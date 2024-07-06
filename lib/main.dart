@@ -48,13 +48,13 @@ class MyApp extends StatelessWidget {
 
 void _createPdfFromMarkdown() async {
 
-  final font = await rootBundle.load("fonts/Metropolis-Regular.ttf");
-  final boldFont = await rootBundle.load("fonts/Metropolis-Bold.ttf");
+  final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
+  final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
   
   final theme = pw.ThemeData.withFont(
     base: pw.Font.ttf(font),
     bold: pw.Font.ttf(boldFont),
-    italic: pw.Font.ttf(await rootBundle.load("fonts/Metropolis-RegularItalic.ttf")),
+    italic: pw.Font.ttf(await rootBundle.load("assets/fonts/Metropolis-RegularItalic.ttf")),
 
   );
 
@@ -77,33 +77,107 @@ void _createPdfFromMarkdown() async {
 
   final style = pw.TextStyle(font: pw.Font.ttf(font));
   final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont));
+
   final footerImage = pw.MemoryImage(
     (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
   );
+  final headerImage = pw.MemoryImage(
+    (await rootBundle.load('assets/header.png')).buffer.asUint8List(),
+  );
 
 
-  final myFooter = pw.Container(
+  final footer = pw.Container(
     alignment: pw.Alignment.bottomCenter,
     child: pw.Image(footerImage),
   );
 
-  final pageTheme = pw.PageTheme(
+  final header = pw.Container(
+    alignment: pw.Alignment.topCenter,
+    child: pw.Image(headerImage)
+  );
+
+  final mainPageTheme = pw.PageTheme(
+    pageFormat: PdfPageFormat.a4,
     buildBackground: (context) {
       return pw.FullPage(
         ignoreMargins: true,
-        child: myFooter,
+        child: footer,
       );
     },
   );
 
-  //Create the footer with specific bounds
-// PdfPageTemplateElement footer = PdfPageTemplateElement(
-//     Rect.fromLTWH(0, 0, document.pageSettings.size.width, 50));
+  final firstPageTheme = pw.PageTheme(
+  pageFormat: PdfPageFormat.a4,
+  buildBackground: (context) {
+    final pageWidth = PdfPageFormat.a4.width;
+    return pw.FullPage(
+      ignoreMargins: true,
+      child: pw.Stack(
+        children: [
+          pw.Positioned(
+            top: 0,
 
-  pdf.addPage(
-    pw.MultiPage(
-      pageTheme: pageTheme,
-      build: (pw.Context context) => parsedMarkdown.expand<pw.Widget>((element) {
+            child: pw.SizedBox(
+              width: pageWidth,
+              child: pw.FittedBox(
+                child: header, // Votre widget d'en-tête
+                fit: pw.BoxFit.scaleDown,
+              ),
+            ),
+          ),
+          pw.Positioned(
+            bottom: 0,
+            child: pw.SizedBox(
+              width: pageWidth,
+              child: pw.FittedBox(
+                child: footer, // Votre widget de pied de page
+                fit: pw.BoxFit.scaleDown,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  },
+);
+
+
+// Ensuite, ajoutez les pages suivantes sans l'image dans l'en-tête
+// Générez d'abord la première page avec le thème firstPageTheme
+pdf.addPage(
+  pw.Page(
+    pageTheme: firstPageTheme,
+    build: (pw.Context context) {
+      return pw.Column(
+        children: parsedMarkdown.expand<pw.Widget>((element) {
+          if(element is md.Element) {
+            if(element.children != null) {
+              return element.children!.map<pw.Widget>((child) {
+                if(child is md.Text) {
+                  return pw.Paragraph(text: child.text, style: style);
+                }
+                else if(child is md.Element && child.tag == 'strong') {
+                  return pw.Paragraph(text: child.textContent, style: boldStyle);
+                }
+                return pw.Container();
+              });
+            }
+          }
+          return [];
+        }).toList(),
+      );
+    },
+  ),
+);
+
+// Ensuite, générez les pages suivantes avec le thème mainPageTheme
+pdf.addPage(
+  pw.MultiPage(
+    pageTheme: mainPageTheme,
+    build: (pw.Context context) {
+      // Ici, vous pouvez ajouter le contenu des pages suivantes
+      // Par exemple, vous pouvez ajouter tous les éléments de parsedMarkdown sauf le premier
+      return parsedMarkdown.skip(1).expand<pw.Widget>((element) {
         if(element is md.Element) {
           if(element.children != null) {
             return element.children!.map<pw.Widget>((child) {
@@ -118,9 +192,10 @@ void _createPdfFromMarkdown() async {
           }
         }
         return [];
-      }).toList()
-    ),
-  );
+      }).toList();
+    },
+  ),
+);
 
 
   // pdf.addPage(
