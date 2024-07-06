@@ -47,7 +47,18 @@ class MyApp extends StatelessWidget {
 
 
 void _createPdfFromMarkdown() async {
-  final pdf = pw.Document();
+
+  final font = await rootBundle.load("fonts/Metropolis-Regular.ttf");
+  final boldFont = await rootBundle.load("fonts/Metropolis-Bold.ttf");
+  
+  final theme = pw.ThemeData.withFont(
+    base: pw.Font.ttf(font),
+    bold: pw.Font.ttf(boldFont),
+    italic: pw.Font.ttf(await rootBundle.load("fonts/Metropolis-RegularItalic.ttf")),
+
+  );
+
+  final pdf = pw.Document(theme: theme);
   final markdownData = await rootBundle.loadString('assets/template.md');
   final parsedMarkdown = md.Document().parseLines(markdownData.split('\n'));
 
@@ -64,12 +75,25 @@ void _createPdfFromMarkdown() async {
   //   }
   // }
 
-  final font = await rootBundle.load("fonts/Metropolis-Regular.ttf");
-  final boldFont = await rootBundle.load("fonts/Metropolis-Bold.ttf");
   final style = pw.TextStyle(font: pw.Font.ttf(font));
   final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont));
   final footerImage = pw.MemoryImage(
     (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
+  );
+
+
+  final myFooter = pw.Container(
+    alignment: pw.Alignment.bottomCenter,
+    child: pw.Image(footerImage),
+  );
+
+  final pageTheme = pw.PageTheme(
+    buildBackground: (context) {
+      return pw.FullPage(
+        ignoreMargins: true,
+        child: myFooter,
+      );
+    },
   );
 
   //Create the footer with specific bounds
@@ -78,6 +102,7 @@ void _createPdfFromMarkdown() async {
 
   pdf.addPage(
     pw.MultiPage(
+      pageTheme: pageTheme,
       build: (pw.Context context) => parsedMarkdown.expand<pw.Widget>((element) {
         if(element is md.Element) {
           if(element.children != null) {
@@ -93,15 +118,7 @@ void _createPdfFromMarkdown() async {
           }
         }
         return [];
-      }).toList(),
-      footer: (pw.Context context) {
-        return pw.Expanded(
-          child: pw.Align(
-            alignment: pw.Alignment.bottomCenter,
-            child: pw.Image(footerImage),
-          ),
-        );
-      },
+      }).toList()
     ),
   );
 
@@ -120,6 +137,5 @@ void _createPdfFromMarkdown() async {
   //   ),
   // );
 
-  final file = File('Contrat/monFichier.pdf');
-  await file.writeAsBytes(await pdf.save());
+  await File('Contrat/monFichier.pdf').writeAsBytes(await pdf.save());
 }
