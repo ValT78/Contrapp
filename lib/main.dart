@@ -49,49 +49,61 @@ class MyApp extends StatelessWidget {
 void _createPdfFromMarkdown() async {
   final pdf = pw.Document();
   final markdownData = await rootBundle.loadString('assets/template.md');
-final parsedMarkdown = md.Document().parseLines(markdownData.split(RegExp(r'\n(?!\n)')));
-  // final ttf = pw.Font.ttf(font);
+  final parsedMarkdown = md.Document().parseLines(markdownData.split('\n'));
 
-  // final style = pw.TextStyle(font: ttf);
 
-  for (final element in parsedMarkdown) {
-    if (element is md.Element) {
-      if (element.children != null) {
-        for (final child in element.children!) {
-          if (child is md.Text) {
-            print(child.text); // Print the text here
-          }
-        }
-      }
-    }
-  }
+  // for (final element in parsedMarkdown) {
+  //   if (element is md.Element) {
+  //     if (element.children != null) {
+  //       for (final child in element.children!) {
+  //         if (child is md.Text) {
+  //           print(child.text); // Print the text here
+  //         }
+  //       }
+  //     }
+  //   }
+  // }
+
   final font = await rootBundle.load("fonts/Metropolis-Regular.ttf");
   final boldFont = await rootBundle.load("fonts/Metropolis-Bold.ttf");
   final style = pw.TextStyle(font: pw.Font.ttf(font));
   final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont));
+  final footerImage = pw.MemoryImage(
+    (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
+  );
 
-//   pdf.addPage(
-//   pw.MultiPage(
-//     build: (pw.Context context) => parsedMarkdown.expand<pw.Widget>((element) {
-//       if(element is md.Element) {
-//         if(element.children != null) {
-//           return element.children!.map<pw.Widget>((child) {
-//             if(child is md.Text) {
-//               if (element.tag == 'strong') {  // Si l'élément est en gras dans le markdown
-//                 print(child.text);  // Imprimez le texte ici
+  //Create the footer with specific bounds
+// PdfPageTemplateElement footer = PdfPageTemplateElement(
+//     Rect.fromLTWH(0, 0, document.pageSettings.size.width, 50));
 
-//                 return pw.Paragraph(text: child.text, style: boldStyle);
-//               }
-//               return pw.Paragraph(text: child.text, style: style);
-//             }
-//             return pw.Container();
-//           });
-//         }
-//       }
-//       return [];
-//     }).toList(),
-//   ),
-// );
+  pdf.addPage(
+    pw.MultiPage(
+      build: (pw.Context context) => parsedMarkdown.expand<pw.Widget>((element) {
+        if(element is md.Element) {
+          if(element.children != null) {
+            return element.children!.map<pw.Widget>((child) {
+              if(child is md.Text) {
+                return pw.Paragraph(text: child.text, style: style);
+              }
+              else if(child is md.Element && child.tag == 'strong') {
+                return pw.Paragraph(text: child.textContent, style: boldStyle);
+              }
+              return pw.Container();
+            });
+          }
+        }
+        return [];
+      }).toList(),
+      footer: (pw.Context context) {
+        return pw.Expanded(
+          child: pw.Align(
+            alignment: pw.Alignment.bottomCenter,
+            child: pw.Image(footerImage),
+          ),
+        );
+      },
+    ),
+  );
 
 
   // pdf.addPage(
