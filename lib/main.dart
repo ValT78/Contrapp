@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:markdown/markdown.dart' as md;
 
-// import 'package:markdown/markdown.dart' show UnorderedList;
 
 void main() {
+
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -48,35 +48,20 @@ class MyApp extends StatelessWidget {
 
 void _createPdfFromMarkdown() async {
 
+  
+  final pdf = pw.Document();
+  final markdownData = await rootBundle.loadString('assets/template.md');
+  final formattedMarkdownData = markdownData.replaceAll(RegExp(r'(?:\r\n|\r|\n)'), '\n');
+  final parsedMarkdown = md.Document().parseLines(formattedMarkdownData.split('\n'));
+
   final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
   final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
+  final italicFont = await rootBundle.load("assets/fonts/Metropolis-RegularItalic.ttf");
   
-  final theme = pw.ThemeData.withFont(
-    base: pw.Font.ttf(font),
-    bold: pw.Font.ttf(boldFont),
-    italic: pw.Font.ttf(await rootBundle.load("assets/fonts/Metropolis-RegularItalic.ttf")),
-
-  );
-
-  final pdf = pw.Document(theme: theme);
-  final markdownData = await rootBundle.loadString('assets/template.md');
-  final parsedMarkdown = md.Document().parseLines(markdownData.split('\n'));
-
-
-  // for (final element in parsedMarkdown) {
-  //   if (element is md.Element) {
-  //     if (element.children != null) {
-  //       for (final child in element.children!) {
-  //         if (child is md.Text) {
-  //           print(child.text); // Print the text here
-  //         }
-  //       }
-  //     }
-  //   }
-  // }
-
-  final style = pw.TextStyle(font: pw.Font.ttf(font));
+  
+  final classicStyle = pw.TextStyle(font: pw.Font.ttf(font));
   final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont));
+  final italicStyle = pw.TextStyle(font: pw.Font.ttf(italicFont));
 
   final footerImage = pw.MemoryImage(
     (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
@@ -153,13 +138,7 @@ pdf.addPage(
           if(element is md.Element) {
             if(element.children != null) {
               return element.children!.map<pw.Widget>((child) {
-                if(child is md.Text) {
-                  return pw.Paragraph(text: child.text, style: style);
-                }
-                else if(child is md.Element && child.tag == 'strong') {
-                  return pw.Paragraph(text: child.textContent, style: boldStyle);
-                }
-                return pw.Container();
+                return _FormatMarkdown(child, classicStyle, boldStyle, italicStyle);
               });
             }
           }
@@ -170,6 +149,11 @@ pdf.addPage(
   ),
 );
 
+print('Nombre d\'éléments dans parsedMarkdown: ${parsedMarkdown.length}');
+
+int wordInFirstParagraph = 20;
+int skippedWords = 0;
+
 // Ensuite, générez les pages suivantes avec le thème mainPageTheme
 pdf.addPage(
   pw.MultiPage(
@@ -177,17 +161,15 @@ pdf.addPage(
     build: (pw.Context context) {
       // Ici, vous pouvez ajouter le contenu des pages suivantes
       // Par exemple, vous pouvez ajouter tous les éléments de parsedMarkdown sauf le premier
-      return parsedMarkdown.skip(1).expand<pw.Widget>((element) {
+      return parsedMarkdown.expand<pw.Widget>((element) {
         if(element is md.Element) {
           if(element.children != null) {
             return element.children!.map<pw.Widget>((child) {
-              if(child is md.Text) {
-                return pw.Paragraph(text: child.text, style: style);
+              skippedWords++;
+              if(skippedWords < wordInFirstParagraph) {
+                return pw.Container();
               }
-              else if(child is md.Element && child.tag == 'strong') {
-                return pw.Paragraph(text: child.textContent, style: boldStyle);
-              }
-              return pw.Container();
+              return _FormatMarkdown(child, classicStyle, boldStyle, italicStyle);
             });
           }
         }
@@ -197,20 +179,36 @@ pdf.addPage(
   ),
 );
 
-
-  // pdf.addPage(
-  //   pw.Page(
-  //     build: (pw.Context context) => pw.Column(
-  //       children: <pw.Widget>[
-  //         pw.Image(yourImage),  // Remplacez `yourImage` par votre image
-  //         pw.Text(htmlData, style: pw.TextStyle(fontSize: 40)),
-  //         pw.Footer(
-  //           child: pw.Image(yourFooterImage),  // Remplacez `yourFooterImage` par votre image de pied de page
-  //         ),
-  //       ],
-  //     ),
-  //   ),
-  // );
-
   await File('Contrat/monFichier.pdf').writeAsBytes(await pdf.save());
+}
+
+pw.Widget _FormatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle) {
+
+  String mdText = _insertInformation(child.textContent as String);
+
+
+  if(child is md.Text) {
+    print(child.text);
+    return pw.Paragraph(text: mdText, style: classicStyle);
+  }
+  else if(child is md.Element && child.tag == 'strong') {
+    return pw.Paragraph(text: mdText, style: boldStyle);
+  }
+  else if (child is md.Element && child.tag == 'li') {
+    return pw.Bullet(text: mdText, style: classicStyle);
+  }
+  else if (child is md.Element && child.tag == 'em') {
+    return pw.Paragraph(text: mdText, style: italicStyle);
+  }
+  return pw.Container();
+}
+
+String _insertInformation(String text) {
+  return text.replaceAllMapped(RegExp('==(.+?)=='), (Match m) {
+    // Récupérer le nom de la variable entre << >>
+
+    // Récupérer l'instance de la classe MesVariablesGlobales
+      return ''; // Add a return statement at the end
+
+  });
 }

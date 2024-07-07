@@ -1,25 +1,41 @@
-Voici 15 lignes de markdown générées pour vous :
 
-# Titre principal
-## Sous-titre
-*Texte en italique*
-**Texte en gras**
-[Lien vers une page web](https://www.example.com) -->
-![Image](test.jpg)
-> Citation inspirante
-- Liste à puces
-1. Liste numérotée
-`Code en ligne`
-```python
-    def hello_world():
-    print("Hello, world!")
-```
-| Colonne 1 | Colonne 2 |
-|----------|----------|
-| Donnée 1 | Donnée 2 |
-<u>Texte souligné</u>
-~~Texte barré~~
-:smile: Emoji
+
+
+
+
+
+
+
+
+
+
+
+
+
+Entre
+
+ 
+**Ets PICQUETTE**
+**Route de Sainte-Cécile**
+**84830 SERIGNAN**
+
+
+ci-après désigné: Ets PICQUETTE
+
+et
+
+
+**==entreprise==**
+**==adresse_1==**
+**==adresse_2==**
+
+
+ci-après désigné: le client
+
+
+Concernant
+
+
 
 **ARTICLE I - LES PARTIES**
 
@@ -67,19 +83,19 @@ D - EXCLUSIONS DU CONTRAT
 
 Le présent contrat n'inclut pas les éléments suivants :
 
- 	Les incidents causés par un incendie, une malveillance, une coupure de courant, une tension anormale, une vidange cassée ou bouchée, un manque d'eau ou une eau anormalement sale, corrosive.
+- Les incidents causés par un incendie, une malveillance, une coupure de courant, une tension anormale, une vidange cassée ou bouchée, un manque d'eau ou une eau anormalement sale, corrosive.
 
- 	Le nettoyage des carrosseries des appareils et leur éventuelle remise en état.
+- Le nettoyage des carrosseries des appareils et leur éventuelle remise en état.
 
- 	Les parties mécaniques des générateurs de glace.
+- Les parties mécaniques des générateurs de glace.
 
- 	Le matériel informatique.
+- Le matériel informatique.
 
- 	Le remplacement de toutes les pièces sur les climatiseurs ou le chauffage du magasin.
+- Le remplacement de toutes les pièces sur les climatiseurs ou le chauffage du magasin.
 
- 	Le remplacement ou les réparations de portes, joints, poignées et serrures des chambres froides.
+- Le remplacement ou les réparations de portes, joints, poignées et serrures des chambres froides.
 
- 	L'entretien des écoulements sous dallage.
+- L'entretien des écoulements sous dallage.
 
  	La vérification des capteurs de CO2.
 
