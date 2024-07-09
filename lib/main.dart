@@ -8,7 +8,7 @@ import 'package:markdown/markdown.dart' as md;
 Map<String, String> variablesContrat = {
   'Entreprise': 'TWitter.com',
   'Adresse1': 'Ar;:;!;:!;:ds.+--sq+d-+qsd',
-  'adresse2': '12 rue de la Paix',
+  'Adresse2': '12 rue de la Paix',
   'Numero': '12313(12)',
   'Capital': '123125€',
   'Matricule': '123  23-556 546',
@@ -65,20 +65,18 @@ void _createPdfFromMarkdown() async {
   final pdf = pw.Document();
   final markdownData = await rootBundle.loadString('assets/template.md');
 
-  // print(markdownData.substring(0, 40));
-  final formattedMarkdownData = markdownData.replaceAll(RegExp(r'\r\n\r\n'), '\r\n \r\n');
-  print(formattedMarkdownData.split('\n')[0]);
-  final parsedMarkdown = md.Document().parseLines(formattedMarkdownData.split('\r\n'));
-  print(parsedMarkdown[0].textContent);
+  final markdownWithReturn = markdownData.replaceAll(RegExp(r'\r\n\r\n'), '\r\n \r\n');
+
+  final parsedMarkdown = markdownWithReturn.split('\r\n');
 
   final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
   final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
   final italicFont = await rootBundle.load("assets/fonts/Metropolis-RegularItalic.ttf");
   
   
-  final classicStyle = pw.TextStyle(font: pw.Font.ttf(font));
-  final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont));
-  final italicStyle = pw.TextStyle(font: pw.Font.ttf(italicFont));
+  final classicStyle = pw.TextStyle(font: pw.Font.ttf(font), fontSize: 12);
+  final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont), fontSize: 12);
+  final italicStyle = pw.TextStyle(font: pw.Font.ttf(italicFont), fontSize: 12);
 
   final footerImage = pw.MemoryImage(
     (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
@@ -143,7 +141,6 @@ void _createPdfFromMarkdown() async {
   },
 );
 
-int i = 0;
 // Ensuite, ajoutez les pages suivantes sans l'image dans l'en-tête
 // Générez d'abord la première page avec le thème firstPageTheme
 pdf.addPage(
@@ -152,21 +149,17 @@ pdf.addPage(
     build: (pw.Context context) {
       return pw.Column(
         children: parsedMarkdown.expand<pw.Widget>((element) {
-          if(i < 3) {
-              i++;
-                print(element.textContent);
-            }
-          
-          if(element is md.Element) {
-            if(element.children != null) {
-              return element.children!.map<pw.Widget>((child) {
+          if(element == '' || element == ' ') {
+            return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 16))]; // Add this line to create a space between paragraphs with increased font size
+          }
+          else {
+            final mdElement = md.Document().parse(element).firstOrNull;
+            if(mdElement is md.Element && mdElement.children != null) {
+              return mdElement.children!.map<pw.Widget>((child) {
                 
                 return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
               });
             }
-          }
-          else if(element.textContent == '' || element.textContent == '\n' || element.textContent == ' ') {
-            return [pw.SizedBox(height: 10)]; // Add this line to create a space between paragraphs
           }
           return [];
         }).toList(),
@@ -188,17 +181,21 @@ pdf.addPage(
       // Ici, vous pouvez ajouter le contenu des pages suivantes
       // Par exemple, vous pouvez ajouter tous les éléments de parsedMarkdown sauf le premier
       return parsedMarkdown.expand<pw.Widget>((element) {
-        if(element is md.Element) {
-          if(element.children != null) {
-            return element.children!.map<pw.Widget>((child) {
-              skippedWords++;
-              if(skippedWords < wordInFirstParagraph) {
-                return pw.Container();
-              }
-              return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
-            });
-          }
+        skippedWords++;
+        if(skippedWords < wordInFirstParagraph) {
+          return [];
         }
+        if(element == '' || element == ' ') {
+            return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 16))]; // Add this line to create a space between paragraphs with increased font size
+          }
+          else {
+            final mdElement = md.Document().parse(element).firstOrNull;
+            if(mdElement is md.Element && mdElement.children != null) {
+              return mdElement.children!.map<pw.Widget>((child) {
+                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
+              });
+            }
+          }
         return [];
       }).toList();
     },
@@ -233,8 +230,6 @@ String _insertInformation(String text) {
 
     final key = m.group(1);
     if(variablesContrat.containsKey(key)) {
-      // print(text);
-      // print(variablesContrat[key]);
       return variablesContrat[key]!;
     }
     // Récupérer l'instance de la classe MesVariablesGlobales

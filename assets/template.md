@@ -1,9 +1,15 @@
  
+
+
+
+
+
+
+
+
+
  
- d
-\n\n
-\n\n
-\n\n
+
 
 
 
@@ -17,7 +23,6 @@ Entre
 
 
 ci-après désigné: Ets PICQUETTE
-
 et
 
 
