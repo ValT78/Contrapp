@@ -5,6 +5,19 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:markdown/markdown.dart' as md;
 
+Map<String, String> variablesContrat = {
+  'Entreprise': 'TWitter.com',
+  'Adresse1': 'Ar;:;!;:!;:ds.+--sq+d-+qsd',
+  'adresse2': '12 rue de la Paix',
+  'Numero': '12313(12)',
+  'Capital': '123125€',
+  'Matricule': '123  23-556 546',
+  'Montant_HT': '1255€',
+  'Montant_TTC': '1000€',
+  'Date': '01/01/2022',
+  'Astreinte': 'Accès au service de dépannage 24h/24 et 7j/7',
+  'Astreinte2': 'Offerte'
+};
 
 void main() {
 
@@ -51,8 +64,12 @@ void _createPdfFromMarkdown() async {
   
   final pdf = pw.Document();
   final markdownData = await rootBundle.loadString('assets/template.md');
-  final formattedMarkdownData = markdownData.replaceAll(RegExp(r'(?:\r\n|\r|\n)'), '\n');
-  final parsedMarkdown = md.Document().parseLines(formattedMarkdownData.split('\n'));
+
+  // print(markdownData.substring(0, 40));
+  final formattedMarkdownData = markdownData.replaceAll(RegExp(r'\r\n\r\n'), '\r\n \r\n');
+  print(formattedMarkdownData.split('\n')[0]);
+  final parsedMarkdown = md.Document().parseLines(formattedMarkdownData.split('\r\n'));
+  print(parsedMarkdown[0].textContent);
 
   final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
   final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
@@ -126,7 +143,7 @@ void _createPdfFromMarkdown() async {
   },
 );
 
-
+int i = 0;
 // Ensuite, ajoutez les pages suivantes sans l'image dans l'en-tête
 // Générez d'abord la première page avec le thème firstPageTheme
 pdf.addPage(
@@ -135,12 +152,21 @@ pdf.addPage(
     build: (pw.Context context) {
       return pw.Column(
         children: parsedMarkdown.expand<pw.Widget>((element) {
+          if(i < 3) {
+              i++;
+                print(element.textContent);
+            }
+          
           if(element is md.Element) {
             if(element.children != null) {
               return element.children!.map<pw.Widget>((child) {
-                return _FormatMarkdown(child, classicStyle, boldStyle, italicStyle);
+                
+                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
               });
             }
+          }
+          else if(element.textContent == '' || element.textContent == '\n' || element.textContent == ' ') {
+            return [pw.SizedBox(height: 10)]; // Add this line to create a space between paragraphs
           }
           return [];
         }).toList(),
@@ -169,7 +195,7 @@ pdf.addPage(
               if(skippedWords < wordInFirstParagraph) {
                 return pw.Container();
               }
-              return _FormatMarkdown(child, classicStyle, boldStyle, italicStyle);
+              return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
             });
           }
         }
@@ -182,13 +208,12 @@ pdf.addPage(
   await File('Contrat/monFichier.pdf').writeAsBytes(await pdf.save());
 }
 
-pw.Widget _FormatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle) {
+pw.Widget _formatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle) {
 
   String mdText = _insertInformation(child.textContent as String);
 
 
   if(child is md.Text) {
-    print(child.text);
     return pw.Paragraph(text: mdText, style: classicStyle);
   }
   else if(child is md.Element && child.tag == 'strong') {
@@ -205,10 +230,15 @@ pw.Widget _FormatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldSty
 
 String _insertInformation(String text) {
   return text.replaceAllMapped(RegExp('==(.+?)=='), (Match m) {
-    // Récupérer le nom de la variable entre << >>
 
+    final key = m.group(1);
+    if(variablesContrat.containsKey(key)) {
+      // print(text);
+      // print(variablesContrat[key]);
+      return variablesContrat[key]!;
+    }
     // Récupérer l'instance de la classe MesVariablesGlobales
-      return ''; // Add a return statement at the end
+      return text; // Add a return statement at the end
 
   });
 }
