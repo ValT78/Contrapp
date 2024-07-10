@@ -1,3 +1,6 @@
+import 'dart:math';
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'dart:io';
 import 'package:pdf/pdf.dart';
@@ -15,6 +18,7 @@ Map<String, String> variablesContrat = {
   'Montant_HT': '1255€',
   'Montant_TTC': '1000€',
   'Date': '01/01/2022',
+  'NumeroContrat': '220101001',
   'Astreinte': 'Accès au service de dépannage 24h/24 et 7j/7',
   'Astreinte2': 'Offerte'
 };
@@ -67,7 +71,9 @@ void _createPdfFromMarkdown() async {
 
   final markdownWithReturn = markdownData.replaceAll(RegExp(r'\r\n\r\n'), '\r\n \r\n');
 
-  final parsedMarkdown = markdownWithReturn.split('\r\n');
+  final parsedMarkdown = markdownWithReturn.split("___");
+  final markdownParagraph = parsedMarkdown.map((e) => e.split('\r\n')).toList();
+  print(markdownParagraph);
 
   final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
   final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
@@ -77,7 +83,10 @@ void _createPdfFromMarkdown() async {
   final classicStyle = pw.TextStyle(font: pw.Font.ttf(font), fontSize: 12);
   final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont), fontSize: 12);
   final italicStyle = pw.TextStyle(font: pw.Font.ttf(italicFont), fontSize: 12);
-
+  final titleStyle = pw.TextStyle(
+    font: pw.Font.ttf(boldFont),
+    fontSize: 20
+  );
   final footerImage = pw.MemoryImage(
     (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
   );
@@ -148,17 +157,21 @@ pdf.addPage(
     pageTheme: firstPageTheme,
     build: (pw.Context context) {
       return pw.Column(
-        children: parsedMarkdown.expand<pw.Widget>((element) {
+        children: markdownParagraph[0].expand<pw.Widget>((element) {
           if(element == '' || element == ' ') {
             return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 16))]; // Add this line to create a space between paragraphs with increased font size
           }
           else {
             final mdElement = md.Document().parse(element).firstOrNull;
-            if(mdElement is md.Element && mdElement.children != null) {
+            if(mdElement is md.Element && mdElement.tag == 'h1') {
+              print(mdElement.textContent);
+              return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, titleStyle)];
+            }
+            else if(mdElement is md.Element && mdElement.children != null) {
               return mdElement.children!.map<pw.Widget>((child) {
-                
-                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
-              });
+
+                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle, titleStyle);
+              }).toList();
             }
           }
           return [];
@@ -168,10 +181,7 @@ pdf.addPage(
   ),
 );
 
-print('Nombre d\'éléments dans parsedMarkdown: ${parsedMarkdown.length}');
 
-int wordInFirstParagraph = 20;
-int skippedWords = 0;
 
 // Ensuite, générez les pages suivantes avec le thème mainPageTheme
 pdf.addPage(
@@ -180,19 +190,19 @@ pdf.addPage(
     build: (pw.Context context) {
       // Ici, vous pouvez ajouter le contenu des pages suivantes
       // Par exemple, vous pouvez ajouter tous les éléments de parsedMarkdown sauf le premier
-      return parsedMarkdown.expand<pw.Widget>((element) {
-        skippedWords++;
-        if(skippedWords < wordInFirstParagraph) {
-          return [];
-        }
+      return markdownParagraph[1].expand<pw.Widget>((element) {
         if(element == '' || element == ' ') {
-            return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 16))]; // Add this line to create a space between paragraphs with increased font size
+            return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 11))]; // Add this line to create a space between paragraphs with increased font size
           }
           else {
             final mdElement = md.Document().parse(element).firstOrNull;
-            if(mdElement is md.Element && mdElement.children != null) {
+            if(mdElement is md.Element && mdElement.tag == 'h1') {
+              print(mdElement.textContent);
+              return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, titleStyle)];
+            }
+            else if(mdElement is md.Element && mdElement.children != null) {
               return mdElement.children!.map<pw.Widget>((child) {
-                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle);
+                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle, titleStyle);
               });
             }
           }
@@ -205,12 +215,26 @@ pdf.addPage(
   await File('Contrat/monFichier.pdf').writeAsBytes(await pdf.save());
 }
 
-pw.Widget _formatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle) {
+pw.Widget _formatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle titleStyle) {
 
   String mdText = _insertInformation(child.textContent as String);
+  if(child is md.Element && child.tag == 'h1') {
+    return pw.SizedBox(
+    width: double.infinity, // ou une autre valeur pour la largeur
+    height: 50, // ou une autre valeur pour la hauteur
+    child: pw.Container(
+      decoration: pw.BoxDecoration(
+        color: const PdfColor.fromInt(0xff0000ff), // Couleur de fond bleue
+        border: pw.Border.all(width: 2.0, color: const PdfColor.fromInt(0xff000000)), // Bordure noire
+      ),
+      child: pw.Center(
+        child: pw.Text(mdText, style: classicStyle),
+      ),
+    ),
+  );
+  }
 
-
-  if(child is md.Text) {
+  else if(child is md.Text) {
     return pw.Paragraph(text: mdText, style: classicStyle);
   }
   else if(child is md.Element && child.tag == 'strong') {

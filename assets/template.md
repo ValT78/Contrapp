@@ -12,7 +12,7 @@
 
 
 
-
+# Contrat de Maintenance N°SAV==NumeroContrat==
 
 Entre
 
@@ -36,13 +36,13 @@ ci-après désigné: le client
 
 Concernant
 
-==Installation frigorifique
+# Installation frigorifique
+___
+# Matériel concerné
 
-==Matériel concerné
+== Equipement
 
-==Equipement
-
-==Descriptif des opérations de maintenance
+# Descriptif des opérations de maintenance
 
 
 
@@ -60,11 +60,11 @@ Les prestations générales de révision de maintenance consistent à effectuer 
 
 Dans le cadre de l’intervention d’entretien si une défectuosité est repérée par le technicien des Ets PICQUETTE et nécessite le remplacement d’une pièce une offre sera transmise au client pour approbation. (Exemple : réparations de fuites, recharge en gaz, vidange huile, pièce de rechange
 
-==Calendrier prévisionnel des visites
+# Calendrier prévisionnel des visites
 
 ==Visites
 
-==COndition générales de vente
+# Condition générales de vente
 
 
 **ARTICLE I - LES PARTIES**
@@ -384,7 +384,7 @@ ARTICLE XVII - ATTRIBUTION DE JURIDICTION
 
 Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécution de ce contrat seront de la compétence des juridictions d'Angers, quelles que soient les modalités de paiement acceptées, même en cas d'appel en garantie ou de pluralité de défendeurs, et nonobstant toute clause contraire. Il est convenu que tout droit d'enregistrement, le cas échéant, ainsi que toute demande, droit encouru et amende, seront à la charge de la partie qui a rendu nécessaire la formalité d'enregistrement.
 
-== Tarifs et signatures
+# Tarifs et signatures
 
 
 <u>Durée du contrat :</u>
