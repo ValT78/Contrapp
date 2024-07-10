@@ -12,29 +12,60 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Contrat de Maintenance N°SAV==NumeroContrat==
+
 
 Entre
 
+
  
 **Ets PICQUETTE**
+
 **Route de Sainte-Cécile**
+
 **84830 SERIGNAN**
 
 
+
+
 ci-après désigné: Ets PICQUETTE
+
 et
 
 
+
+
 **==Entreprise==**
+
 **==Adresse1==**
+
 **==Adresse2==**
+
 
 
 ci-après désigné: le client
 
 
+
 Concernant
+
+
 
 # Installation frigorifique
 ___
@@ -51,14 +82,17 @@ Le présent contrat a pour but d’assurer l’entretien périodique et de véri
 
 
 Les prestations générales de révision de maintenance consistent à effectuer les travaux suivants : 
--	Nettoyage des parties de fonctionnelles.
--	Contrôle des fonctions des installations.
+
+-	Nettoyage des parties de fonctionnelles
+
+-	Contrôle des fonctions des installations
+
 -	Etablissement du certificat d’étanchéité
 
 
 ==MAINTENANCE
 
-Dans le cadre de l’intervention d’entretien si une défectuosité est repérée par le technicien des Ets PICQUETTE et nécessite le remplacement d’une pièce une offre sera transmise au client pour approbation. (Exemple : réparations de fuites, recharge en gaz, vidange huile, pièce de rechange
+Dans le cadre de l’intervention d’entretien si une défectuosité est repérée par le technicien des Ets PICQUETTE et nécessite le remplacement d’une pièce une offre sera transmise au client pour approbation. (Exemple : réparations de fuites, recharge en gaz, vidange huile, pièce de rechange)
 
 # Calendrier prévisionnel des visites
 
@@ -69,26 +103,30 @@ Dans le cadre de l’intervention d’entretien si une défectuosité est repér
 
 **ARTICLE I - LES PARTIES**
 
+
 Le présent document a pour objet d'établir un contrat entre les parties ci-dessous désignées :
 
 - Société des Etablissements PICQUETTE, au capital de 100 000 €, domiciliée Route de Sainte-Cécile – 84 830 Sérignan-Du-Comtat, immatriculée au RCS Avignon B sous le numéro 305 949 679, ci-après dénommée « le Prestataire ».
 
-- ==Entreprise==, sise à ==Adresse1==, ==Adresse2==, au capital de ==CAPITAL== €, immatriculée au RCS ==Matricule==, ci-après dénommée « le Client ».
+- ==Entreprise==, sise à ==Adresse1==, ==Adresse2==, au capital de ==Capital== €, immatriculée au RCS ==Matricule==, ci-après dénommée « le Client ».
 
 Les parties « le Prestataire » et « le Client » seront ci-après désignées ensemble par « les Parties ».
 
+
 **ARTICLE II - OBJET**
+
 
 Le présent contrat a pour objet d'assurer un contrôle général du bon fonctionnement de la ou des installation(s) frigorifique(s) de l'établissement du Client avec délivrance du certificat d'étanchéité. Il intègre, selon les formules, des opérations de maintenance préventive, corrective (telles que définies par la FD X 80-000 de mai 2002), ainsi que du suivi de performance énergétique.
 
 
 **ARTICLE III – ENGAGEMENTS DU PRESTATAIRE**
 
-A – ENTRETIEN
+
+**A – ENTRETIEN**
 
 Le Prestataire s’engage à effectuer les visites de maintenance selon le « Calendrier Prévisionnel des Visites ». Le calendrier de visites est proposé plus haut. Le non-respect du calendrier à l’initiative du Client ne pourra pas être opposable au Prestataire.
 
-B – DÉPANNAGES
+**B – DÉPANNAGES**
 
 Le Prestataire s'engage à intervenir ou à faire intervenir sur les installations frigorifiques dans un délai de 12 heures ouvrées (de 8H à 12H et de 14H à 18H hors weekend et jours fériés) suivant l'appel téléphonique. Ainsi, pour un appel reçu avant 10h, l'intervention aura lieu au plus tard en fin d'après-midi et pour un appel reçu après 16h, au plus tard le lendemain matin.
 
@@ -102,14 +140,18 @@ Le Prestataire décline toute responsabilité pour toutes défaillances affectan
 
 Toute nouvelle intervention faisant suite à un devis non accepté de remise en état sera facturée. Les travaux ne pourront commencer qu'une fois le devis accepté et signé par le Client.
 
-C – PIÈCES
+
+**C – PIÈCES**
+
 
 Les éventuelles pièces usées ou détériorées, fluides frigorigènes nécessaires sont fournis et facturés (suivant la formule retenue) selon leur disponibilité au fur et à mesure des interventions. Un Rapport d’Entretien (RE) signé par le client prouve la mise en œuvre de ces fournitures.
 La facturation complémentaire sera appliquée pour la main d'œuvre nécessaire à la remise en état ou le remplacement de "gros matériel" tels que les compresseurs, les échangeurs, les évaporateurs, les automates, quelle que soit la formule retenue.
 En cas de travaux réglementaires nécessaires sur l'installation, en cas de refus de prise en charge par le client, le Prestataire peut décider de suspendre l'application des clauses du présent contrat, jusqu'à acceptation du devis par le client.
 La pose de pièces fournies par le client n'est pas comprise dans le contrat et ne bénéficie d'aucune garantie. Le prestataire se réserve le droit de refuser la pose de celles-ci.
 
-D - EXCLUSIONS DU CONTRAT
+
+**D - EXCLUSIONS DU CONTRAT**
+
 
 Le présent contrat n'inclut pas les éléments suivants :
 
@@ -145,7 +187,9 @@ Le présent contrat n'inclut pas les éléments suivants :
 
 - Les interventions ou les dépannages résultant de températures extérieures exceptionnellement inférieures ou supérieures à la température habituellement constatée dans la région pour la période donnée.
 
-ARTICLE IV - DURÉE DU CONTRAT
+
+**ARTICLE IV - DURÉE DU CONTRAT**
+
 
 Le contrat prend effet dès sa signature par les parties et dure une année. De plus, les parties conviennent que le contrat sera automatiquement renouvelé pour une durée d’un an à la fin de cette période, à moins qu'une des parties ne le dénonce par lettre recommandée avec accusé de réception, au moins trois (3) mois avant sa date anniversaire. 
 
@@ -153,7 +197,9 @@ Cette clause s'applique à chaque renouvellement du contrat à l'expiration de c
 
 Toute modification par ajout ou suppression d'installation effectuée par le prestataire entraîne une modification correspondante du bordereau de prix, mais ne résilie pas le contrat en aucun cas.
 
-ARTICLE V – SÉCURITÉ
+
+**ARTICLE V – SÉCURITÉ**
+
 
 Conformément au décret n°92-158 du 20 février 1992, le représentant du site client (entreprise utilisatrice) organise une inspection commune avant l'opération de l'entreprise extérieure. Lors de cette inspection commune des lieux, les risques liés à la coactivité due à l'interférence entre les installations/le matériel de l'entreprise utilisatrice et le personnel de l'entreprise extérieure sont analysés et des mesures de prévention sont définies pour les prévenir. 
 
@@ -170,16 +216,21 @@ L'absence d'un plan de prévention écrit engage la responsabilité des deux ent
 
 L'entreprise extérieure se réserve le droit de ne pas intervenir si la sécurité n'est pas assurée conformément à la réglementation en vigueur, et en cas de danger grave et imminent.
 
-ARTICLE VI - ÉVOLUTION ET AMÉLIORATION DE L'INSTALLATION
+
+**ARTICLE VI - ÉVOLUTION ET AMÉLIORATION DE L'INSTALLATION**
+
 
 Compte tenu de l'évolution des normes et des améliorations techniques disponibles (économies d'énergie, récupération de chaleur, télégestion, substitution de fluides frigorigènes, etc.), le prestataire proposera en option un plan de progrès.
 
 
 
 
-ARTICLE VII - OBLIGATIONS DES PARTIES
+**ARTICLE VII - OBLIGATIONS DES PARTIES**
+
+
 
 - OBLIGATIONS DU PRESTATAIRE
+
 
 Le Prestataire assure les obligations qui lui sont confiées dans le cadre d'une obligation de moyens.
 
@@ -191,7 +242,9 @@ Avant de sous-traiter une de ses prestations, le Prestataire informera préalabl
 
 À chaque intervention de maintenance ou de dépannage, le Prestataire a l'obligation de faire viser son rapport d’entretien par le Client et lui en remettre un double envoyé par mail.
 
+
 - OBLIGATIONS DU CLIENT
+
 
 Le Client garantit au Prestataire, à son personnel ainsi qu'à ses éventuels sous-traitants, le libre accès aux installations pour l'exécution des prestations.
 
@@ -214,7 +267,9 @@ Par ailleurs, pour pouvoir être tenu responsable d'une éventuelle perte de mar
 
 
 
-ARTICLE VII - PENALITES FORFAITAIRES ET EXONERATION
+**ARTICLE VIII - PENALITES FORFAITAIRES ET EXONERATION**
+
+
 
 Les manquements du prestataire à ses obligations, tels que définis à l'article III du présent contrat, lui sont signalés par le client dès leur constatation, soit directement au personnel sur place, soit téléphoniquement et confirmés par lettre recommandée avec avis de réception.
 
@@ -251,7 +306,9 @@ Aucune pénalité n'est due dans les cas suivants :
 
 - Dommages atteignant les installations et non imputables au Prestataire
 
-ARTICLE IX - CONFORMITE AVEC LA LEGISLATION EN VIGUEUR
+
+**ARTICLE IX - CONFORMITE AVEC LA LEGISLATION EN VIGUEUR**
+
 
 Le Prestataire s'engage à réaliser ou faire réaliser (inspection périodiques) les prestations conformément à la législation et la réglementation en vigueur.
 
@@ -267,7 +324,11 @@ En cas de modification de la législation, des normes ou de la réglementation p
 
 Dans le cadre de l'évolution législative concernant de nouvelles taxes (non connues lors de la signature du contrat), elles feront l'objet de facturations complémentaires.
 
-ARTICLE X – EXCLUSIVITE
+
+
+**ARTICLE X – EXCLUSIVITE**
+
+
 
 Pour la durée du contrat et s'agissant des Installations, le Client réserve au Prestataire l'exclusivité de l'exploitation.
 
@@ -277,7 +338,11 @@ Cas de force majeure : Mouvements sociaux, grèves dont approvisionnement en car
 
 En cas d'intervention d'une tierce entreprise dans la maintenance de l'installation sans son accord préalable écrit, la responsabilité du Prestataire sera écartée.
 
-ARTICLE XI - NON-PAIEMENT DU CONTRAT
+
+
+**ARTICLE XI - NON-PAIEMENT DU CONTRAT**
+
+
 
 Tout retard de paiement de facture par le Client donne lieu de plein droit, dès le lendemain des termes fixés, à des intérêts de retard calculés au taux d'intérêt appliqué par la Banque centrale européenne à son opération de refinancement la plus récente majorée de 10 points de pourcentage, et qui ne peut, en tout état de cause, être inférieur à trois fois le taux d'intérêt légal.
 Cette facture sera majorée de 15% pour frais de recouvrement.
@@ -299,29 +364,44 @@ La mise en œuvre des dispositions du présent article libère provisoirement le
 Indépendamment de ce qui précède, en cas de non-paiement au terme d'un délai de trente (30) jours suivant la mise en demeure ci-dessus, le Prestataire peut résilier le contrat de plein droit par l'envoi d'une seconde lettre recommandée avec accusé de réception.
 
 
-ARTICLE XII - RÉSILIATION DU CONTRAT
+
+**ARTICLE XII - RÉSILIATION DU CONTRAT**
+
+
 
 - RÉSILIATION DU CONTRAT PAR LE PRESTATAIRE
+
 
 En cas de défaut de paiement après mise en demeure restée infructueuse, le présent contrat pourra être résilié par le Prestataire aux torts exclusifs du Client.
 Le Prestataire pourra également résilier le contrat s'il se trouve empêché de réaliser sa prestation par le Client.
 
 Enfin, le présent contrat pourra être résilié en cas de circonstances imprévisibles comme prévu à l'article XVI.
 
+
 - RÉSILIATION DU CONTRAT PAR LE CLIENT
+
 
 Le contrat pourra être résilié par le Client en cas d'inexécution par le Prestataire de ses engagements contractuels.
 
+
 - CONDITIONS ET EFFETS DE LA RÉSILIATION
 
+
+
 **Conditions de la résiliation :**
+
+
 
 La partie qui souhaite résilier le contrat devra mettre en demeure l'autre partie de s'exécuter par lettre recommandée avec accusé réception.
 
 A défaut d'exécution sous un mois, la partie qui souhaite résilier devra notifier sa décision de résiliation par lettre recommandée avec accusé de réception.
 La résiliation prendra alors effet passé un délai de 2 mois à compter de la réception de la lettre recommandée par l'autre partie.
 
+
+
 **Effets de la résiliation :**
+
+
 
 La résiliation du contrat produit ses effets pour l'avenir. Les parties se trouvent libérées à compter de la date de la résiliation.
 
@@ -329,13 +409,19 @@ La résiliation du contrat produit ses effets pour l'avenir. Les parties se trou
 
 
 
-ARTICLE XIII – ASSURANCE
+**ARTICLE XIII – ASSURANCE**
+
+
 
 La responsabilité civile du Prestataire est régulièrement assurée. Un justificatif d'assurance en cours de validité est fourni par le Prestataire à la demande du Client.
 
 En cas de sinistre, le Client doit obligatoirement faire une déclaration auprès de ses assureurs. Il lui appartient de pouvoir justifier la causalité.
 
-ARTICLE XV - ADAPTATION DU CONTRAT
+
+
+**ARTICLE XIV - ADAPTATION DU CONTRAT**
+
+
 
 Dans l'hypothèse où des circonstances imprévisibles à la date de signature du contrat et d'ordre technique, technologique, administrative, économique et/ou légale ou règlementaire, évolueraient de telle sorte que les conditions d'exécution du contrat s'en trouvent significativement modifiées, pour l'une ou l'autre des parties, notamment sur le plan économique, les parties se concerteront dans les conditions du présent article pour déterminer en commun le moyen de remédier à cette situation préjudiciable et, le cas échéant, pour apporter au contrat les modifications nécessaires, dans le -même esprit de bonne foi que celui qui a présidé à la conclusion du contrat de façon à se replacer dans une position d'équilibre comparable à celle existant lors de sa conclusion.
 
@@ -352,7 +438,10 @@ Sans que cette énumération ne présente de caractère limitatif, les circonsta
 En somme, ces clauses visent à garantir que les parties ont des options pour modifier ou résilier le contrat en cas de changements imprévus ou de non-respect des conditions de paiement. Elles couvrent également la responsabilité du Prestataire en cas de sinistre et comment le contrat pourrait être ajusté si des circonstances extérieures affectent son exécution.
 
 
-ARTICLE XIV
+
+**ARTICLE XV**
+
+
 
 Si la réglementation évolue et qu'une taxe (sur les fluides ou autre) était instaurée après la date de signature du contrat, celle-ci serait ajoutée des accords contractuels. L'occurrence d'un ou plusieurs de ces cas est notifiée par l'une ou l'autre des parties à l'autre partie par lettre recommandée avec accusé de réception.
 
@@ -360,11 +449,18 @@ La proposition d'adaptation du contrat est communiquée par écrit par le Presta
 L'utilisation de cette clause ne peut entraîner une suspension de l'exécution par les parties de leurs obligations, à moins que les circonstances rendent leur poursuite impossible.
 
 
-ARTICLE XV - CESSION/TRANSFERT DU CONTRAT
+
+**ARTICLE XVI - CESSION/TRANSFERT DU CONTRAT**
+
+
 
 Les droits et obligations du contrat ne peuvent être cédés par l'une ou l'autre des parties sans l'accord préalable écrit de l'autre partie.
 
-ARTICLE XVI - CLAUSES GÉNÉRALES
+
+
+**ARTICLE XVII - CLAUSES GÉNÉRALES**
+
+
 
 Ce contrat n'exempte pas le Client de fournir tous les soins qu'une personne raisonnable apporterait à son installation et de prendre toutes mesures préventives en cas d'accident ou d'incident, comme transférer les marchandises dans un local ou un meuble dont les conditions de fonctionnement restent satisfaisantes. Que ce soit avant que le Prestataire ait pu intervenir ou à partir de son intervention, le Client doit informer le Prestataire de tout changement sur son installation.
 
@@ -380,9 +476,15 @@ En aucun cas, ce contrat ne modifie les conditions initiales de la garantie. Le 
 
 Le bénéficiaire de la prestation accepte le contenu de ces conditions générales et leur caractère obligatoire, au même titre que les autres stipulations de ce contrat, qu'elles aient été négociées ou non.
 
-ARTICLE XVII - ATTRIBUTION DE JURIDICTION
+
+
+**ARTICLE XVIII - ATTRIBUTION DE JURIDICTION**
+
+
 
 Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécution de ce contrat seront de la compétence des juridictions d'Angers, quelles que soient les modalités de paiement acceptées, même en cas d'appel en garantie ou de pluralité de défendeurs, et nonobstant toute clause contraire. Il est convenu que tout droit d'enregistrement, le cas échéant, ainsi que toute demande, droit encouru et amende, seront à la charge de la partie qui a rendu nécessaire la formalité d'enregistrement.
+
+
 
 # Tarifs et signatures
 

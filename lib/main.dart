@@ -1,5 +1,3 @@
-import 'dart:math';
-import 'dart:ui';
 
 import 'package:flutter/material.dart';
 import 'dart:io';
@@ -73,19 +71,21 @@ void _createPdfFromMarkdown() async {
 
   final parsedMarkdown = markdownWithReturn.split("___");
   final markdownParagraph = parsedMarkdown.map((e) => e.split('\r\n')).toList();
-  print(markdownParagraph);
 
   final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
   final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
   final italicFont = await rootBundle.load("assets/fonts/Metropolis-RegularItalic.ttf");
   
   
-  final classicStyle = pw.TextStyle(font: pw.Font.ttf(font), fontSize: 12);
-  final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont), fontSize: 12);
-  final italicStyle = pw.TextStyle(font: pw.Font.ttf(italicFont), fontSize: 12);
+  final classicStyle = pw.TextStyle(font: pw.Font.ttf(font), fontSize: 12, lineSpacing: 5);
+  final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont), fontSize: 12, lineSpacing: 2);
+  final italicStyle = pw.TextStyle(font: pw.Font.ttf(italicFont), fontSize: 12, lineSpacing: 0.3);
+  final underlineStyle = pw.TextStyle(font: pw.Font.ttf(italicFont), decoration: pw.TextDecoration.underline);
   final titleStyle = pw.TextStyle(
     font: pw.Font.ttf(boldFont),
-    fontSize: 20
+    fontSize: 20,
+    color: PdfColors.white, // Rend l'écriture blanche
+
   );
   final footerImage = pw.MemoryImage(
     (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
@@ -93,11 +93,25 @@ void _createPdfFromMarkdown() async {
   final headerImage = pw.MemoryImage(
     (await rootBundle.load('assets/header.png')).buffer.asUint8List(),
   );
+  final signatureImage = pw.MemoryImage(
+    (await rootBundle.load('assets/signature.png')).buffer.asUint8List(),
+  );
+  final bulletImage = pw.MemoryImage(
+    (await rootBundle.load('assets/bulletPoint.png')).buffer.asUint8List(),
+  );
 
+  final titleCadre = pw.MemoryImage(
+    File('assets/titleCadre.png').readAsBytesSync(),
+  );
 
   final footer = pw.Container(
     alignment: pw.Alignment.bottomCenter,
     child: pw.Image(footerImage),
+  );
+
+   final signature = pw.Container(
+    alignment: pw.Alignment.bottomCenter,
+    child: pw.Image(signatureImage),
   );
 
   final header = pw.Container(
@@ -157,20 +171,20 @@ pdf.addPage(
     pageTheme: firstPageTheme,
     build: (pw.Context context) {
       return pw.Column(
+        mainAxisSize: pw.MainAxisSize.min,
         children: markdownParagraph[0].expand<pw.Widget>((element) {
           if(element == '' || element == ' ') {
-            return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 16))]; // Add this line to create a space between paragraphs with increased font size
+            return [pw.SizedBox(height: 7)]; // Réduisez l'espace entre les paragraphes en ajustant la hauteur
           }
           else {
             final mdElement = md.Document().parse(element).firstOrNull;
             if(mdElement is md.Element && mdElement.tag == 'h1') {
-              print(mdElement.textContent);
-              return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, titleStyle)];
+              return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, titleCadre, bulletImage)];
             }
             else if(mdElement is md.Element && mdElement.children != null) {
               return mdElement.children!.map<pw.Widget>((child) {
 
-                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle, titleStyle);
+                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, titleCadre, bulletImage);
               }).toList();
             }
           }
@@ -192,17 +206,16 @@ pdf.addPage(
       // Par exemple, vous pouvez ajouter tous les éléments de parsedMarkdown sauf le premier
       return markdownParagraph[1].expand<pw.Widget>((element) {
         if(element == '' || element == ' ') {
-            return [pw.Text('\n', style: classicStyle.copyWith(fontSize: 11))]; // Add this line to create a space between paragraphs with increased font size
+            return [pw.SizedBox(height: 7)]; // Réduisez l'espace entre les paragraphes en ajustant la hauteur
           }
           else {
             final mdElement = md.Document().parse(element).firstOrNull;
             if(mdElement is md.Element && mdElement.tag == 'h1') {
-              print(mdElement.textContent);
-              return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, titleStyle)];
+              return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, titleCadre, bulletImage)];
             }
             else if(mdElement is md.Element && mdElement.children != null) {
               return mdElement.children!.map<pw.Widget>((child) {
-                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle, titleStyle);
+                return _formatMarkdown(child, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, titleCadre, bulletImage);
               });
             }
           }
@@ -215,37 +228,50 @@ pdf.addPage(
   await File('Contrat/monFichier.pdf').writeAsBytes(await pdf.save());
 }
 
-pw.Widget _formatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle titleStyle) {
+pw.Widget _formatMarkdown(child, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.ImageProvider titleCadre, pw.ImageProvider bulletImage) {
 
   String mdText = _insertInformation(child.textContent as String);
   if(child is md.Element && child.tag == 'h1') {
-    return pw.SizedBox(
+  return pw.SizedBox(
     width: double.infinity, // ou une autre valeur pour la largeur
-    height: 50, // ou une autre valeur pour la hauteur
-    child: pw.Container(
-      decoration: pw.BoxDecoration(
-        color: const PdfColor.fromInt(0xff0000ff), // Couleur de fond bleue
-        border: pw.Border.all(width: 2.0, color: const PdfColor.fromInt(0xff000000)), // Bordure noire
-      ),
-      child: pw.Center(
-        child: pw.Text(mdText, style: classicStyle),
-      ),
+    height: titleCadre.height! / (titleCadre.width as num) * (PdfPageFormat.a4.width - PdfPageFormat.a4.marginLeft - PdfPageFormat.a4.marginRight),
+    child: pw.Stack(
+      children: [
+        pw.Image(titleCadre, fit: pw.BoxFit.cover), // Utilisez l'image ici
+        pw.Center(
+          child: pw.Text(mdText, style: titleStyle),
+        ),
+      ],
     ),
   );
-  }
+}
 
   else if(child is md.Text) {
-    return pw.Paragraph(text: mdText, style: classicStyle);
+    return pw.Text(mdText, style: classicStyle);
   }
   else if(child is md.Element && child.tag == 'strong') {
-    return pw.Paragraph(text: mdText, style: boldStyle);
+    return pw.Text(mdText, style: boldStyle);
   }
   else if (child is md.Element && child.tag == 'li') {
-    return pw.Bullet(text: mdText, style: classicStyle);
-  }
+  return pw.Row(
+    crossAxisAlignment: pw.CrossAxisAlignment.start,
+    children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.only(top: 3), // Ajustez la valeur du padding en haut selon vos besoins
+        child: pw.Image(bulletImage, width: 10, height: 10), // Remplacez la taille par celle qui vous convient
+      ),
+      pw.SizedBox(width: 5), // Espace entre l'image et le texte
+      pw.Expanded(child: pw.Text(mdText, style: classicStyle)),
+    ],
+  );
+}
   else if (child is md.Element && child.tag == 'em') {
-    return pw.Paragraph(text: mdText, style: italicStyle);
+    return pw.Text(mdText, style: italicStyle);
   }
+  if (child is md.Element && child.tag == 'u') {
+  return pw.Text(mdText, style: underlineStyle);
+}
+
   return pw.Container();
 }
 
