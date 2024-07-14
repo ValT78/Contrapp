@@ -1,6 +1,5 @@
-import 'package:contrapp/navbare.dart';
+import 'package:contrapp/custom_navbar.dart';
 import 'package:flutter/material.dart';
-import '../navbar.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,8 +8,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.blueGrey,
-      appBar: CustomNavBar(),
-      body: Navbare(),
-      );
+      appBar: PreferredSize(
+        preferredSize: const Size.fromHeight(100),
+        child: CustomNavbar(height: 100,),
+      )
+    );
     }
 }

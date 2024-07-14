@@ -33,7 +33,7 @@ Widget build(BuildContext context) {
               ),
             ),
             Padding(padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: Text(texte, style: const TextStyle(color: Colors.white, fontSize: 20),),
+              child: Text(texte, style: const TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontSize: 20),),
         )],
         ),
         ),
