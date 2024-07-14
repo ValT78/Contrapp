@@ -113,13 +113,21 @@ Le présent document a pour objet d'établir un contrat entre les parties ci-des
 Les parties « le Prestataire » et « le Client » seront ci-après désignées ensemble par « les Parties ».
 
 
+
+
 **ARTICLE II - OBJET**
+
+
 
 
 Le présent contrat a pour objet d'assurer un contrôle général du bon fonctionnement de la ou des installation(s) frigorifique(s) de l'établissement du Client avec délivrance du certificat d'étanchéité. Il intègre, selon les formules, des opérations de maintenance préventive, corrective (telles que définies par la FD X 80-000 de mai 2002), ainsi que du suivi de performance énergétique.
 
 
+
+
 **ARTICLE III – ENGAGEMENTS DU PRESTATAIRE**
+
+
 
 
 **A – ENTRETIEN**
@@ -273,7 +281,7 @@ Par ailleurs, pour pouvoir être tenu responsable d'une éventuelle perte de mar
 
 Les manquements du prestataire à ses obligations, tels que définis à l'article III du présent contrat, lui sont signalés par le client dès leur constatation, soit directement au personnel sur place, soit téléphoniquement et confirmés par lettre recommandée avec avis de réception.
 
-Les pénalités dues par le Prestataire en cas de prestations non conformes sont fixées comme       suit :
+Les pénalités dues par le Prestataire en cas de prestations non conformes sont fixées comme suit :
 
 - Défaut de visite de maintenance : 10% du contrat par visite.
 
@@ -485,7 +493,7 @@ Le bénéficiaire de la prestation accepte le contenu de ces conditions généra
 Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécution de ce contrat seront de la compétence des juridictions d'Angers, quelles que soient les modalités de paiement acceptées, même en cas d'appel en garantie ou de pluralité de défendeurs, et nonobstant toute clause contraire. Il est convenu que tout droit d'enregistrement, le cas échéant, ainsi que toute demande, droit encouru et amende, seront à la charge de la partie qui a rendu nécessaire la formalité d'enregistrement.
 
 
-
+___
 # Tarifs et signatures
 
 
@@ -495,26 +503,35 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 
 -	1 an renouvelable par tacite reconduction
 
+
+
 <u>Périodicité :</u>
+
 
  
 -	Suivre la catégorie « Planning Prévisionnel des visites » 
 		
+
+
+
 <u>Dépannage :</u>
 
+
+
+
 -	==Astreinte==
+
 
 
 <u>Montant du contrat d’entretien :</u>
 
 
-**Montant HT contrat entretien**					
-**==Montant_HT== €**
+
+**<s>Montant HT contrat entretien					        ==Montant_HT== €</s>**
 		
 ==PrixAstreinte==
 
-**Montant TTC contrat entretien**
-**==Montant_TTC== €**
+**Montant TTC contrat entretien                         ==Montant_TTC== €**
 
 
 ==Entreprise==                               Ets PICQUETTE
@@ -522,10 +539,25 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 ==Adresse2==                                 84830 - SERIGNAN
 
 
-Date: ............................. 				Date : ==Date==
+Date: ............................. 			        	        Date : ==Date==
 
 
 Signature : 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
