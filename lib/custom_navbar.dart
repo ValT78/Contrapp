@@ -30,7 +30,7 @@ class _CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMix
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 30),
+      duration: const Duration(milliseconds: 100),
       vsync: this,
     );
 

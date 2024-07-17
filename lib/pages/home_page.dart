@@ -8,13 +8,13 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       backgroundColor: Colors.blueGrey,
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100,),
       ),
-      body: const Center(
+      body: Center(
   child: Expanded(
     child: AutoSizeText(
       'A really long String joqnfoiq nfoinqoifnioqjfioj siojfioqjiosfjioq jfoisjoifjqiojsoijfqiojs oifjqiojfois qjfoijqoijfsoisq joifjqsoijfoi qjoifqoifjoiqjf oiqjfoiq joijoi',
