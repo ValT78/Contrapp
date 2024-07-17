@@ -11,6 +11,7 @@ class CustomNavbar extends StatelessWidget {
   final int arrowNumber = 5;
   final double height;
   final List<String> textes = ['Information', 'Equipement', 'Calendrier', 'Pièce-Jointe', 'Récapitulatif'];
+  final List<String> link = ['common', 'equip', 'calendar', 'attach', 'recap'];
   
   CustomNavbar({super.key, required this.height});
   
@@ -30,7 +31,7 @@ class CustomNavbar extends StatelessWidget {
       child: SizedBox(
         height: height,
         child: Container(
-          color: Colors.blue[900],
+          color: const Color.fromARGB(255, 8, 46, 102),
           child: Row(
           children: [
             GestureDetector(
@@ -67,19 +68,19 @@ class CustomNavbar extends StatelessWidget {
                   height: height,
                   width: arrowWidth / overlapFactor,
 
-                  child: ArrowBox(index: index, width: arrowWidth / overlapFactor, height: height, overlapFactor: overlapFactor, texte: textes[index]),
+                  child: ArrowBox(index: index, width: arrowWidth / overlapFactor, height: height, overlapFactor: overlapFactor, texte: textes[index], link: link[index]),
                 )).reversed.toList(),
               ),
             ),
             Align(
   alignment: Alignment.center,
   child: Container(
-    color: Colors.blue[900],
+    color: const Color.fromARGB(255, 8, 46, 102),
     child: SizedBox(
       height: height,
       width: buttonWidth,
       child: Container(
-        margin: const EdgeInsets.all(4),
+        margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
         child: ElevatedButton(
           style: ButtonStyle(
             backgroundColor: WidgetStateProperty.resolveWith<Color>(
@@ -117,7 +118,7 @@ class CustomNavbar extends StatelessWidget {
 Align(
   alignment: Alignment.center,
   child: Container(
-    color: Colors.blue[900],
+    color: const Color.fromARGB(255, 8, 46, 102),
     child: SizedBox(
       height: height,
       width: buttonWidth,
