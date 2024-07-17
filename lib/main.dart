@@ -6,10 +6,12 @@ import 'pages/equip_page.dart';
 import 'pages/calendar_page.dart';
 import 'pages/attach_page.dart';
 import 'pages/recap_page.dart';
+import 'package:contrapp/create_pdf.dart' as pdf;
 
 
 void main() {
   runApp(const MyApp());
+  pdf.createPdfFromMarkdown();
 }
 
 class MyApp extends StatelessWidget {

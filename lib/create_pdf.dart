@@ -5,12 +5,12 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:markdown/markdown.dart' as md;
 
 Map<String, String> variablesContrat = {
-  'Entreprise': 'TWitter.com',
-  'Adresse1': 'Ar;:;!;:!;:ds.+--sq+d-+qsd',
+  'Entreprise': 'JeSuisUneEntreprise',
+  'Adresse1': 'Batiment B',
   'Adresse2': '12 rue de la Paix',
   'Numero': '12313(12)',
-  'Capital': '123125€',
-  'Matricule': '123  23-556 546',
+  'Capital': '123125',
+  'Matricule': '123-23-556-546',
   'Montant_HT': '1255',
   'Montant_TTC': '1000',
   'Date': '01/01/2022',
@@ -19,7 +19,7 @@ Map<String, String> variablesContrat = {
   'PrixAstreinte': 'Offerte'
 };
 
-void _createPdfFromMarkdown() async {
+void createPdfFromMarkdown() async {
 
   
   final pdf = pw.Document();
