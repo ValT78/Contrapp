@@ -9,6 +9,8 @@ import 'pages/recap_page.dart';
 import 'package:contrapp/create_pdf.dart' as pdf;
 
 
+final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+
 void main() {
   runApp(const MyApp());
   pdf.createPdfFromMarkdown();
@@ -20,6 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorObservers: [routeObserver],
       initialRoute: '/home',
       routes: {
         '/home': (context) => const HomePage(),
@@ -29,6 +32,7 @@ class MyApp extends StatelessWidget {
         '/attach': (context) => const AttachPage(),
         '/recap': (context) => const RecapPage(),
       },
+      
     );
   }
 }

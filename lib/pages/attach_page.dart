@@ -6,9 +6,9 @@ class AttachPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(100),
+        preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100,),
       ),  
       body: Center(child: Text('Attach Page')),

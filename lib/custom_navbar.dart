@@ -10,10 +10,10 @@ class CustomNavbar extends StatefulWidget {
   const CustomNavbar({super.key, required this.height});
 
   @override
-  _CustomNavbarState createState() => _CustomNavbarState();
+  CustomNavbarState createState() => CustomNavbarState();
 }
 
-class _CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixin {
+class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixin {
   late final AnimationController _controller;
   late Animation<double> _scale;
   late Animation<Color?> _color;
@@ -23,7 +23,7 @@ class _CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMix
   final List<String> textes = ['Information', 'Equipement', 'Calendrier', 'Pièce-Jointe', 'Récapitulatif'];
   final List<String> link = ['common', 'equip', 'calendar', 'attach', 'recap'];
   
-  _CustomNavbarState();
+  CustomNavbarState();
   
   @override
   void initState() {

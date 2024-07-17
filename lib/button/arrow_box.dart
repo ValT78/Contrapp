@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:contrapp/main.dart';
 import 'package:flutter/material.dart';
 
 class ArrowBox extends StatefulWidget {
@@ -13,15 +14,17 @@ class ArrowBox extends StatefulWidget {
   const ArrowBox({super.key, required this.index, required this.width, required this.height, required this.overlapFactor, required this.texte, required this.link});
 
   @override
-  _ArrowBoxState createState() => _ArrowBoxState();
+  ArrowBoxState createState() => ArrowBoxState();
 }
 
 
-class _ArrowBoxState extends State<ArrowBox> {
+class ArrowBoxState extends State<ArrowBox> with RouteAware {
   bool _hovering = false;
+  bool _isActivePage = false;
 
-  _ArrowBoxState();
+  ArrowBoxState();
 
+@override
 Widget build(BuildContext context) {
   Color? color = Colors.blue[(widget.index) * 200 + 100];
 
@@ -62,11 +65,26 @@ Widget build(BuildContext context) {
                 children: [
                   Padding(
                     padding: EdgeInsets.fromLTRB((widget.width+50) * (1-widget.overlapFactor), 0, 0, 0),
+                    child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: Colors.black,
+                        width: 2.0,
+                      ),
+                    ),
                     child: CircleAvatar(
                       radius: widget.width/10,
-                      backgroundColor: Colors.white,
-                      child: Text('${widget.index + 1}', style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: max(10, widget.width/15 + 6)),),
+                      backgroundColor: _isActivePage ? const Color.fromARGB(255, 186, 183, 247) : Colors.white,
+                      child: Text(
+                        '${widget.index + 1}',
+                        style: TextStyle(
+                          color: const Color.fromARGB(255, 0, 0, 0),
+                          fontSize: max(10, widget.width/15 + 6),
+                        ),
+                      ),
                     ),
+                  )
                   ),
                   Padding(padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
                     child: Text(widget.texte, style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontSize: max(10, widget.width/15 + 6))),
@@ -81,5 +99,31 @@ Widget build(BuildContext context) {
 
 }
 
+@override
+void didChangeDependencies() {
+  super.didChangeDependencies();
+  routeObserver.subscribe(this, ModalRoute.of(context) as PageRoute<dynamic>);
+}
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
+  }
+
+  @override
+  void didPush() {
+    _checkActivePage();
+  }
+
+  @override
+  void didPopNext() {
+    _checkActivePage();
+  }
+
+  void _checkActivePage() {
+    final isActive = ModalRoute.of(context)!.settings.name == '/${widget.link}';
+    setState(() => _isActivePage = isActive);
+  }
   
 }
