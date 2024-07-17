@@ -15,34 +15,35 @@ class ArrowBox extends StatelessWidget {
 Widget build(BuildContext context) {
   Color? color = Colors.blue[(index) * 200 + 100];
 
-  return Stack(
-    children: [
-      SizedBox(
-        width: width,
-        height: height,
-        child: Material(
-          color: Colors.transparent,
-          child: InkWell(
-            onHover: (value) {
-              color = value ? Colors.blue[(index) * 200 + 200] : Colors.blue[(index) * 200 + 100];
-            },
-            onTap: () {
-                color = const Color.fromARGB(255, 10, 46, 74);
-              // Naviguez vers une autre page
-              Navigator.pushNamed(
-                context,
-                '/$link',
-              );
-            },
-            child: Ink.image(
-              image: const AssetImage('assets/arrow.png'),
-              colorFilter: ColorFilter.mode(color!, BlendMode.modulate),
-              fit: BoxFit.fill,
-            ),
+ return Stack(
+  children: [
+    SizedBox(
+      width: width,
+      height: height,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          onHover: (value) {
+            color = value ? Colors.blue[(index) * 200 + 200] : Colors.blue[(index) * 200 + 100];
+          },
+          onTap: () {
+            color = const Color.fromARGB(255, 10, 46, 74);
+            // Naviguez vers une autre page
+            Navigator.pushNamed(
+              context,
+              '/$link',
+            );
+          },
+          child: Ink.image(
+            image: const AssetImage('assets/arrow.png'),
+            colorFilter: ColorFilter.mode(color!, BlendMode.modulate),
+            fit: BoxFit.fill,
           ),
         ),
       ),
-      SizedBox(
+    ),
+    IgnorePointer(
+      child: SizedBox(
         width: width,
         height: height,
         child: Row(
@@ -51,26 +52,22 @@ Widget build(BuildContext context) {
           children: [
             Padding(
               padding: EdgeInsets.fromLTRB((width+50) * (1-overlapFactor), 0, 0, 0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                child: CircleAvatar(
-                  radius: width/10,
-                  backgroundColor: Colors.white,
-                  child: Text('${index + 1}', style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: max(10, width/15 + 6)),),
-                ),
+              child: CircleAvatar(
+                radius: width/10,
+                backgroundColor: Colors.white,
+                child: Text('${index + 1}', style: TextStyle(color: const Color.fromARGB(255, 0, 0, 0), fontSize: max(10, width/15 + 6)),),
               ),
             ),
             Padding(padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-              child: GestureDetector(
-                behavior: HitTestBehavior.translucent,
-                child: Text(texte, style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontSize: max(10, width/15 + 6))),
-              ),
+              child: Text(texte, style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontSize: max(10, width/15 + 6))),
             ),
           ],
         ),
       ),
-    ],
-  );
+    ),
+  ],
+);
+
 }
 
   
