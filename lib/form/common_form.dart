@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Importez le package intl
+import 'package:contrapp/main.dart'; // Importez le fichier main.dart
 
 class CommonForm extends StatefulWidget {
   const CommonForm({super.key});
@@ -12,13 +13,6 @@ class CommonForm extends StatefulWidget {
 
 class CommonFormState extends State<CommonForm> {
   final _formKey = GlobalKey<FormState>();
-  String entreprise = '';
-  String adresse1 = '';
-  String adresse2 = '';
-  String matricule = '';
-  int capital = 0;
-  DateTime date = DateTime.now();
-  int versionContrat = 1;
 
   // Création des FocusNodes
   late FocusNode entrepriseFocusNode;
@@ -112,7 +106,10 @@ class CommonFormState extends State<CommonForm> {
                     prefixIcon: Icon(Icons.business),
                   ),
                   onChanged: (value) {
-                    entreprise = value;
+                    setState(() {
+                      entreprise = value;
+                      print(entreprise);
+                    });
                   },
                 ),
                 Row(
@@ -125,7 +122,9 @@ class CommonFormState extends State<CommonForm> {
                           prefixIcon: Icon(Icons.location_on),
                         ),
                         onChanged: (value) {
-                          adresse1 = value;
+                          setState(() {
+                            adresse1 = value;
+                          });
                         },
                       ),
                     ),
@@ -138,7 +137,9 @@ class CommonFormState extends State<CommonForm> {
                           prefixIcon: Icon(Icons.location_on),
                         ),
                         onChanged: (value) {
-                          adresse2 = value;
+                          setState(() {
+                            adresse2 = value;
+                          });
                         },
                       ),
                     ),
@@ -151,7 +152,9 @@ class CommonFormState extends State<CommonForm> {
                     prefixIcon: Icon(Icons.confirmation_number),
                   ),
                   onChanged: (value) {
-                    matricule = value;
+                    setState(() {
+                      matricule = value;
+                    });
                   },
                 ),
                 TextFormField(
@@ -162,7 +165,9 @@ class CommonFormState extends State<CommonForm> {
                   ),
                   keyboardType: TextInputType.number,
                   onChanged: (value) {
-                    capital = int.tryParse(value) ?? 0;
+                    setState(() {
+                      capital = int.tryParse(value) ?? 0;
+                    });
                   },
                   validator: (value) {
                     if (value != null && int.tryParse(value) == null) {
@@ -201,7 +206,9 @@ class CommonFormState extends State<CommonForm> {
                     prefixIcon: Icon(Icons.description),
                   ),
                   onChanged: (value) {
-                    versionContrat = int.parse(value);
+                    setState(() {
+                      versionContrat = int.parse(value);
+                    });
                   },
                 ),
               ],

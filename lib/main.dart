@@ -11,6 +11,14 @@ import 'package:contrapp/create_pdf.dart' as pdf;
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
+String entreprise = 'tttttt';
+String adresse1 = '';
+String adresse2 = '';
+String matricule = '';
+int capital = 0;
+DateTime date = DateTime.now();
+int versionContrat = 1;
+
 void main() {
   runApp(const MyApp());
   pdf.createPdfFromMarkdown();
