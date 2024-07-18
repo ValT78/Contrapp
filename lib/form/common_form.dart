@@ -83,21 +83,21 @@ class CommonFormState extends State<CommonForm> {
       Column(
         children: [
       Container(
-        margin: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+        margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
         padding: const EdgeInsets.all(20),
         width: 1000, // Définissez la largeur de votre choix
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.black),
+          border: Border.all(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(20),
-          boxShadow: [
+            boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.5),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: const Offset(0, 3),
+              color: Colors.grey.withOpacity(0.8), // Increase opacity to make the shadow more visible
+              spreadRadius: 10,
+              blurRadius: 14,
+              offset: const Offset(0, 5),
             ),
-          ],
+            ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -281,21 +281,23 @@ class CommonFormState extends State<CommonForm> {
                             color: Colors.green[700], // Changer la couleur du texte entré en orange
                             fontWeight : FontWeight.bold
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              capital = int.tryParse(value) ?? 0;
-                            });
-                          },
+                            onChanged: (value) {
+                              setState(() {
+                                if (value.isEmpty) {
+                                  capital = 0;
+                                }
+                                else if(int.tryParse(value) != null) {
+                                  capital = int.parse(value);
+                                }
+                                else {
+                                  capitalController.text = capital.toString();
+                                }
+                              });
+                            },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
                             capitalFocusNode.unfocus();
                             FocusScope.of(context).requestFocus(matriculeFocusNode);
-                          },
-                          validator: (value) {
-                            if (value != null && int.tryParse(value) == null) {
-                              return 'Veuillez entrer un nombre valide';
-                            }
-                            return null;
                           },
                         ),
                       ),
@@ -395,11 +397,19 @@ class CommonFormState extends State<CommonForm> {
                             color: Colors.pink[900], // Changer la couleur du texte entré en magenta
                             fontWeight : FontWeight.bold
                           ),
-                          onChanged: (value) {
-                            setState(() {
-                              versionContrat = int.parse(value);
-                            });
-                          },
+                           onChanged: (value) {
+                              setState(() {
+                                if (value.isEmpty) {
+                                  versionContrat = 0;
+                                }
+                                else if(int.tryParse(value) != null) {
+                                  versionContrat = int.parse(value);
+                                }
+                                else {
+                                  versionContratController.text = versionContrat.toString();
+                                }
+                              });
+                            },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
                             versionContratFocusNode.unfocus();
