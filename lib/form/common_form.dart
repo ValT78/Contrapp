@@ -50,7 +50,7 @@ class CommonFormState extends State<CommonForm> {
     adresse1Controller = TextEditingController(text: adresse1);
     adresse2Controller = TextEditingController(text: adresse2);
     matriculeController = TextEditingController(text: matricule);
-    capitalController = TextEditingController(text: capital.toString());
+    capitalController = TextEditingController(text: capital == 0 ? '' : capital.toString());
     dateController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(date));
     versionContratController = TextEditingController(text: versionContrat.toString());
 
