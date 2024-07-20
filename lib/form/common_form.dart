@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Importez le package intl
 import 'package:contrapp/main.dart'; // Importez le fichier main.dart
@@ -14,9 +13,7 @@ class CommonForm extends StatefulWidget {
 
 class CommonFormState extends State<CommonForm> {
   final _formKey = GlobalKey<FormState>();
-  bool _isHoveringButton1 = false;
-  bool _isHoveringButton2 = false;
-    
+  
 
   // Création des FocusNodes
   late FocusNode entrepriseFocusNode;
@@ -81,12 +78,7 @@ class CommonFormState extends State<CommonForm> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: SingleChildScrollView(
-        child:
-      Column(
-        children: [
-      Container(
+    return Container(
         margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
         padding: const EdgeInsets.all(20),
         width: 1000, // Définissez la largeur de votre choix
@@ -474,82 +466,6 @@ class CommonFormState extends State<CommonForm> {
             ),
           ),
         ),
-      ),
-      SizedBox(
-        
-  width: 1000,
-  height: 100,
-  child: Row(
-    children: <Widget>[
-      Expanded(
-        child: MouseRegion(
-          onEnter: (PointerEnterEvent event) => setState(() => _isHoveringButton1 = true),
-          onExit: (PointerExitEvent event) => setState(() => _isHoveringButton1 = false),
-          child: AnimatedContainer(
-            transform: _isHoveringButton1 ? Matrix4.translationValues(0, -10, 0) : Matrix4.translationValues(0, 0, 0),
-            duration: const Duration(milliseconds: 200),
-            height: _isHoveringButton1 ? 100 : 90,
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton.icon(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                  (Set<WidgetState> states) {
-                    if (states.contains(WidgetState.hovered)) {
-                      return Colors.deepPurple[700]!; //couleur plus foncée quand la souris passe dessus
-                    }
-                    return Colors.deepPurple; //couleur d'origine
-                  },
-                ),
-                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                overlayColor: WidgetStateProperty.all<Color>(Colors.deepPurple[100]!), //couleur quand on clique sur le bouton
-              ),
-              icon: const Icon(Icons.navigate_before),
-              label: const Text('Précédent'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
-          ),
-        ),
-      ),
-      Expanded(
-        child: MouseRegion(
-          onEnter: (PointerEnterEvent event) => setState(() => _isHoveringButton2 = true),
-          onExit: (PointerExitEvent event) => setState(() => _isHoveringButton2 = false),
-          child: AnimatedContainer(
-            height: _isHoveringButton2 ? 100 : 90,
-            transform: _isHoveringButton2 ? Matrix4.translationValues(0, -10, 0) : Matrix4.translationValues(0, 0, 0),
-            duration: const Duration(milliseconds: 200),
-            padding: const EdgeInsets.all(8.0),
-            child: ElevatedButton.icon(
-              style: ButtonStyle(
-                backgroundColor: WidgetStateProperty.resolveWith<Color>(
-                  (Set<WidgetState> states) {
-                    if (states.contains(WidgetState.hovered)) {
-                      return Colors.green[700]!; //couleur plus foncée quand la souris passe dessus
-                    }
-                    return Colors.greenAccent; //couleur d'origine
-                  },
-                ),
-                foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
-                overlayColor: WidgetStateProperty.all<Color>(Colors.greenAccent[100]!), //couleur quand on clique sur le bouton
-              ),
-              icon: const Icon(Icons.navigate_next),
-              label: const Text('Suivant'),
-              onPressed: () {
-                Navigator.pushNamed(context, '/equip');
-              },
-            ),
-          ),
-        ),
-      ),
-    ],
-  ),
-)
-
-      ],
-      ),
-      ),
-    );
+      );    
   }
 }

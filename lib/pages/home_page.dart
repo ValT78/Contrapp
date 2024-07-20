@@ -1,6 +1,6 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:flutter/material.dart';
+import 'package:contrapp/button/travel_button.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,21 +8,21 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Scaffold(
-      backgroundColor: Colors.blueGrey,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100,),
       ),
       body: Center(
-  child: Expanded(
-    child: AutoSizeText(
-      'A really long String joqnfoiq nfoinqoifnioqjfioj siojfioqjiosfjioq jfoisjoifjqiojsoijfqiojs oifjqiojfois qjfoijqoijfsoisq joifjqsoijfoi qjoifqoifjoiqjf oiqjfoiq joijoi',
-      minFontSize: 5,
-      style: TextStyle(color: Colors.white, fontSize: 50),
-      maxLines: 1,
-    ),
-  ),
-)
+        child: SizedBox(
+          width: 1000,
+          child: Row(
+            children: <Widget>[              
+                TravelButton(color: Colors.amber, icon: Icons.file_upload, label: 'Charger un contrat existant', link: '/home', height: 500, roundedBorder: 30, textSize: 50),            
+                TravelButton(color: Colors.green, icon: Icons.create, label: 'Créer un nouveau contrat', link: '/common', height: 500, roundedBorder: 30, textSize: 50),
+            ],
+          ),
+        ),
+      )
     );
-    }
+  }
 }
