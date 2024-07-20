@@ -3,6 +3,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'button/arrow_box.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:contrapp/main.dart';
 
 class CustomNavbar extends StatefulWidget {
   final double height;
@@ -36,6 +40,39 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
 
     _scale = Tween<double>(begin: 1.0, end: 1.0).animate(_controller);
     _color = ColorTween(begin: Colors.blue[100], end: Colors.blue[100]).animate(_controller);
+  }
+
+  // Fonction pour sauvegarder les données
+  Future<void> sauvegarder() async {
+    Map<String, dynamic> data = {
+      'entreprise': entreprise,
+      'adresse1': adresse1,
+      'adresse2': adresse2,
+      'matricule': matricule,
+      'capital': capital,
+      'date': date.toIso8601String(),
+      'versionContrat': versionContrat,
+    };
+
+    String jsonData = jsonEncode(data);
+
+    String? filePath  = await FilePicker.platform.saveFile(
+      dialogTitle: 'Sauvegarder le contrat',
+      type: FileType.custom,
+      allowedExtensions: ['cntrt'],
+    );
+  
+
+    if (filePath != null) {
+
+      // Vérifiez si le fichier a l'extension .cntrt
+      if (!filePath.endsWith('.cntrt')) {
+        filePath += '.cntrt';
+      }
+
+      File file = File(filePath);
+      await file.writeAsString(jsonData);
+    }
   }
 
   @override
@@ -148,7 +185,9 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                 ),
                               ),
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              sauvegarder();
+                            },
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -217,9 +256,9 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                       backgroundColor: Colors.green,
                                       minimumSize: const Size(200, 50), // Taille du bouton
                                     ),
-                                    onPressed: () {
-                                      // Insérez ici le code pour sauvegarder les données
-                                      SystemNavigator.pop();
+                                    onPressed: () async {
+                                      await sauvegarder();
+                                      exit(0);
                                     },
                                     child: const Text('Sauvegarder et Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
                                   ),
@@ -230,7 +269,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                       minimumSize: const Size(200, 50), // Taille du bouton
                                     ),
                                     onPressed: () {
-                                      SystemNavigator.pop();
+                                      exit(0);
                                     },
                                     child: const Text('Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
                                   ),

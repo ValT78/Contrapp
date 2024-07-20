@@ -11,7 +11,7 @@ import 'package:contrapp/create_pdf.dart' as pdf;
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-String entreprise = 'tttttt';
+String entreprise = '';
 String adresse1 = '';
 String adresse2 = '';
 String matricule = '';

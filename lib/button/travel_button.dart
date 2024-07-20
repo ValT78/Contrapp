@@ -66,12 +66,12 @@ class TravelButtonState extends State<TravelButton> {
                 ),
               ),
             ),
-            onPressed: () {
+            onPressed: () async {
+              if (widget.actionFunction != null) {
+                await widget.actionFunction!();
+              }
               if (widget.link != null) {
                 Navigator.pushNamed(context, widget.link!);
-              }
-              else if (widget.actionFunction != null) {
-                widget.actionFunction!();
               }
             },
           ),

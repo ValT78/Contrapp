@@ -1,14 +1,18 @@
 import 'package:contrapp/custom_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/button/travel_button.dart';
+import 'package:file_picker/file_picker.dart';
+import 'dart:io';
+import 'dart:convert';
+import 'package:contrapp/main.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100,),
       ),
@@ -17,12 +21,36 @@ class HomePage extends StatelessWidget {
           width: 1000,
           child: Row(
             children: <Widget>[              
-                TravelButton(color: Colors.amber, icon: Icons.file_upload, label: 'Charger un contrat existant', link: '/home', height: 500, roundedBorder: 30, textSize: 50),            
-                TravelButton(color: Colors.green, icon: Icons.create, label: 'Créer un nouveau contrat', link: '/common', height: 500, roundedBorder: 30, textSize: 50),
+                TravelButton(color: Colors.amber, icon: Icons.file_upload, label: 'Charger un contrat existant', actionFunction: charger, link: '/common', height: 500, roundedBorder: 30, textSize: 50),            
+                const TravelButton(color: Colors.green, icon: Icons.create, label: 'Créer un nouveau contrat', link: '/common', height: 500, roundedBorder: 30, textSize: 50),
             ],
           ),
         ),
       )
     );
   }
+
+  // Fonction pour charger les données
+Future<void> charger() async {
+  FilePickerResult? result = await FilePicker.platform.pickFiles(
+    type: FileType.custom,
+    allowedExtensions: ['cntrt'],
+  );
+
+  if (result != null) {
+    File file = File(result.files.single.path!);
+    String jsonData = await file.readAsString();
+
+    Map<String, dynamic> data = jsonDecode(jsonData);
+
+    entreprise = data['entreprise'];
+    adresse1 = data['adresse1'];
+    adresse2 = data['adresse2'];
+    matricule = data['matricule'];
+    capital = data['capital'];
+    date = DateTime.parse(data['date']);
+    versionContrat = data['versionContrat'];
+  }
+}
+
 }
