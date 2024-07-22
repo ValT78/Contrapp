@@ -7,6 +7,8 @@ import 'pages/calendar_page.dart';
 import 'pages/attach_page.dart';
 import 'pages/recap_page.dart';
 import 'package:contrapp/create_pdf.dart' as pdf;
+import 'search/equip_list.dart';
+import 'package:provider/provider.dart';
 
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -19,8 +21,15 @@ int capital = 0;
 DateTime date = DateTime.now();
 int versionContrat = 1;
 
+final List<String> equipToPickList = ["Equipement1", "Equipement2", "Equipement3"]; // Votre liste d'équipements
+List<String> equipPickedList = []; // La deuxième liste
+
+
 void main() {
-  runApp(const MyApp());
+  runApp(ChangeNotifierProvider(
+      create: (context) => EquipList(),
+      child: const MyApp(),
+    ),);
   pdf.createPdfFromMarkdown();
 }
 

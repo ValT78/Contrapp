@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
-import 'package:contrapp/form/common_form.dart';
+import 'package:contrapp/skeleton/common_form.dart';
 import 'package:contrapp/button/travel_button.dart';
 
 class CommonPage extends StatefulWidget {
