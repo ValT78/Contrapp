@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'button/arrow_box.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
@@ -34,7 +33,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
     super.initState();
 
     _controller = AnimationController(
-      duration: const Duration(milliseconds: 100),
+      duration: const Duration(milliseconds: 50),
       vsync: this,
     );
 

@@ -1,4 +1,7 @@
 // main.dart
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/common_page.dart';
@@ -21,11 +24,32 @@ int capital = 0;
 DateTime date = DateTime.now();
 int versionContrat = 1;
 
-final List<String> equipToPickList = ["Equipement1", "Equipement2", "Equipement3"]; // Votre liste d'équipements
+final List<String> equipToPickList = []; // Votre liste d'équipements
 List<String> equipPickedList = []; // La deuxième liste
+
+Future<void> _loadAppData() async {
+  Directory projectDir = Directory.current;
+    List<FileSystemEntity> files = projectDir.listSync(recursive: false);
+    File? targetFile;
+
+    for (var file in files) {
+      if (file is File && file.path.endsWith('.contrapp')) {
+      targetFile = file;
+      break;
+      }
+    }
+
+    if(targetFile != null) {
+      String jsonData = await targetFile.readAsString();
+      Map<String, dynamic> data = jsonDecode(jsonData);
+
+      equipToPickList.addAll(List<String>.from(data['equipToPickList']));
+    }
+  }
 
 
 void main() {
+  _loadAppData();
   runApp(ChangeNotifierProvider(
       create: (context) => EquipList(),
       child: const MyApp(),
@@ -52,6 +76,8 @@ class MyApp extends StatelessWidget {
       
     );
   }
+
+  
 }
 
 
