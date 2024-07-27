@@ -51,6 +51,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
       'capital': capital,
       'date': date.toIso8601String(),
       'versionContrat': versionContrat,
+      'attachList': attachList,
     };
 
     String jsonData = jsonEncode(data);

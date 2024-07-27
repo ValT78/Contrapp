@@ -50,6 +50,7 @@ Future<void> charger() async {
     capital = data['capital'];
     date = DateTime.parse(data['date']);
     versionContrat = data['versionContrat'];
+    attachList = List<String>.from(data['attachList']);
   }
 }
 

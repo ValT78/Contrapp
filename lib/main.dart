@@ -27,6 +27,9 @@ int versionContrat = 1;
 final List<String> equipToPickList = []; // Votre liste d'équipements
 List<String> equipPickedList = []; // La deuxième liste
 
+List<String> attachList = [];
+
+
 Future<void> _loadAppData() async {
   Directory projectDir = Directory.current;
     List<FileSystemEntity> files = projectDir.listSync(recursive: false);

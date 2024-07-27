@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
+import 'package:contrapp/button/travel_button.dart';
+import 'package:contrapp/skeleton/attach_picker.dart';
 
 class AttachPage extends StatelessWidget {
   const AttachPage({super.key});
@@ -9,9 +11,28 @@ class AttachPage extends StatelessWidget {
     return const Scaffold(
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(100),
-        child: CustomNavbar(height: 100,),
-      ),  
-      body: Center(child: Text('Attach Page')),
+        child: CustomNavbar(height: 100),
+      ),      
+      body:  Center(
+         
+  child: SingleChildScrollView(
+    child: Column(
+      children: [
+        AttachPicker(),
+        SizedBox(
+          width: 1000,
+          child: Row(
+            children: <Widget>[              
+              TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/calendar', height: 100, roundedBorder: 50, textSize: 30),            
+              TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/recap', height: 100, roundedBorder: 50, textSize: 30),
+            ],
+          ),
+        ),
+      ],
+    ),
+  ),
+)
+
     );
   }
 }

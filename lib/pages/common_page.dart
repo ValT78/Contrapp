@@ -22,25 +22,23 @@ class CommonPageState extends State<CommonPage> {
         child: CustomNavbar(height: 100),
       ),      
       body:  Center(
-         
-  child: SingleChildScrollView(
-    child: Column(
-      children: [
-        CommonForm(),
-        SizedBox(
-          width: 1000,
-          child: Row(
-            children: <Widget>[              
-              TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/home', height: 100, roundedBorder: 50, textSize: 30),            
-              TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/equip', height: 100, roundedBorder: 50, textSize: 30),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              CommonForm(),
+              SizedBox(
+                width: 1000,
+                child: Row(
+                  children: <Widget>[              
+                    TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/home', height: 100, roundedBorder: 50, textSize: 30),            
+                    TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/equip', height: 100, roundedBorder: 50, textSize: 30),
+                  ],
+                ),
+              ),
             ],
           ),
         ),
-      ],
-    ),
-  ),
-)
-
+      )
     );
   }
 }

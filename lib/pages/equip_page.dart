@@ -40,7 +40,6 @@ class EquipPage extends StatelessWidget {
 
 
   Future<void> modifyApp() async {
-    print(equipToPickList);
     Map<String, dynamic> data = {
       'equipToPickList': equipToPickList,
     };
@@ -60,9 +59,7 @@ class EquipPage extends StatelessWidget {
     }
 
     targetFile ??= File('default.contrapp');
-    print(targetFile.path);
     await targetFile.writeAsString(jsonData);
 
-  
   }
 }
