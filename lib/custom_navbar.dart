@@ -43,18 +43,9 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
 
   // Fonction pour sauvegarder les données
   Future<void> sauvegarder() async {
-    Map<String, dynamic> data = {
-      'entreprise': entreprise,
-      'adresse1': adresse1,
-      'adresse2': adresse2,
-      'matricule': matricule,
-      'capital': capital,
-      'date': date.toIso8601String(),
-      'versionContrat': versionContrat,
-      'attachList': attachList,
-    };
+    
 
-    String jsonData = jsonEncode(data);
+    String jsonData = jsonEncode(variablesContrat);
 
     String? filePath  = await FilePicker.platform.saveFile(
       dialogTitle: 'Sauvegarder le contrat',

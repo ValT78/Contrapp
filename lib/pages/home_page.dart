@@ -43,14 +43,11 @@ Future<void> charger() async {
 
     Map<String, dynamic> data = jsonDecode(jsonData);
 
-    entreprise = data['entreprise'];
-    adresse1 = data['adresse1'];
-    adresse2 = data['adresse2'];
-    matricule = data['matricule'];
-    capital = data['capital'];
-    date = DateTime.parse(data['date']);
-    versionContrat = data['versionContrat'];
-    attachList = List<String>.from(data['attachList']);
+    variablesContrat = data;
+
+    // Convertir explicitement les listes en List<String>
+    variablesContrat['attachList'] = List<String>.from(variablesContrat['attachList']);
+    variablesContrat['equipPickedList'] = List<String>.from(variablesContrat['equipPickedList']);
   }
 }
 

@@ -47,13 +47,13 @@ class CommonFormState extends State<CommonForm> {
     versionContratFocusNode = FocusNode();
 
     // Initialisation des TextEditingController avec les valeurs actuelles
-    entrepriseController = TextEditingController(text: entreprise);
-    adresse1Controller = TextEditingController(text: adresse1);
-    adresse2Controller = TextEditingController(text: adresse2);
-    matriculeController = TextEditingController(text: matricule);
-    capitalController = TextEditingController(text: capital == 0 ? '' : capital.toString());
-    dateController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(date));
-    versionContratController = TextEditingController(text: versionContrat.toString());
+    entrepriseController = TextEditingController(text: variablesContrat['entreprise']);
+    adresse1Controller = TextEditingController(text: variablesContrat['adresse1']);
+    adresse2Controller = TextEditingController(text: variablesContrat['adresse2']);
+    matriculeController = TextEditingController(text: variablesContrat['matricule']);
+    capitalController = TextEditingController(text: variablesContrat['capital'] == 0 ? '' : variablesContrat['capital'].toString());
+    dateController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.parse(variablesContrat['date'])));
+    versionContratController = TextEditingController(text: variablesContrat['versionContrat'].toString());
 
     // Demande le focus sur le premier champ du formulaire
     entrepriseFocusNode.requestFocus();
@@ -151,7 +151,7 @@ class CommonFormState extends State<CommonForm> {
                     ),
                     onChanged: (value) {
                       setState(() {
-                        entreprise = value;
+                        variablesContrat['entreprise'] = value;
                       });
                     },
                      onFieldSubmitted: (term){
@@ -192,7 +192,7 @@ class CommonFormState extends State<CommonForm> {
                           ),
                           onChanged: (value) {
                             setState(() {
-                              adresse1 = value;
+                              variablesContrat['adresse1'] = value;
                             });
                           },
                           onFieldSubmitted: (term){
@@ -233,7 +233,7 @@ class CommonFormState extends State<CommonForm> {
                           ),
                           onChanged: (value) {
                             setState(() {
-                              adresse2 = value;
+                              variablesContrat['adresse2'] = value;
                             });
                           },
                           onFieldSubmitted: (term){
@@ -280,13 +280,13 @@ class CommonFormState extends State<CommonForm> {
                             onChanged: (value) {
                               setState(() {
                                 if (value.isEmpty) {
-                                  capital = 0;
+                                  variablesContrat['capital'] = 0;
                                 }
                                 else if(int.tryParse(value) != null) {
-                                  capital = int.parse(value);
+                                  variablesContrat['capital'] = int.parse(value);
                                 }
                                 else {
-                                  capitalController.text = capital.toString();
+                                  capitalController.text = variablesContrat['capital'].toString();
                                 }
                               });
                             },
@@ -329,7 +329,7 @@ class CommonFormState extends State<CommonForm> {
                           ),
                           onChanged: (value) {
                             setState(() {
-                              matricule = value;
+                              variablesContrat['matricule'] = value;
                             });
                           },
                           onFieldSubmitted: (term){
@@ -396,13 +396,13 @@ class CommonFormState extends State<CommonForm> {
                            onChanged: (value) {
                               setState(() {
                                 if (value.isEmpty) {
-                                  versionContrat = 0;
+                                  variablesContrat['versionContrat'] = 0;
                                 }
                                 else if(int.tryParse(value) != null) {
-                                  versionContrat = int.parse(value);
+                                  variablesContrat['versionContrat'] = int.parse(value);
                                 }
                                 else {
-                                  versionContratController.text = versionContrat.toString();
+                                  versionContratController.text = variablesContrat['versionContrat'].toString();
                                 }
                               });
                             },
@@ -445,13 +445,13 @@ class CommonFormState extends State<CommonForm> {
                           onTap: () async {
                             final selectedDate = await showDatePicker(
                               context: context,
-                              initialDate: date,
+                              initialDate: variablesContrat['date'],
                               firstDate: DateTime.now().subtract(const Duration(days: 365)),
                                 lastDate: DateTime.now().add(const Duration(days: 365)),
                             );
                             if (selectedDate != null) {
                               setState(() {
-                                date = selectedDate;
+                                variablesContrat['date'] = selectedDate.toIso8601String();
                                 dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
                               });
                             }

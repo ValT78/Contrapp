@@ -9,25 +9,43 @@ import 'pages/equip_page.dart';
 import 'pages/calendar_page.dart';
 import 'pages/attach_page.dart';
 import 'pages/recap_page.dart';
-import 'package:contrapp/create_pdf.dart' as pdf;
 import 'search/equip_list.dart';
 import 'package:provider/provider.dart';
 
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-String entreprise = '';
-String adresse1 = '';
-String adresse2 = '';
-String matricule = '';
-int capital = 0;
-DateTime date = DateTime.now();
-int versionContrat = 1;
+  Map<String, dynamic> variablesContrat = {
+    'entreprise': '',
+    'adresse1': '',
+    'adresse2': '',
+    'matricule': '',
+    'capital': 0,
+    'date': DateTime.now().toIso8601String(),
+    'versionContrat': 1,
+    'numeroContrat': '000000001',
+    'attachList': <String>[],
+    'equipPickedList': <String>[],
+    'montantHT': 1255,
+    'montantTTC': 1000,
+    'astreinte': 'Accès au service de dépannage 24h/24 et 7j/7',
+    'prixAstreinte': 'Offerte'
+  };
 
-final List<String> equipToPickList = []; // Votre liste d'équipements
-List<String> equipPickedList = []; // La deuxième liste
 
-List<String> attachList = [];
+  final List<String> equipToPickList = []; // Votre liste d'équipements
+
+  List<String> get equipPickedList => variablesContrat['equipPickedList'] as List<String>;
+
+  set equipPickedList(List<String> list) {
+    variablesContrat['equipPickedList'] = list;
+  }
+
+  List<String> get attachList => variablesContrat['attachList'] as List<String>;
+
+  set attachList(List<String> list) {
+    variablesContrat['attachList'] = list;
+  }
 
 
 Future<void> _loadAppData() async {
@@ -57,7 +75,6 @@ void main() {
       create: (context) => EquipList(),
       child: const MyApp(),
     ),);
-  pdf.createPdfFromMarkdown();
 }
 
 class MyApp extends StatelessWidget {

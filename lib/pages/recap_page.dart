@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
-import 'package:contrapp/skeleton/common_form.dart';
 import 'package:contrapp/button/travel_button.dart';
+import 'package:contrapp/create_pdf.dart';
 
 class RecapPage extends StatefulWidget {
   const RecapPage({super.key});
@@ -25,13 +25,12 @@ class RecapPageState extends State<RecapPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              CommonForm(),
               SizedBox(
                 width: 1000,
                 child: Row(
                   children: <Widget>[              
                     TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/attach', height: 100, roundedBorder: 50, textSize: 30),            
-                    TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/equip', height: 100, roundedBorder: 50, textSize: 30),
+                    TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Genérer le PDF', actionFunction: createPdfFromMarkdown, height: 100, roundedBorder: 50, textSize: 30),
                   ],
                 ),
               ),

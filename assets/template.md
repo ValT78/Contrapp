@@ -28,7 +28,7 @@
 
 
 
-# Contrat de Maintenance N°SAV==NumeroContrat==
+# Contrat de Maintenance N°SAV==numeroContrat==
 
 
 Entre
@@ -51,11 +51,11 @@ et
 
 
 
-**==Entreprise==**
+**==entreprise==**
 
-**==Adresse1==**
+**==adresse1==**
 
-**==Adresse2==**
+**==adresse2==**
 
 
 
@@ -108,7 +108,7 @@ Le présent document a pour objet d'établir un contrat entre les parties ci-des
 
 - Société des Etablissements PICQUETTE, au capital de 100 000 €, domiciliée Route de Sainte-Cécile – 84 830 Sérignan-Du-Comtat, immatriculée au RCS Avignon B sous le numéro 305 949 679, ci-après dénommée « le Prestataire ».
 
-- ==Entreprise==, sise à ==Adresse1==, ==Adresse2==, au capital de ==Capital== €, immatriculée au RCS ==Matricule==, ci-après dénommée « le Client ».
+- ==entreprise==, sise à ==adresse1==, ==adresse2==, au capital de ==capital== €, immatriculée au RCS ==matricule==, ci-après dénommée « le Client ».
 
 Les parties « le Prestataire » et « le Client » seront ci-après désignées ensemble par « les Parties ».
 
@@ -493,6 +493,13 @@ Le bénéficiaire de la prestation accepte le contenu de ces conditions généra
 Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécution de ce contrat seront de la compétence des juridictions d'Angers, quelles que soient les modalités de paiement acceptées, même en cas d'appel en garantie ou de pluralité de défendeurs, et nonobstant toute clause contraire. Il est convenu que tout droit d'enregistrement, le cas échéant, ainsi que toute demande, droit encouru et amende, seront à la charge de la partie qui a rendu nécessaire la formalité d'enregistrement.
 
 
+
+
+# Pièces-Jointes
+
+
+
+&& attachList
 ___
 # Tarifs et signatures
 
@@ -519,7 +526,7 @@ ___
 
 
 
--	==Astreinte==
+-	==astreinte==
 
 
 
@@ -527,19 +534,19 @@ ___
 
 
 
-**<s>Montant HT contrat entretien					        ==Montant_HT== €</s>**
+**<s>Montant HT contrat entretien					        ==montantHT== €</s>**
 		
-==PrixAstreinte==
+==prixAstreinte==
 
-**Montant TTC contrat entretien                         ==Montant_TTC== €**
-
-
-==Entreprise==                               Ets PICQUETTE
-==Adresse1==                                 Route de Sainte-Cécile
-==Adresse2==                                 84830 - SERIGNAN
+**Montant TTC contrat entretien                         ==montantTTC== €**
 
 
-Date: ............................. 			        	        Date : ==Date==
+==entreprise==                               Ets PICQUETTE
+==adresse1==                                 Route de Sainte-Cécile
+==adresse2==                                 84830 - SERIGNAN
+
+
+Date: ............................. 			        	        Date : ==date==
 
 
 Signature : 
