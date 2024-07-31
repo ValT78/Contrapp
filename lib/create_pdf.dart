@@ -1,10 +1,28 @@
 import 'dart:io';
+import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:markdown/markdown.dart' as md;
 import 'package:contrapp/main.dart';
 import 'dart:convert';
+
+final titleCadre = pw.MemoryImage(
+    File('assets/titleCadre.png').readAsBytesSync(),
+);
+
+final footerImage = pw.MemoryImage(
+  File('assets/footer.png').readAsBytesSync(),
+  );
+  final headerImage = pw.MemoryImage(
+  File('assets/header.png').readAsBytesSync(),
+  );
+  final signatureImage = pw.MemoryImage(
+  File('assets/signature.png').readAsBytesSync(),
+  );
+  final bulletImage = pw.MemoryImage(
+  File('assets/bulletPoint.png').readAsBytesSync(),
+  );
 
 
 void createPdfFromMarkdown() async {
@@ -33,23 +51,7 @@ void createPdfFromMarkdown() async {
     color: PdfColors.white, // Rend l'écriture blanche
 
   );
-
-  final footerImage = pw.MemoryImage(
-    (await rootBundle.load('assets/footer.png')).buffer.asUint8List(),
-  );
-  final headerImage = pw.MemoryImage(
-    (await rootBundle.load('assets/header.png')).buffer.asUint8List(),
-  );
-  final signatureImage = pw.MemoryImage(
-    (await rootBundle.load('assets/signature.png')).buffer.asUint8List(),
-  );
-  final bulletImage = pw.MemoryImage(
-    (await rootBundle.load('assets/bulletPoint.png')).buffer.asUint8List(),
-  );
-
-  final titleCadre = pw.MemoryImage(
-    File('assets/titleCadre.png').readAsBytesSync(),
-  );
+  
 
   final footer = pw.Container(
     alignment: pw.Alignment.bottomCenter,
@@ -113,7 +115,7 @@ void createPdfFromMarkdown() async {
       build: (pw.Context context) {
         return pw.Column(
           mainAxisSize: pw.MainAxisSize.min,
-          children: _markdownToWidget(markdownParagraph[0], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, titleCadre, bulletImage),
+          children: _markdownToWidget(markdownParagraph[0], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle),
         );
       },
     ),
@@ -127,18 +129,16 @@ void createPdfFromMarkdown() async {
     pageTheme: mainPageTheme,
     build: (pw.Context context) {
       return [
-        pw.Container(
-          constraints: pw.BoxConstraints(
-            maxHeight: PdfPageFormat.a4.availableHeight - 100, // Ajustez cette valeur selon vos besoins
-          ),
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(bottom: 20), // Ajustez cette valeur selon vos besoins
           child: pw.Column(
-            children: _markdownToWidget(markdownParagraph[1], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, titleCadre, bulletImage)
+            children: _markdownToWidget(markdownParagraph[1], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle)
           ),
         ),
       ];
-      },
-    ),
-  );
+    },
+  ),
+);
 
 
 
@@ -152,7 +152,7 @@ void createPdfFromMarkdown() async {
             pw.Column(
               mainAxisSize: pw.MainAxisSize.min,
               crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: _markdownToWidget(markdownParagraph[2], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, titleCadre, bulletImage),
+              children: _markdownToWidget(markdownParagraph[2], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle),
             ),
             pw.Positioned(
               bottom: 0,
@@ -178,18 +178,18 @@ String generateNumeroContrat(String date, int versionContrat) {
   return '$year$month$dayOfMonth$version';
 }
 
-List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle, pw.ImageProvider titleCadre, pw.ImageProvider bulletImage) {
+List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle) {
   return markdownParagraph.expand<pw.Widget>((element) {
   if(element == ' ') {
     return [pw.SizedBox(height: 12)]; // Réduisez l'espace entre les paragraphes en ajustant la hauteur
   }
   else if(element.startsWith('&&')) {
-    return _insertGraph(element);
+    return _insertGraph(element, titleStyle);
   }
   else {
     final mdElement = md.Document().parse(element).firstOrNull;
     if(mdElement is md.Element) {
-      return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, titleCadre, bulletImage)];
+      return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle)];
     }          
   }
   return [pw.Container()];
@@ -209,17 +209,57 @@ String _insertInformation(String text) {
   });
 }
 
-List<pw.Widget> _insertGraph(String element) {
+List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle) {
   if(element.contains('attachList')) {
-    return attachList.map((imageItem) {
-      return pw.Image(pw.MemoryImage(base64Decode(imageItem)));
-    }).toList();
+    // Vérifiez si attachList est vide
+  if (attachList.isEmpty) {
+    return [pw.Container()]; // Retournez un widget vide
+  }
+
+  // Déterminez le texte à utiliser en fonction du nombre d'images
+  String text = attachList.length > 1 ? "Pièces Jointes" : "Pièce Jointe";
+
+  // Créez une nouvelle liste de pw.Widget
+  List<pw.Widget> widgets = [];
+
+  // Ajoutez votre pw.SizedBox à la liste
+  widgets.add(
+    pw.SizedBox(
+      width: double.infinity, // ou une autre valeur pour la largeur
+      height: titleCadre.height! / (titleCadre.width as num) * (PdfPageFormat.a4.width - PdfPageFormat.a4.marginLeft - PdfPageFormat.a4.marginRight),
+      child: pw.Stack(
+        children: [
+          pw.Image(titleCadre, fit: pw.BoxFit.cover), // Utilisez l'image ici
+          pw.Center(
+            child: pw.Text(text, style: titleStyle), // Utilisez le texte déterminé ici
+          ),
+        ],
+      ),
+    ),
+  );
+
+  // Ajoutez vos images à la liste
+  widgets.addAll(
+    attachList.map((imageItem) {
+      return pw.Padding(
+        padding: const pw.EdgeInsets.all(10), // Ajoutez un espace autour de l'image
+        child: pw.Container(
+          width: 500, // Contrôlez la largeur de l'image
+          height: 500, // Contrôlez la hauteur de l'image
+          child: pw.Image(pw.MemoryImage(base64Decode(imageItem))),
+        ),
+      );
+    }).toList(),
+  );
+
+  // Renvoie la liste de widgets
+  return widgets;
   }
   return [pw.Container()];
 }
 
 
-  pw.Widget _formatMarkdown(mdContent, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle, pw.ImageProvider titleCadre, pw.ImageProvider bulletImage) {
+  pw.Widget _formatMarkdown(mdContent, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle) {
 
     String mdText = _insertInformation(mdContent.textContent);
 

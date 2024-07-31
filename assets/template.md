@@ -495,10 +495,6 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 
 
 
-# Pièces-Jointes
-
-
-
 && attachList
 ___
 # Tarifs et signatures
