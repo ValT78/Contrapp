@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
+import 'package:contrapp/skeleton/calendar.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -11,7 +12,7 @@ class CalendarPage extends StatelessWidget {
         preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100,),
       ),  
-      body: Center(child: Text('Calendar Page')),
+      body: Center(child: Calendar()),
     );
   }
 }

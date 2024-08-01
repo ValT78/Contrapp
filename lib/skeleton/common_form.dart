@@ -52,7 +52,7 @@ class CommonFormState extends State<CommonForm> {
     adresse2Controller = TextEditingController(text: variablesContrat['adresse2']);
     matriculeController = TextEditingController(text: variablesContrat['matricule']);
     capitalController = TextEditingController(text: variablesContrat['capital'] == 0 ? '' : variablesContrat['capital'].toString());
-    dateController = TextEditingController(text: DateFormat('dd/MM/yyyy').format(DateTime.parse(variablesContrat['date'])));
+    dateController = TextEditingController(text: variablesContrat['date']);
     versionContratController = TextEditingController(text: variablesContrat['versionContrat'].toString());
 
     // Demande le focus sur le premier champ du formulaire
@@ -445,13 +445,13 @@ class CommonFormState extends State<CommonForm> {
                           onTap: () async {
                             final selectedDate = await showDatePicker(
                               context: context,
-                              initialDate: variablesContrat['date'],
+                                initialDate: DateFormat('dd/MM/yyyy').parse(variablesContrat['date']),
                               firstDate: DateTime.now().subtract(const Duration(days: 365)),
                                 lastDate: DateTime.now().add(const Duration(days: 365)),
                             );
                             if (selectedDate != null) {
                               setState(() {
-                                variablesContrat['date'] = selectedDate.toIso8601String();
+                                variablesContrat['date'] = DateFormat('dd/MM/yyyy').format(selectedDate);
                                 dateController.text = DateFormat('dd/MM/yyyy').format(selectedDate);
                               });
                             }

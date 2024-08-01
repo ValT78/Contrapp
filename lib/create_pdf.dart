@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
@@ -169,13 +168,10 @@ void createPdfFromMarkdown() async {
 }
 
 String generateNumeroContrat(String date, int versionContrat) {
-  DateTime parsedDate = DateTime.parse(date);
-  String year = parsedDate.year.toString().substring(2);
-  String month = parsedDate.month.toString().padLeft(2, '0');
-  String dayOfMonth = parsedDate.day.toString().padLeft(2, '0');
+  final elements = date.split('/');
   String version = versionContrat.toString().padLeft(3, '0');
   
-  return '$year$month$dayOfMonth$version';
+  return '${elements[2].padLeft(2)}${elements[1]}${elements[0]}$version';
 }
 
 List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle) {
@@ -212,48 +208,51 @@ String _insertInformation(String text) {
 List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle) {
   if(element.contains('attachList')) {
     // Vérifiez si attachList est vide
-  if (attachList.isEmpty) {
-    return [pw.Container()]; // Retournez un widget vide
-  }
+    if (attachList.isEmpty) {
+      return [pw.Container()]; // Retournez un widget vide
+    }
 
-  // Déterminez le texte à utiliser en fonction du nombre d'images
-  String text = attachList.length > 1 ? "Pièces Jointes" : "Pièce Jointe";
+    // Déterminez le texte à utiliser en fonction du nombre d'images
+    String text = attachList.length > 1 ? "Pièces Jointes" : "Pièce Jointe";
 
-  // Créez une nouvelle liste de pw.Widget
-  List<pw.Widget> widgets = [];
+    // Créez une nouvelle liste de pw.Widget
+    List<pw.Widget> widgets = [];
 
-  // Ajoutez votre pw.SizedBox à la liste
-  widgets.add(
-    pw.SizedBox(
-      width: double.infinity, // ou une autre valeur pour la largeur
-      height: titleCadre.height! / (titleCadre.width as num) * (PdfPageFormat.a4.width - PdfPageFormat.a4.marginLeft - PdfPageFormat.a4.marginRight),
-      child: pw.Stack(
-        children: [
-          pw.Image(titleCadre, fit: pw.BoxFit.cover), // Utilisez l'image ici
-          pw.Center(
-            child: pw.Text(text, style: titleStyle), // Utilisez le texte déterminé ici
-          ),
-        ],
-      ),
-    ),
-  );
-
-  // Ajoutez vos images à la liste
-  widgets.addAll(
-    attachList.map((imageItem) {
-      return pw.Padding(
-        padding: const pw.EdgeInsets.all(10), // Ajoutez un espace autour de l'image
-        child: pw.Container(
-          width: 500, // Contrôlez la largeur de l'image
-          height: 500, // Contrôlez la hauteur de l'image
-          child: pw.Image(pw.MemoryImage(base64Decode(imageItem))),
+    // Ajoutez votre pw.SizedBox à la liste
+    widgets.add(
+      pw.SizedBox(
+        width: double.infinity, // ou une autre valeur pour la largeur
+        height: titleCadre.height! / (titleCadre.width as num) * (PdfPageFormat.a4.width - PdfPageFormat.a4.marginLeft - PdfPageFormat.a4.marginRight),
+        child: pw.Stack(
+          children: [
+            pw.Image(titleCadre, fit: pw.BoxFit.cover), // Utilisez l'image ici
+            pw.Center(
+              child: pw.Text(text, style: titleStyle), // Utilisez le texte déterminé ici
+            ),
+          ],
         ),
-      );
-    }).toList(),
-  );
+      ),
+    );
 
-  // Renvoie la liste de widgets
-  return widgets;
+    // Ajoutez vos images à la liste
+    widgets.addAll(
+      attachList.map((imageItem) {
+        return pw.Padding(
+          padding: const pw.EdgeInsets.all(10), // Ajoutez un espace autour de l'image
+          child: pw.Container(
+            width: 500, // Contrôlez la largeur de l'image
+            height: 500, // Contrôlez la hauteur de l'image
+            child: pw.Image(pw.MemoryImage(base64Decode(imageItem))),
+          ),
+        );
+      }).toList(),
+    );
+
+    // Renvoie la liste de widgets
+    return widgets;
+  }
+  else if(element.contains('astreinte')) {
+    
   }
   return [pw.Container()];
 }
@@ -289,20 +288,42 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle) {
       }
 
       else if (mdContent.tag == 'ul') {
-        return pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            pw.Padding(
-              padding: const pw.EdgeInsets.only(top: 3), // Ajustez la valeur du padding en haut selon vos besoins
-              child: pw.Image(bulletImage, width: 10, height: 10), // Remplacez la taille par celle qui vous convient
-            ),
-            pw.SizedBox(width: 5), // Espace entre l'image et le texte
-            pw.Expanded(child: pw.Text(mdText, style: classicStyle)),
-          ],
+        return pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20), 
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(top: 3), // Ajustez la valeur du padding en haut selon vos besoins
+                child: pw.Image(bulletImage, width: 10, height: 10), // Remplacez la taille par celle qui vous convient
+              ),
+              pw.SizedBox(width: 5), // Espace entre l'image et le texte
+              pw.Expanded(child: pw.Text(mdText, style: classicStyle)),
+            ],
+          ),
         );
       }
       else if (mdContent.tag == 'em') {
         return pw.Text(mdText, style: italicStyle);
+      }
+      else if(mdText.startsWith('<tab>')) {
+        mdText = mdText.replaceFirst('<tab>', '');
+        List<String> parts = mdText.split('|'); // Divisez le texte en deux parties à partir de :
+
+        return pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20), // Utilisez la valeur de leftPadding
+          child: pw.Expanded(
+            child: parts.length > 1
+              ? pw.Row(
+                  children: [
+                    pw.Text(parts[0], style: boldStyle),
+                    pw.Spacer(), // Utilisez Spacer pour pousser le reste du texte à droite
+                    pw.Text(parts.sublist(1).join('|'), style: boldStyle),
+                  ],
+                )
+              : pw.Text(mdText, style: classicStyle),
+          ),
+        );
       }
       else if (mdContent.tag == 'p') {
         final underlinedMatch = RegExp(r'<u>(.*?)</u>').firstMatch(mdText);

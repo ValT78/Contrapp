@@ -530,19 +530,23 @@ ___
 
 
 
-**<s>Montant HT contrat entretien					        ==montantHT== €</s>**
+<tab>Montant HT contrat entretien| ==montantHT== €	
 		
-==prixAstreinte==
+&& astreinte
 
-**Montant TTC contrat entretien                         ==montantTTC== €**
-
-
-==entreprise==                               Ets PICQUETTE
-==adresse1==                                 Route de Sainte-Cécile
-==adresse2==                                 84830 - SERIGNAN
+<tab>Montant TTC contrat entretien| ==montantTTC== €
 
 
-Date: ............................. 			        	        Date : ==date==
+
+
+
+
+<tab>==entreprise== |Ets PICQUETTE
+<tab>==adresse1== |Route de Sainte-Cécile
+<tab>==adresse2== |84830 - SERIGNAN
+
+
+<tab>Date: ............................. |Date : ==date==      
 
 
 Signature : 

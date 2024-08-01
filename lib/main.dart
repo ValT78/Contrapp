@@ -1,8 +1,10 @@
 // main.dart
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'pages/home_page.dart';
 import 'pages/common_page.dart';
 import 'pages/equip_page.dart';
@@ -21,7 +23,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'adresse2': '',
     'matricule': '',
     'capital': 0,
-    'date': DateTime.now().toIso8601String(),
+    'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
     'versionContrat': 1,
     'numeroContrat': '000000001',
     'attachList': <String>[],
@@ -49,6 +51,8 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
 
 Future<void> _loadAppData() async {
+    print(variablesContrat);
+
   Directory projectDir = Directory.current;
     List<FileSystemEntity> files = projectDir.listSync(recursive: false);
     File? targetFile;
