@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:contrapp/search/equip_list.dart';
+import 'package:contrapp/object/equip_list.dart';
 
+
+//Les équipements sélectionnés dans la page des équipements
 class SelectedEquip extends StatelessWidget {
   const SelectedEquip({super.key});
 
@@ -10,10 +12,10 @@ class SelectedEquip extends StatelessWidget {
     return Consumer<EquipList>(
       builder: (context, equipList, child) {
         return ListView.builder(
-          itemCount: equipList.equipPickedList.length,
+          itemCount: equipList.equipList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              title: Text(equipList.equipPickedList[index]),
+              title: Text(equipList.equipList[index].equipName),
             );
           },
         );

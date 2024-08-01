@@ -19,6 +19,7 @@ class CalendarState extends State<Calendar> {
     for (var equip in equipPickedList) {
       selected[equip] = {for (var month in months) month: false};
     }
+    print(equipPickedList);
   }
 
   @override

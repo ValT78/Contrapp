@@ -1,7 +1,8 @@
+import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/main.dart';
 import 'package:provider/provider.dart';
-import 'package:contrapp/search/equip_list.dart';
+import 'package:contrapp/object/equip_list.dart';
 import 'package:contrapp/pages/equip_page.dart';
 
 class MainSearchBar extends StatefulWidget {
@@ -11,15 +12,21 @@ class MainSearchBar extends StatefulWidget {
   MainSearchBarState createState() => MainSearchBarState();
 }
 
+
+
 class MainSearchBarState extends State<MainSearchBar> {
+
+  //Les variables pour la barre de recherche
   final FocusNode _searchFocusNode = FocusNode();
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
-  List<String> _searchList = [];
-  bool _isLoading = false;
 
-  bool _isSearching = false;
+  List<Equipment> _searchList = []; // Liste des résultats de la recherche
+  bool _isLoading = false; // Attend quand on clique sur un élément avant de fermer la barre de recherche
+  bool _isSearching = false; // Si la barre de recherche est active
 
+  // Constructeur de la classe
+  //Gère les changements de focus dans la barre de recherche
   MainSearchBarState() {
     _filter.addListener(() {
       setState(() {
@@ -47,44 +54,44 @@ class MainSearchBarState extends State<MainSearchBar> {
 
   @override
   void initState() {
-    _searchList = equipToPickList;
+    _searchList = equipToPick.equipList;
     super.initState();
   }
 
   @override
-Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
   return Center(
       child: SizedBox(
-        width: MediaQuery.of(context).size.width * 0.8,
+        width: MediaQuery.of(context).size.width * 0.8, // Occupera 80% de la largeur de l'écran
         child: Column(
           children: <Widget>[
             Container(
               margin: const EdgeInsets.all(20.0),
               child: TextField(
-  focusNode: _searchFocusNode,
-  controller: _filter,
-  decoration: const InputDecoration(
-    prefixIcon: Icon(Icons.search),
-    hintText: 'Ajouter un équipement...',
-  ),
-  onSubmitted: (value) {
-    if (_searchList.isNotEmpty) {
-      // Si la liste n'est pas vide, déclencher l'action de la première entrée
-      Provider.of<EquipList>(context, listen: false).add(_searchList[0]);
-      _searchFocusNode.unfocus();
-      _filter.clear();
-      _isLoading = false;
-    } else if (_searchText.isNotEmpty) {
-      // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
-      Provider.of<EquipList>(context, listen: false).add(_searchText);
-      equipToPickList.add(_searchText);
-      const EquipPage().modifyApp();
-      _searchFocusNode.unfocus();
-      _filter.clear();
-      _isLoading = false;
-    }
-  },
-),
+                focusNode: _searchFocusNode,
+                controller: _filter,
+                decoration: const InputDecoration(
+                  prefixIcon: Icon(Icons.search),
+                  hintText: 'Ajouter un équipement...',
+                ),
+                onSubmitted: (value) { 
+                  if (_searchList.isNotEmpty) {
+                    // Si la liste n'est pas vide, déclencher l'action de la première entrée
+                    equipPicked.add(_searchList[0]);
+                    _searchFocusNode.unfocus();
+                    _filter.clear();
+                    _isLoading = false;
+                  } else if (_searchText.isNotEmpty) {
+                    // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
+                    Equipment newEquip = Equipment(equipName: _searchText);
+                    equipPicked.add(newEquip);
+                    equipToPick.add(newEquip);
+                    _searchFocusNode.unfocus();
+                    _filter.clear();
+                    _isLoading = false;
+                  }
+                },
+              ),
             ),
             _buildSearchList(),
           ],
@@ -122,7 +129,7 @@ Widget build(BuildContext context) {
             })
           },
           onTap: () {
-            Provider.of<EquipList>(context, listen: false).add(_searchText);
+            equipPicked.add(_searchText);
             equipToPickList.add(_searchText);
             const EquipPage().modifyApp();
             _searchFocusNode.unfocus();
@@ -155,7 +162,7 @@ Widget build(BuildContext context) {
             })
           },
           onTap: () {
-            Provider.of<EquipList>(context, listen: false).add(_searchList[index]);
+            equipPicked.add(_searchList[index]);
             _searchFocusNode.unfocus();
             _filter.clear();
             _isLoading = false;
@@ -202,7 +209,7 @@ Widget build(BuildContext context) {
 
                       if (confirm == true) {
                         setState(() {
-                          equipToPickList.remove(_searchList[index]);
+                          equipToPick.equipList.remove(_searchList[index]);
                         });
                         await const EquipPage().modifyApp();
                       }
@@ -224,6 +231,7 @@ Widget build(BuildContext context) {
 
   }
 
+  // Vérifier si un mot contient tous les caractères d'une requête
   bool containsAllCharacters(String word, String query) {
     Map<String, int> wordCharCount = {};
     Map<String, int> queryCharCount = {};
@@ -248,7 +256,9 @@ Widget build(BuildContext context) {
     return true;
   }
 
+  // Filtrer les résultats de la recherche
   List<String> filterSearchResults(List<String> searchList, String query) {
     return searchList.where((word) => containsAllCharacters(word, query)).toList();
   }
+
 }
