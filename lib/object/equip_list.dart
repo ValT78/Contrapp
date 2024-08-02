@@ -2,7 +2,6 @@ import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:contrapp/main.dart';
 
 class EquipList extends ChangeNotifier {
   final List<Equipment> _equipList = [];
@@ -24,18 +23,14 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) modifyApp();
   }
 
-
-
-
   // Enregistre les modifications qui ont été effectuées dans la page des équipements de manière définitive
   Future<void> modifyApp() async {
     Map<String, dynamic> data = {
-      'equipToPickList': equipToPick,
+      'equipToPick': _equipList.map((e) => e.toJson()).toList(),
     };
 
     String jsonData = jsonEncode(data);
 
-    
     Directory projectDir = Directory.current;
     List<FileSystemEntity> files = projectDir.listSync(recursive: false);
     File? targetFile;

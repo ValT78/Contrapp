@@ -1,1 +1,1 @@
-{"equipToPickList":["Equipement1","Equipement2","Equipement3","aaaaaaaaaaaaa","Ecoulement à froid","CHauffage","Ventilateur"]}
+{"equipToPick":[{"equipName":"Radiateur","information":"","emplacement":"","type":"","marque":"","visitsPerYear":1,"minutesExpected":1.0,"price":0.0,"daysExpected":0.0,"operations":[]},{"equipName":"Evier","information":"","emplacement":"","type":"","marque":"","visitsPerYear":1,"minutesExpected":1.0,"price":0.0,"daysExpected":0.0,"operations":[]}]}

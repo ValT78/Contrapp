@@ -16,10 +16,9 @@ class CalendarState extends State<Calendar> {
   @override
   void initState() {
     super.initState();
-    for (var equip in equipPickedList) {
-      selected[equip] = {for (var month in months) month: false};
+    for (var equip in equipPicked.equipList) {
+      selected[equip.equipName] = {for (var month in months) month: false};
     }
-    print(equipPickedList);
   }
 
   @override
@@ -30,8 +29,8 @@ class CalendarState extends State<Calendar> {
           for (var month in months) DataColumn(label: Text(month)),
           const DataColumn(label: Text('Total')),
         ],
-        rows: equipPickedList.map((equip) {
-          var total = selected[equip]?.values.where((e) => e).length;
+        rows: equipPicked.equipList.map((equip) {
+          var total = selected[equip.equipName]?.values.where((e) => e).length;
           return DataRow(
             cells: [
               for (var month in months)
@@ -39,10 +38,10 @@ class CalendarState extends State<Calendar> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        selected[equip]![month] = !selected[equip]![month]!;
+                        selected[equip.equipName]![month] = !selected[equip.equipName]![month]!;
                       });
                     },
-                    child: selected[equip]![month]! ? const Text('X') : null,
+                    child: selected[equip.equipName]![month]! ? const Text('X') : null,
                   ),
                 ),
               DataCell(Text('$total')),

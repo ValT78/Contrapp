@@ -52,7 +52,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'versionContrat': 1,
     'numeroContrat': '000000001',
     'attachList': <String>[],
-    'equipPickedList': equipPicked.equipList,
+    'equipPicked': equipPicked.equipList,
     'montantHT': 0,
     'montantTTC': 0,
     'astreinte': 'Accès au service de dépannage 24h/24 et 7j/7',
@@ -78,17 +78,23 @@ Future<void> _loadAppData() async {
 
     if(targetFile != null) {
       String jsonData = await targetFile.readAsString();
-      Map<String, dynamic> data = jsonDecode(jsonData);
+      try {
+        Map<String, dynamic> data = jsonDecode(jsonData);
+        equipToPick.equipList.addAll(List<Equipment>.from(data['equipToPick'].map((e) => Equipment.fromJson(e))));
 
-      equipToPick.equipList.addAll(List<Equipment>.from(data['equipToPick']));
+      } catch (e) {
+        // Handle decoding error
+        print('Error decoding JSON data: $e');
+      }
+
     }
   }
 
 
 void main() {
   _loadAppData();
-  runApp(ChangeNotifierProvider(
-      create: (context) => EquipList(),
+  runApp(ChangeNotifierProvider<EquipList>.value(
+      value: equipPicked,
       child: const MyApp(),
     ),);
 }

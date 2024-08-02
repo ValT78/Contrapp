@@ -1,4 +1,5 @@
 import 'package:contrapp/custom_navbar.dart';
+import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/button/travel_button.dart';
 import 'package:file_picker/file_picker.dart';
@@ -46,8 +47,9 @@ Future<void> charger() async {
     variablesContrat = data;
 
     // Convertir explicitement les listes en List<String>
-    variablesContrat['attachList'] = List<String>.from(variablesContrat['attachList']);
-    variablesContrat['equipPickedList'] = List<String>.from(variablesContrat['equipPickedList']);
+    attachList = List<String>.from(variablesContrat['attachList']);
+    equipPicked.equipList.addAll(List<Equipment>.from(data['equipPicked'].map((e) => Equipment.fromJson(e))));
+
   }
 }
 

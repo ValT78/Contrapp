@@ -1,9 +1,6 @@
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/main.dart';
-import 'package:provider/provider.dart';
-import 'package:contrapp/object/equip_list.dart';
-import 'package:contrapp/pages/equip_page.dart';
 
 class MainSearchBar extends StatefulWidget {
   const MainSearchBar({super.key});
@@ -58,6 +55,7 @@ class MainSearchBarState extends State<MainSearchBar> {
     super.initState();
   }
 
+// Corps du widget
   @override
   Widget build(BuildContext context) {
   return Center(
@@ -67,14 +65,14 @@ class MainSearchBarState extends State<MainSearchBar> {
           children: <Widget>[
             Container(
               margin: const EdgeInsets.all(20.0),
-              child: TextField(
+              child: TextField( // Barre de recherche
                 focusNode: _searchFocusNode,
                 controller: _filter,
                 decoration: const InputDecoration(
                   prefixIcon: Icon(Icons.search),
                   hintText: 'Ajouter un équipement...',
                 ),
-                onSubmitted: (value) { 
+                onSubmitted: (value) { // Si on clique sur entrée
                   if (_searchList.isNotEmpty) {
                     // Si la liste n'est pas vide, déclencher l'action de la première entrée
                     equipPicked.add(_searchList[0]);
@@ -83,12 +81,7 @@ class MainSearchBarState extends State<MainSearchBar> {
                     _isLoading = false;
                   } else if (_searchText.isNotEmpty) {
                     // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
-                    Equipment newEquip = Equipment(equipName: _searchText);
-                    equipPicked.add(newEquip);
-                    equipToPick.add(newEquip);
-                    _searchFocusNode.unfocus();
-                    _filter.clear();
-                    _isLoading = false;
+                    _createNewEquipment(_searchText);
                   }
                 },
               ),
@@ -106,10 +99,10 @@ class MainSearchBarState extends State<MainSearchBar> {
       return const SizedBox();
     }
     if (_searchText.isNotEmpty) {
-      _searchList = filterSearchResults(equipToPickList, _searchText);
+      _searchList = filterSearchResults(equipToPick.equipList, _searchText);
     }
     else {
-      _searchList = equipToPickList;
+      _searchList = equipToPick.equipList;
     }
 
     return Expanded(
@@ -129,12 +122,7 @@ class MainSearchBarState extends State<MainSearchBar> {
             })
           },
           onTap: () {
-            equipPicked.add(_searchText);
-            equipToPickList.add(_searchText);
-            const EquipPage().modifyApp();
-            _searchFocusNode.unfocus();
-            _filter.clear();
-            _isLoading = false;
+            _createNewEquipment(_searchText);
           },
           child: Container(
             decoration: BoxDecoration(
@@ -174,7 +162,7 @@ class MainSearchBarState extends State<MainSearchBar> {
               children: [
                 Expanded(
                   child: Center(
-                    child: Text(_searchList[index], style: const TextStyle(fontSize: 20)),
+                    child: Text(_searchList[index].equipName, style: const TextStyle(fontSize: 20)),
                   ),
                 ),
                 Center(
@@ -209,15 +197,13 @@ class MainSearchBarState extends State<MainSearchBar> {
 
                       if (confirm == true) {
                         setState(() {
-                          equipToPick.equipList.remove(_searchList[index]);
+                          equipToPick.remove(_searchList[index].equipName);
                         });
-                        await const EquipPage().modifyApp();
                       }
                     },
                     child: const Icon(Icons.delete),
                   ),
                 ),
-
               ],
             ),
           ),
@@ -230,6 +216,16 @@ class MainSearchBarState extends State<MainSearchBar> {
 
 
   }
+
+  void _createNewEquipment(String equipName) {
+    Equipment newEquip = Equipment(equipName: _searchText);
+    equipPicked.add(newEquip);
+    equipToPick.add(newEquip);
+    _searchFocusNode.unfocus();
+    _filter.clear();
+    _isLoading = false;
+  }
+
 
   // Vérifier si un mot contient tous les caractères d'une requête
   bool containsAllCharacters(String word, String query) {
@@ -257,8 +253,8 @@ class MainSearchBarState extends State<MainSearchBar> {
   }
 
   // Filtrer les résultats de la recherche
-  List<String> filterSearchResults(List<String> searchList, String query) {
-    return searchList.where((word) => containsAllCharacters(word, query)).toList();
+  List<Equipment> filterSearchResults(List<Equipment> searchList, String query) {
+    return searchList.where((equip) => containsAllCharacters(equip.equipName, query)).toList();
   }
 
 }
