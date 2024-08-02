@@ -34,6 +34,9 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
   EquipList equipToPick = EquipList(isModifyingApp: true); // Votre liste d'équipements
   EquipList equipPicked = EquipList(); // Votre liste d'équipements sélectionnés
 
+  Map<String, Map<String, bool>> selectedCalendar = {};
+
+
   // Liste des photos à attacher
   List<String> get attachList => variablesContrat['attachList'] as List<String>;
 
@@ -56,7 +59,8 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'montantHT': 0,
     'montantTTC': 0,
     'astreinte': 'Accès au service de dépannage 24h/24 et 7j/7',
-    'prixAstreinte': 'Offerte'
+    'prixAstreinte': 'Offerte',
+    'selectedCalendar': selectedCalendar,
   };
 
   

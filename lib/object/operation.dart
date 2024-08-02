@@ -7,9 +7,9 @@ class Operation extends Object {
 
   Map<String, dynamic> toJson() {
     return {
-      'operationName': this.operationName,
-      'visits': this.visits,
-      'defaultSelected': this.defaultSelected,
+      'operationName': operationName,
+      'visits': visits,
+      'defaultSelected': defaultSelected,
     };
   }
 

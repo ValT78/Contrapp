@@ -49,6 +49,7 @@ Future<void> charger() async {
     // Convertir explicitement les listes en List<String>
     attachList = List<String>.from(variablesContrat['attachList']);
     equipPicked.equipList.addAll(List<Equipment>.from(data['equipPicked'].map((e) => Equipment.fromJson(e))));
+    selectedCalendar = Map<String, Map<String, bool>>.from(variablesContrat['selectedCalendar'].map((key, value) => MapEntry(key, Map<String, bool>.from(value))));
 
   }
 }
