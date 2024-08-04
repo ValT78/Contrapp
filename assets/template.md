@@ -522,7 +522,7 @@ ___
 
 
 
--	==astreinte==
+&& astreinteTexte
 
 
 
@@ -532,7 +532,9 @@ ___
 
 <tab>Montant HT contrat entretien| ==montantHT== €	
 		
-&& astreinte
+
+        
+&& astreintePrice
 
 <tab>Montant TTC contrat entretien| ==montantTTC== €
 

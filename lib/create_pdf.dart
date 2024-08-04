@@ -180,7 +180,7 @@ List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle c
     return [pw.SizedBox(height: 12)]; // Réduisez l'espace entre les paragraphes en ajustant la hauteur
   }
   else if(element.startsWith('&&')) {
-    return _insertGraph(element, titleStyle);
+    return _insertGraph(element, titleStyle, classicStyle, boldStyle, italicStyle, underlineStyle, highlightedStyle);
   }
   else {
     final mdElement = md.Document().parse(element).firstOrNull;
@@ -205,7 +205,7 @@ String _insertInformation(String text) {
   });
 }
 
-List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle) {
+List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle highlightedStyle) {
   if(element.contains('attachList')) {
     // Vérifiez si attachList est vide
     if (attachList.isEmpty) {
@@ -213,7 +213,7 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle) {
     }
 
     // Déterminez le texte à utiliser en fonction du nombre d'images
-    String text = attachList.length > 1 ? "Pièces Jointes" : "Pièce Jointe";
+    final String text = attachList.length > 1 ? "Pièces Jointes" : "Pièce Jointe";
 
     // Créez une nouvelle liste de pw.Widget
     List<pw.Widget> widgets = [];
@@ -251,8 +251,45 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle) {
     // Renvoie la liste de widgets
     return widgets;
   }
-  else if(element.contains('astreinte')) {
-    
+  else if(element.contains('astreinteTexte')) {
+    final String astreinteTexte;
+    if(variablesContrat['hasAstreinte']) {
+      astreinteTexte = "Accès au service de dépannage 24h/24 et 7j/7";
+    }
+    else {
+      astreinteTexte = "Pas d'astreinte";
+    }
+    return [pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20), 
+          child: pw.Row(
+            crossAxisAlignment: pw.CrossAxisAlignment.start,
+            children: [
+              pw.Padding(
+                padding: const pw.EdgeInsets.only(top: 3), // Ajustez la valeur du padding en haut selon vos besoins
+                child: pw.Image(bulletImage, width: 10, height: 10), // Remplacez la taille par celle qui vous convient
+              ),
+              pw.SizedBox(width: 5), // Espace entre l'image et le texte
+              pw.Expanded(child: pw.Text(astreinteTexte, style: classicStyle)),
+            ],
+          ),
+        )];
+  }
+
+  else if(element.contains('astreintePrice')) {
+    if(variablesContrat['hasAstreinte']) {
+      return [pw.Padding(
+          padding: const pw.EdgeInsets.only(left: 20), // Utilisez la valeur de leftPadding
+          child: pw.Expanded(
+            child: pw.Row(
+                  children: [
+                    pw.Text("Supplément Astreinte 24/24", style: boldStyle),
+                    pw.Spacer(), // Utilisez Spacer pour pousser le reste du texte à droite
+                    variablesContrat['montantAstreinte'] == 0 ? pw.Text("Offerte", style: boldStyle) : pw.Text("${variablesContrat['montantAstreinte']} €", style: boldStyle),
+                  ],
+                )
+          ),
+        )];
+    }
   }
   return [pw.Container()];
 }
