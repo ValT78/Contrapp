@@ -58,6 +58,9 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'equipPicked': equipPicked.equipList,
     'montantHT': 0,
     'montantTTC': 0,
+    'hasAstreinte': false,
+    'montantAstreinte': 0,
+
     'astreinte': 'Accès au service de dépannage 24h/24 et 7j/7',
     'prixAstreinte': 'Offerte',
     'selectedCalendar': selectedCalendar,
