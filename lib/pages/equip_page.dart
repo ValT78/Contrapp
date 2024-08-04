@@ -9,25 +9,30 @@ class EquipPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100,),
       ),
       body: Center(
         child: Stack(
           children: [
+            Center(child:
             Column(
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 100,
                 ),
-                Expanded(
-                  child: SelectedEquip(),
+
+                SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  height: MediaQuery.of(context).size.height - 220,
+                  child: const SelectedEquip(),
                 ),
               ],
             ),
-            MainSearchBar(), 
+          ),
+            const MainSearchBar(), 
           ],
         )
       )
