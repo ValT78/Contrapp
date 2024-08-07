@@ -61,6 +61,7 @@ class MainSearchBarState extends State<MainSearchBar> {
   return Center(
       child: SizedBox(
         width: MediaQuery.of(context).size.width * 0.8, // Occupera 80% de la largeur de l'écran
+        height: MediaQuery.of(context).size.height - 200,
         child: Column(
           children: <Widget>[
             Container(
