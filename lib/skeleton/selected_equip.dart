@@ -70,7 +70,7 @@ class SelectedEquip extends StatelessWidget {
                                       entry.key,
                                       textAlign: TextAlign.center,
                                       style: const TextStyle(
-                                        fontSize: 36.0, // Taille de la police
+                                        fontSize: 36, // Taille de la police en fonction de l'espace disponible
                                         fontWeight: FontWeight.bold, // Poids de la police
                                         color: Colors.white, // Couleur du texte
                                       ),

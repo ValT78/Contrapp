@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/main.dart';
@@ -59,33 +61,37 @@ class MainSearchBarState extends State<MainSearchBar> {
   @override
   Widget build(BuildContext context) {
   return Center(
-      child: SizedBox(
+      child: Container(
         width: MediaQuery.of(context).size.width * 0.8, // Occupera 80% de la largeur de l'écran
-        height: MediaQuery.of(context).size.height - 200,
+        height: _isSearching ? min( (70 + 50 * ((_searchList.length + 1) ~/ 2 + 1)).toDouble(), MediaQuery.of(context).size.height * 0.75) : 70,
+        margin: const EdgeInsets.all(20.0),
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+                color: Colors.white,
+                // border: Border.all(color: Colors.grey),
+                borderRadius: _isSearching ? BorderRadius.circular(40) : BorderRadius.circular(100),
+        ),
         child: Column(
           children: <Widget>[
-            Container(
-              margin: const EdgeInsets.all(20.0),
-              child: TextField( // Barre de recherche
-                focusNode: _searchFocusNode,
-                controller: _filter,
-                decoration: const InputDecoration(
-                  prefixIcon: Icon(Icons.search),
-                  hintText: 'Ajouter un équipement...',
-                ),
-                onSubmitted: (value) { // Si on clique sur entrée
-                  if (_searchList.isNotEmpty) {
-                    // Si la liste n'est pas vide, déclencher l'action de la première entrée
-                    equipPicked.add(_searchList[0]);
-                    _searchFocusNode.unfocus();
-                    _filter.clear();
-                    _isLoading = false;
-                  } else if (_searchText.isNotEmpty) {
-                    // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
-                    _createNewEquipment(_searchText);
-                  }
-                },
+            TextField( // Barre de recherche
+              focusNode: _searchFocusNode,
+              controller: _filter,
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Ajouter un équipement...',
               ),
+              onSubmitted: (value) { // Si on clique sur entrée
+                if (_searchList.isNotEmpty) {
+                  // Si la liste n'est pas vide, déclencher l'action de la première entrée
+                  equipPicked.add(_searchList[0]);
+                  _searchFocusNode.unfocus();
+                  _filter.clear();
+                  _isLoading = false;
+                } else if (_searchText.isNotEmpty) {
+                  // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
+                  _createNewEquipment(_searchText);
+                }
+              },
             ),
             _buildSearchList(),
           ],
