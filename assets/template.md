@@ -96,7 +96,7 @@ Dans le cadre de l’intervention d’entretien si une défectuosité est repér
 
 # Calendrier prévisionnel des visites
 
-==Visites
+&& calendar
 
 # Condition générales de vente
 

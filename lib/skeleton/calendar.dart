@@ -11,7 +11,7 @@ class Calendar extends StatefulWidget {
 
 
 class CalendarState extends State<Calendar> {
-  List<String> months = ['Jan', 'Fev', 'Mar', 'Avr', 'Mai', 'Jun', 'Jul', 'Aou', 'Sep', 'Oct', 'Nov', 'Dec'];
+  List<String> months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jui', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
 
   @override
   void initState() {
@@ -89,7 +89,7 @@ class CalendarState extends State<Calendar> {
                 },
                 child: Container(
                   margin: const EdgeInsets.all(2),
-                  child: selectedCalendar[equipName]![month]! ? const Center(child: Text('X')) : null,
+                  child: selectedCalendar[equipName]![month]! ? const Center(child: Text('✔')) : null,
                 ),
               ),
             ),

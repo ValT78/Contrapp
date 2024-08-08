@@ -6,6 +6,8 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:contrapp/main.dart';
 import 'dart:convert';
 
+import 'package:contrapp/pdf/calendar_object.dart'; // Importez votre widget personnalisé
+
 final titleCadre = pw.MemoryImage(
     File('assets/titleCadre.png').readAsBytesSync(),
 );
@@ -34,10 +36,9 @@ void createPdfFromMarkdown() async {
   final parsedMarkdown = markdownWithReturn.split("___");
   final markdownParagraph = parsedMarkdown.map((e) => e.split('\r\n')).toList();
 
-  final font = await rootBundle.load("assets/fonts/Metropolis-Regular.ttf");
-  final boldFont = await rootBundle.load("assets/fonts/Metropolis-Bold.ttf");
-  final italicFont = await rootBundle.load("assets/fonts/Metropolis-RegularItalic.ttf");
-  
+  final font = await rootBundle.load("assets/fonts/Gotham-Book.ttf");
+  final boldFont = await rootBundle.load("assets/fonts/Gotham-Bold.ttf");
+  final italicFont = await rootBundle.load("assets/fonts/Gotham-BookItalic.ttf");
   
   final classicStyle = pw.TextStyle(font: pw.Font.ttf(font), fontSize: 12, lineSpacing: 5);
   final boldStyle = pw.TextStyle(font: pw.Font.ttf(boldFont), fontSize: 12, lineSpacing: 2);
@@ -288,9 +289,14 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
                   ],
                 )
           ),
-        )];
+        )
+      ];
     }
   }
+  else if(element.contains('calendar')) {
+    return buildCalendar(variablesContrat['selectedCalendar']);
+  }
+
   return [pw.Container()];
 }
 

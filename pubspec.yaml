@@ -89,12 +89,12 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-    - family: Metropolis
+    - family: Gotham
       fonts:
-        - asset: assets/fonts/Metropolis-Regular.ttf
+        - asset: assets/fonts/Gotham-Book.ttf
         - asset: assets/fonts/Metropolis-RegularItalic.ttf
           style: italic
-        - asset: assets/fonts/Metropolis-Bold.ttf
+        - asset: assets/fonts/Gotham-Bold.ttf
           weight: 700
   #
   # For details regarding fonts from package dependencies,
