@@ -204,7 +204,7 @@ class MainSearchBarState extends State<MainSearchBar> {
 
                       if (confirm == true) {
                         setState(() {
-                          equipToPick.remove(_searchList[index].equipName);
+                          equipToPick.remove(_searchList[index]);
                         });
                       }
                     },

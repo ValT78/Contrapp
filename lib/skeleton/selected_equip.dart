@@ -115,7 +115,7 @@ class SelectedEquip extends StatelessWidget {
                       ),
                     ),
                     const Padding(
-                      padding: const EdgeInsets.fromLTRB(64, 4, 8, 0),
+                      padding: EdgeInsets.fromLTRB(64, 4, 8, 0),
                       child: IntrinsicHeight(
                       child: Row(
                         children: [
@@ -146,7 +146,7 @@ class SelectedEquip extends StatelessWidget {
                           VerticalDivider(thickness: 1, color: Colors.black, indent: 2, endIndent: 2),
                           Expanded(
                             child: Text(
-                              "Temps",
+                              "Temps (minute)",
                               textAlign: TextAlign.center,
                               style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                             ),
@@ -194,28 +194,56 @@ class SelectedEquip extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(800),
                 border: Border.all(
-                  color: Colors.green[800]!,
+                  color: Colors.red[800]!,
                   width: 1,
                 ),
-                color: Colors.green[400],
+                color: Colors.red[400],
               ),
               child:
             IconButton(
-              icon: const Icon(Icons.add),
+              icon: const Icon(Icons.delete),
               color: Colors.black,
               onPressed: () {
-                // Action pour le bouton +
+                equipPicked.remove(equip);
               },
             ),
             ),
-            Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+            Expanded(child: Container(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              margin: const EdgeInsets.fromLTRB(32,8,32,8),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(87, 25, 197, 31),
+                borderRadius: BorderRadius.circular(6),
+                // border: Border.all(
+                //   color: Colors.green[900]!,
+                //   width: 2,
+                // ),
+              ),
+                child:  TextFormField(
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green[900]!,
+                      width: 3.0, // Augmentez cette valeur pour une barre plus haute
+
+                    ),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2.0,
+                    ),
+                  ),
+                  // border: InputBorder.none,
                 ),
                 textAlign: TextAlign.center,
-              ),
+                cursorColor: Colors.green, // Set cursor color to green
+                style: const TextStyle(
+                  decorationColor: Colors.green, // Set underline color to green
+                ),
+                ),
             ),
+              ),
             Expanded(
               flex: 3,
               child: InkWell(
@@ -230,32 +258,127 @@ class SelectedEquip extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
-                ),
-                textAlign: TextAlign.center,
+            Expanded(child: Container(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              margin: const EdgeInsets.fromLTRB(32,8,32,8),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(87, 25, 197, 31),
+                borderRadius: BorderRadius.circular(6),
+                // border: Border.all(
+                //   color: Colors.green[900]!,
+                //   width: 2,
+                // ),
               ),
-            ),
-            Expanded(
-              child: TextFormField(
-                decoration: const InputDecoration(
-                  border: InputBorder.none,
+                child:  TextFormField(
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green[900]!,
+                      width: 3.0, // Augmentez cette valeur pour une barre plus haute
+
+                    ),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2.0,
+                    ),
+                  ),
+                  // border: InputBorder.none,
                 ),
                 textAlign: TextAlign.center,
+                cursorColor: Colors.green, // Set cursor color to green
+                style: const TextStyle(
+                  decorationColor: Colors.green, // Set underline color to green
+                ),
+                ),
+            ),
+              ),
+            Expanded(child: Container(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              margin: const EdgeInsets.fromLTRB(16,8,16,8),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(87, 25, 197, 31),
+                borderRadius: BorderRadius.circular(6),
+                // border: Border.all(
+                //   color: Colors.green[900]!,
+                //   width: 2,
+                // ),
+              ),
+                child:  TextFormField(
+                decoration: InputDecoration(
+                  enabledBorder: UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green[900]!,
+                      width: 3.0, // Augmentez cette valeur pour une barre plus haute
+
+                    ),
+                  ),
+                  focusedBorder: const UnderlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.green,
+                      width: 2.0,
+                    ),
+                  ),
+                  prefixIcon: const Icon(
+                    Icons.person, // Remplacez par l'icône de votre choix
+                    color: Colors.green,
+                  ),
+                  // border: InputBorder.none,
+                ),
+                textAlign: TextAlign.center,
+                cursorColor: Colors.green, // Set cursor color to green
+                style: const TextStyle(
+                  decorationColor: Colors.green, // Set underline color to green
+                ),
+                ),
+            ),
+              ),
+            Expanded(
+              child: Container(
+              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+              margin: const EdgeInsets.fromLTRB(16,8,16,8),
+              decoration: BoxDecoration(
+                color: const Color.fromARGB(181, 25, 197, 31),
+                borderRadius: BorderRadius.circular(80),
+                border: Border.all(
+                  color: Colors.green[900]!,
+                  width: 2,
+                ),
+              ),
+              child: Text(
+                "Prix",
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.green[900]!,
+                ),
+              ),
               ),
             ),
             Expanded(
               child: Container(
-                padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-                child: const Text("Prix"),
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
+                margin: const EdgeInsets.fromLTRB(16,8,16,8),
+                decoration: BoxDecoration(
+                color: const Color.fromARGB(171, 255, 168, 55),
+                borderRadius: BorderRadius.circular(80),
+                border: Border.all(
+                  color: Colors.orange[900]!,
+                  width: 2,
+                ),
+                
               ),
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(8, 16, 8, 16),
-                child: const Text("Travail"),
+                child: Text(
+                  "Travail",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                  fontSize: 32,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.orange[900]!,
+                  ),
+                ),
               ),
             ),
           ],
@@ -263,7 +386,7 @@ class SelectedEquip extends StatelessWidget {
       ),
     ),
   );
-}).toList(),
+}),
 
 
                   ],

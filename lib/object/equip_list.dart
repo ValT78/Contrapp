@@ -17,8 +17,14 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) modifyApp();
   }
 
-  void remove(String equipName) {
+  void removeName(String equipName) {
     _equipList.removeWhere((element) => element.equipName == equipName);
+    notifyListeners();
+    if (isModifyingApp) modifyApp();
+  }
+
+  void remove(Equipment equip) {
+    _equipList.remove(equip);
     notifyListeners();
     if (isModifyingApp) modifyApp();
   }
