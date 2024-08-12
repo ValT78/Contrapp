@@ -5,7 +5,7 @@ class CustomFormField<T> extends StatefulWidget {
   final IconData icon;
   final double textSize;
   final double? height;
-  final double width;
+  final double? width;
   final bool textAlign;
   final String? label;
   final double horizontalMargin;
@@ -13,8 +13,10 @@ class CustomFormField<T> extends StatefulWidget {
   final T initValue;
   final ValueChanged<T> onChanged;
 
+  final void Function(TextEditingController)? onTap;
 
-  const CustomFormField({super.key, required this.color, required this.icon, required this.textSize, this.height, required this.width, this.textAlign = false, this.label, required this.onChanged, required this.initValue, this.horizontalMargin = 0});
+
+  const CustomFormField({super.key, required this.color, required this.icon, required this.textSize, this.height, this.width, this.textAlign = false, this.label, required this.onChanged, required this.initValue, this.horizontalMargin = 0, this.onTap});
 
   static FormFieldState? of(BuildContext context) => context.findAncestorStateOfType<FormFieldState>();
 
@@ -40,6 +42,13 @@ class FormFieldState<T> extends State<CustomFormField<T>> {
       );
     }
   });
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    _focusNode.dispose();
+    super.dispose();
   }
 
   @override
@@ -89,7 +98,8 @@ class FormFieldState<T> extends State<CustomFormField<T>> {
           fontWeight: FontWeight.bold,
           color: widget.color[900]!,
         ),
-        onChanged: _whenFieldChanged
+        onChanged: _whenFieldChanged,
+        onTap: widget.onTap != null ? () => widget.onTap!(_textController) : null,
       ),
     );
   }
