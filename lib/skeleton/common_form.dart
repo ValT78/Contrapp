@@ -1,6 +1,8 @@
+import 'package:contrapp/button/custom_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Importez le package intl
 import 'package:contrapp/main.dart'; // Importez le fichier main.dart
+import 'package:contrapp/button/super_title.dart'; // Importez le fichier super_title.dart
 
 class CommonForm extends StatefulWidget {
   const CommonForm({super.key});
@@ -11,9 +13,7 @@ class CommonForm extends StatefulWidget {
   CommonFormState createState() => CommonFormState();
 }
 
-class CommonFormState extends State<CommonForm> {
-  final _formKey = GlobalKey<FormState>();
-  
+class CommonFormState extends State<CommonForm> {  
 
   // Création des FocusNodes
   late FocusNode entrepriseFocusNode;
@@ -25,7 +25,6 @@ class CommonFormState extends State<CommonForm> {
   late FocusNode versionContratFocusNode;
 
    // Création des TextEditingController
-  late TextEditingController entrepriseController;
   late TextEditingController adresse1Controller;
   late TextEditingController adresse2Controller;
   late TextEditingController matriculeController;
@@ -47,7 +46,6 @@ class CommonFormState extends State<CommonForm> {
     versionContratFocusNode = FocusNode();
 
     // Initialisation des TextEditingController avec les valeurs actuelles
-    entrepriseController = TextEditingController(text: variablesContrat['entreprise']);
     adresse1Controller = TextEditingController(text: variablesContrat['adresse1']);
     adresse2Controller = TextEditingController(text: variablesContrat['adresse2']);
     matriculeController = TextEditingController(text: variablesContrat['matricule']);
@@ -86,81 +84,85 @@ class CommonFormState extends State<CommonForm> {
           color: Colors.white,
           border: Border.all(color: Colors.black, width: 2),
           borderRadius: BorderRadius.circular(20),
-            boxShadow: [
+          boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.8), // Increase opacity to make the shadow more visible
               spreadRadius: 10,
               blurRadius: 14,
               offset: const Offset(0, 5),
             ),
-            ],
+          ],
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-
-          child: Form(
-            key: _formKey,
-            child: Column(
+          child: Column(
               children: <Widget>[
-                Text(
-                  'Informations sur l\'Entreprise',
-                  style: TextStyle(
-                    color: Colors.purple[900],
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0,
-                    shadows: const [
-                      Shadow(
-                        blurRadius: 10.0,
-                        color: Colors.black26,
-                        offset: Offset(5.0, 5.0),
-                      ),
-                    ],
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.purple[600],
-                    decorationStyle: TextDecorationStyle.dotted,
-                  ),
-                ),
+                const SuperTitle(title: 'Informations sur l\'entreprise', color: Colors.purple),
                 const SizedBox(height: 20),
-
-                Container(
-                  height: 100,
-                  padding: const EdgeInsets.all(10),
-                  margin: const EdgeInsets.only(bottom: 10),
-                  decoration: BoxDecoration(
-                  color: Colors.purple[50],
-                  borderRadius: BorderRadius.circular(10), // Add rounded edge
-                  ),
-                  child: TextFormField(
-                    controller: entrepriseController,
-                    maxLines: 1,
-                    focusNode: entrepriseFocusNode,
-                    decoration: InputDecoration(
-                      labelText: 'Nom de l\'entreprise',
-                      labelStyle: TextStyle(
-                        fontSize: 20.0, // Augmenter la taille du label
-                        fontWeight: FontWeight.bold, // Mettre le label en gras
-                        color: Colors.purple[600], // Changer la couleur du label
-                      ),
-                      prefixIcon: Icon(Icons.business, color: Colors.purple[600], size: 60.0), // Changer la couleur et la taille de l'icône
-                    ),
-                    style: TextStyle(
-                      fontSize: 30.0, // Augmenter la taille du texte entré
-                      color: Colors.purple[900], // Changer la couleur du texte entré
-                      fontWeight : FontWeight.bold
-                    ),
-                    onChanged: (value) {
-                      setState(() {
-                        variablesContrat['entreprise'] = value;
-                      });
-                    },
-                     onFieldSubmitted: (term){
-                      // Lorsque vous appuyez sur Entrée, il passe au champ suivant
-                      entrepriseFocusNode.unfocus();
-                      FocusScope.of(context).requestFocus(adresse1FocusNode);
-                    },
-                  ),
+                CustomFormField(
+                  color: Colors.purple, 
+                  icon: Icons.business, 
+                  textSize: 50, 
+                  width: 300,
+                  height: 100, 
+                  label: "Nom de l'entreprise", 
+                  initValue: variablesContrat['entreprise'],
+                  onChanged: (value) {
+                    variablesContrat['entreprise'] = value;
+                  },
                 ),
+                const SizedBox(height: 20,),
+                // Container(
+                //   height: 100,
+                //   padding: const EdgeInsets.all(10),
+                //   margin: const EdgeInsets.only(bottom: 10),
+                //   decoration: BoxDecoration(
+                //   color: Colors.purple[50],
+                //   borderRadius: BorderRadius.circular(10), // Add rounded edge
+                //   ),
+                //   child: TextFormField(
+                //     controller: entrepriseController,
+                //     maxLines: 1,
+                //     focusNode: entrepriseFocusNode,
+                //     decoration: InputDecoration(
+                //       labelText: 'Nom de l\'entreprise',
+                //       labelStyle: TextStyle(\'
+                //         fontSize: 20.0, // Augmenter la taille du label
+                //         fontWeight: FontWeight.bold, // Mettre le label en gras
+                //         color: Colors.purple[600], // Changer la couleur du label
+                //       ),
+                //       enabledBorder: UnderlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: Colors.purple[600]!,
+                //           width: 3.0, // Augmentez cette valeur pour une barre plus haute
+
+                //         ),
+                //       ),
+                //       focusedBorder: UnderlineInputBorder(
+                //         borderSide: BorderSide(
+                //           color: Colors.purple[300]!,
+                //           width: 2.0,
+                //         ),
+                //       ),
+                //       prefixIcon: Icon(Icons.business, color: Colors.purple[600], size: 60.0), // Changer la couleur et la taille de l'icône
+                //     ),
+                //     style: TextStyle(
+                //       fontSize: 30.0, // Augmenter la taille du texte entré
+                //       color: Colors.purple[700], // Changer la couleur du texte entré
+                //       fontWeight : FontWeight.bold
+                //     ),
+                //     onChanged: (value) {
+                //       setState(() {
+                //         _whenFieldChanged('entreprise', value, false);
+                //       });
+                //     },
+                //      onFieldSubmitted: (term){
+                //       // Lorsque vous appuyez sur Entrée, il passe au champ suivant
+                //       entrepriseFocusNode.unfocus();
+                //       FocusScope.of(context).requestFocus(adresse1FocusNode);
+                //     },
+                //   ),
+                // ),
                 Row(
                   children: <Widget>[
                     Expanded(
@@ -191,9 +193,7 @@ class CommonFormState extends State<CommonForm> {
                             fontWeight : FontWeight.bold
                           ),
                           onChanged: (value) {
-                            setState(() {
-                              variablesContrat['adresse1'] = value;
-                            });
+                            // _whenFieldChanged('adresse1', value, false);
                           },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
@@ -232,9 +232,7 @@ class CommonFormState extends State<CommonForm> {
                             fontWeight : FontWeight.bold
                           ),
                           onChanged: (value) {
-                            setState(() {
-                              variablesContrat['adresse2'] = value;
-                            });
+                            // _whenFieldChanged('adresse2', value, false);
                           },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
@@ -278,17 +276,7 @@ class CommonFormState extends State<CommonForm> {
                             fontWeight : FontWeight.bold
                           ),
                             onChanged: (value) {
-                              setState(() {
-                                if (value.isEmpty) {
-                                  variablesContrat['capital'] = 0;
-                                }
-                                else if(int.tryParse(value) != null) {
-                                  variablesContrat['capital'] = int.parse(value);
-                                }
-                                else {
-                                  capitalController.text = variablesContrat['capital'].toString();
-                                }
-                              });
+                              // _whenFieldChanged('capital', value, true);
                             },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
@@ -328,9 +316,7 @@ class CommonFormState extends State<CommonForm> {
                             fontWeight : FontWeight.bold
                           ),
                           onChanged: (value) {
-                            setState(() {
-                              variablesContrat['matricule'] = value;
-                            });
+                              // _whenFieldChanged('matricule', value, false);
                           },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
@@ -343,25 +329,7 @@ class CommonFormState extends State<CommonForm> {
                   ],
                 ),
                 const SizedBox(height: 20),
-                Text(
-                  'Date et version du contrat',
-                  style: TextStyle(
-                    color: Colors.red[900],
-                    fontSize: 50.0,
-                    fontWeight: FontWeight.bold,
-                    letterSpacing: 2.0,
-                    shadows: const [
-                      Shadow(
-                        blurRadius: 10.0,
-                        color: Colors.black26,
-                        offset: Offset(5.0, 5.0),
-                      ),
-                    ],
-                    decoration: TextDecoration.underline,
-                    decorationColor: Colors.red[600],
-                    decorationStyle: TextDecorationStyle.dotted,
-                  ),
-                ),
+                const SuperTitle(title: 'Date et Version du Contrat', color: Colors.red),
                 const SizedBox(height: 20),
 
                 Row(
@@ -394,17 +362,7 @@ class CommonFormState extends State<CommonForm> {
                             fontWeight : FontWeight.bold
                           ),
                            onChanged: (value) {
-                              setState(() {
-                                if (value.isEmpty) {
-                                  variablesContrat['versionContrat'] = 0;
-                                }
-                                else if(int.tryParse(value) != null) {
-                                  variablesContrat['versionContrat'] = int.parse(value);
-                                }
-                                else {
-                                  versionContratController.text = variablesContrat['versionContrat'].toString();
-                                }
-                              });
+                              // _whenFieldChanged('versionContrat', value, true);
                             },
                           onFieldSubmitted: (term){
                             // Lorsque vous appuyez sur Entrée, il passe au champ suivant
@@ -465,7 +423,9 @@ class CommonFormState extends State<CommonForm> {
               ],
             ),
           ),
-        ),
       );    
   }
+
+  
+  
 }

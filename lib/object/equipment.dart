@@ -1,4 +1,5 @@
 import 'package:contrapp/object/operation.dart';
+import 'package:flutter/material.dart';
 
 class Equipment extends Object {
   final String equipName;
@@ -6,11 +7,13 @@ class Equipment extends Object {
   final String emplacement;
   final String type;
   final String marque;
-  final int visitsPerYear;
-  final double minutesExpected;
+  int number;
+  int visitsPerYear;
+  int minutesExpected;
 
-  final double price;
-  final double daysExpected;
+  final ValueNotifier<int> priceNotifier = ValueNotifier<int>(0);
+
+  final ValueNotifier<double> hoursExpectedNotifier = ValueNotifier<double>(0);
 
   List<Operation> operations = [];
 
@@ -22,9 +25,8 @@ class Equipment extends Object {
     this.type = '', 
     this.marque = '', 
     this.visitsPerYear = 1, 
-    this.minutesExpected = 1, 
-    this.price = 0, 
-    this.daysExpected = 0
+    this.minutesExpected = 120, 
+    this.number = 1
   });
 
   Map<String, dynamic> toJson() {
@@ -36,8 +38,6 @@ class Equipment extends Object {
       'marque': marque,
       'visitsPerYear': visitsPerYear,
       'minutesExpected': minutesExpected,
-      'price': price,
-      'daysExpected': daysExpected,
       'operations': operations.map((operation) => operation.toJson()).toList(),
     };
   }
@@ -51,8 +51,19 @@ class Equipment extends Object {
       marque: json['marque'],
       visitsPerYear: json['visitsPerYear'],
       minutesExpected: json['minutesExpected'],
-      price: json['price'],
-      daysExpected: json['daysExpected'],
+    );
+  }
+
+  Equipment clone() {
+    return Equipment(
+      equipName: equipName,
+      information: information,
+      emplacement: emplacement,
+      type: type,
+      marque: marque,
+      visitsPerYear: visitsPerYear,
+      minutesExpected: minutesExpected,
+      number: number,
     );
   }
 

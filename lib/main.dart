@@ -18,16 +18,21 @@ import 'package:provider/provider.dart';
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
-  double tauxHoraire = 1; // Taux horaire de l'entreprise
-  double daysOfWork = 0; // Jours de travail total
+  final ValueNotifier<double> tauxHoraireNotifier = ValueNotifier<double>(80);
+
+  final ValueNotifier<double> hoursOfWorkNotifier = ValueNotifier<double>(0);
+
 
   // Montant HT (et TTC) du contrat
+  final ValueNotifier<int> montantHTNotifier = ValueNotifier<int>(0);
+
   double get montantHT {
     return variablesContrat['montantHT'];
   }
   
   set montantHT(double value) {
     variablesContrat['montantHT'] = value;
+    montantHTNotifier.value = value.toInt();
     variablesContrat['montantTTC'] = value * 1.2;
   }
   
@@ -56,10 +61,10 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'numeroContrat': '000000001',
     'attachList': <String>[],
     'equipPicked': equipPicked.equipList,
-    'montantHT': 0,
-    'montantTTC': 0,
+    'montantHT': 0.0,
+    'montantTTC': 0.0,
     'hasAstreinte': false,
-    'montantAstreinte': 0,
+    'montantAstreinte': 0.0,
     'selectedCalendar': selectedCalendar,
   };
 

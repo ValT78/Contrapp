@@ -63,13 +63,21 @@ class MainSearchBarState extends State<MainSearchBar> {
   return Center(
       child: Container(
         width: MediaQuery.of(context).size.width * 0.8, // Occupera 80% de la largeur de l'écran
-        height: _isSearching ? min( (70 + 50 * ((_searchList.length + 1) ~/ 2 + 1)).toDouble(), MediaQuery.of(context).size.height * 0.75) : 70,
+        height: _isSearching ? min( (70 + 50 * ((_searchList.length + 1) ~/ 2 + 1)).toDouble(), MediaQuery.of(context).size.height * 0.75) : 72,
         margin: const EdgeInsets.all(20.0),
         padding: const EdgeInsets.all(10.0),
         decoration: BoxDecoration(
-                color: Colors.white,
-                // border: Border.all(color: Colors.grey),
-                borderRadius: _isSearching ? BorderRadius.circular(40) : BorderRadius.circular(100),
+          color: Colors.white,
+          // border: Border.all(color: const Color.fromARGB(255, 150, 150, 150), width: 2),
+          borderRadius: _isSearching ? BorderRadius.circular(40) : BorderRadius.circular(100),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey[300]!.withOpacity(0.5), // Increase opacity to make the shadow more visible
+              spreadRadius: 10,
+              blurRadius: 14,
+              offset: const Offset(5, -5),
+            ),
+          ],
         ),
         child: Column(
           children: <Widget>[
@@ -83,7 +91,7 @@ class MainSearchBarState extends State<MainSearchBar> {
               onSubmitted: (value) { // Si on clique sur entrée
                 if (_searchList.isNotEmpty) {
                   // Si la liste n'est pas vide, déclencher l'action de la première entrée
-                  equipPicked.add(_searchList[0]);
+                    equipPicked.add(_searchList[0].clone());
                   _searchFocusNode.unfocus();
                   _filter.clear();
                   _isLoading = false;
@@ -157,7 +165,7 @@ class MainSearchBarState extends State<MainSearchBar> {
             })
           },
           onTap: () {
-            equipPicked.add(_searchList[index]);
+            equipPicked.add(_searchList[index].clone());
             _searchFocusNode.unfocus();
             _filter.clear();
             _isLoading = false;

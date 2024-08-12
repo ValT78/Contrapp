@@ -494,9 +494,18 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 
 
 
+# Remise spécial
+
+
+
+Remise de 10% sur l'ensemble des pièces Dans le cadre de ce contrat et blalblal ballblalb blalballba balblalbalbllalb ablmalblalba
+
+
+
 
 && attachList
 ___
+
 # Tarifs et signatures
 
 

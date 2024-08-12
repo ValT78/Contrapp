@@ -1,7 +1,11 @@
+
+import 'package:contrapp/button/custom_form_field.dart';
+import 'package:contrapp/button/variable_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:contrapp/object/equip_list.dart';
 import 'package:contrapp/object/equipment.dart';
+import 'package:contrapp/main.dart';
 
 //Les équipements sélectionnés dans la page des équipements
 class SelectedEquip extends StatelessWidget {
@@ -55,6 +59,26 @@ class SelectedEquip extends StatelessWidget {
                         ),
                         child: Row(
                           children: [
+                            
+                            Container(
+                              margin: const EdgeInsets.only(left: 8),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(800),
+                                // border: Border.all(
+                                //   color: Colors.blue[900]!,
+                                //   width: 2,
+                                // ),
+                                color: Colors.green[800],
+                              ),
+                              child:
+                            IconButton(
+                              icon: const Icon(Icons.add),
+                              color: Colors.white,
+                              onPressed: () {
+                                equipPicked.add(entry.value[0].clone());
+                              },
+                            ),
+                            ),
                             Expanded(
                               child: Center(
                                 child: Row(
@@ -84,7 +108,6 @@ class SelectedEquip extends StatelessWidget {
                                 // Action pour "Ajouter des Opérations"
                               },
                               style: ElevatedButton.styleFrom(
-                                
                                 backgroundColor: Colors.white, // Couleur de fond
                                 foregroundColor:const Color.fromARGB(255, 14, 56, 119),
                                 textStyle: const TextStyle(
@@ -111,284 +134,213 @@ class SelectedEquip extends StatelessWidget {
                             ),
                           ],
                         ),
-
                       ),
                     ),
                     const Padding(
-                      padding: EdgeInsets.fromLTRB(64, 4, 8, 0),
+                      padding: EdgeInsets.fromLTRB(80, 4, 8, 0),
                       child: IntrinsicHeight(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              "Quantité",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                "Quantité",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          VerticalDivider(thickness: 1, color: Colors.black, indent: 2, endIndent: 2),
-                          Expanded(
-                            flex: 3,
-                            child: Text(
-                              "Désignation",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                            Expanded(
+                              flex: 4
+                              ,
+                              child: Text(
+                                "Désignation",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          VerticalDivider(thickness: 1, color: Colors.black, indent: 2, endIndent: 2),
-                          Expanded(
-                            child: Text(
-                              "Visite / an",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                            Expanded(
+
+                              child: Text(
+                                "Visite / an",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          VerticalDivider(thickness: 1, color: Colors.black, indent: 2, endIndent: 2),
-                          Expanded(
-                            child: Text(
-                              "Temps (minute)",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                            Expanded(
+                              child: Text(
+                                "Temps (minute)",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          VerticalDivider(thickness: 1, color: Colors.black, indent: 2, endIndent: 2),
-                          Expanded(
-                            child: Text(
-                              "Prix",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                            Expanded(
+                              child: Text(
+                                "Prix",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                          VerticalDivider(thickness: 1, color: Colors.black, indent: 2, endIndent: 2),
-                          Expanded(
-                            child: Text(
-                              "Travail",
-                              textAlign: TextAlign.center,
-                              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                            VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                            Expanded(
+                              child: Text(
+                                "Travail (heure)",
+                                textAlign: TextAlign.center,
+                                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
                             ),
-                          ),
-                        ],
-                      ),
+                          ],
+                        ),
                       ),
                     ),
-
-
-
                     // Lignes de sous-catégorie
-...entry.value.asMap().entries.map((entry) {
-  int index = entry.key;
-  var equip = entry.value;
-  return Padding(
-    padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
-    child: Container(
-      decoration: BoxDecoration(
-        color: index % 2 == 0 ? Colors.blue[200] : Colors.blue[300],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Material(
-        color: Colors.transparent, // Important pour voir l'effet d'encre
-        child: Row(
-          children: [
-            Container(
-              margin: const EdgeInsets.only(left: 8),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(800),
-                border: Border.all(
-                  color: Colors.red[800]!,
-                  width: 1,
-                ),
-                color: Colors.red[400],
-              ),
-              child:
-            IconButton(
-              icon: const Icon(Icons.delete),
-              color: Colors.black,
-              onPressed: () {
-                equipPicked.remove(equip);
-              },
-            ),
-            ),
-            Expanded(child: Container(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              margin: const EdgeInsets.fromLTRB(32,8,32,8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(87, 25, 197, 31),
-                borderRadius: BorderRadius.circular(6),
-                // border: Border.all(
-                //   color: Colors.green[900]!,
-                //   width: 2,
-                // ),
-              ),
-                child:  TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green[900]!,
-                      width: 3.0, // Augmentez cette valeur pour une barre plus haute
-
-                    ),
-                  ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                  // border: InputBorder.none,
-                ),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.green, // Set cursor color to green
-                style: const TextStyle(
-                  decorationColor: Colors.green, // Set underline color to green
-                ),
-                ),
-            ),
-              ),
-            Expanded(
-              flex: 3,
-              child: InkWell(
-                onTap: () {
-                  // Action pour le bouton Désignation
-                },
-                child: const InputDecorator(
-                  decoration: InputDecoration(
-                    suffixIcon: Icon(Icons.arrow_drop_down),
-                    border: InputBorder.none,
-                  ),
-                ),
-              ),
-            ),
-            Expanded(child: Container(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              margin: const EdgeInsets.fromLTRB(32,8,32,8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(87, 25, 197, 31),
-                borderRadius: BorderRadius.circular(6),
-                // border: Border.all(
-                //   color: Colors.green[900]!,
-                //   width: 2,
-                // ),
-              ),
-                child:  TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green[900]!,
-                      width: 3.0, // Augmentez cette valeur pour une barre plus haute
-
-                    ),
-                  ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                  // border: InputBorder.none,
-                ),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.green, // Set cursor color to green
-                style: const TextStyle(
-                  decorationColor: Colors.green, // Set underline color to green
-                ),
-                ),
-            ),
-              ),
-            Expanded(child: Container(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              margin: const EdgeInsets.fromLTRB(16,8,16,8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(87, 25, 197, 31),
-                borderRadius: BorderRadius.circular(6),
-                // border: Border.all(
-                //   color: Colors.green[900]!,
-                //   width: 2,
-                // ),
-              ),
-                child:  TextFormField(
-                decoration: InputDecoration(
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green[900]!,
-                      width: 3.0, // Augmentez cette valeur pour une barre plus haute
-
-                    ),
-                  ),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.green,
-                      width: 2.0,
-                    ),
-                  ),
-                  prefixIcon: const Icon(
-                    Icons.person, // Remplacez par l'icône de votre choix
-                    color: Colors.green,
-                  ),
-                  // border: InputBorder.none,
-                ),
-                textAlign: TextAlign.center,
-                cursorColor: Colors.green, // Set cursor color to green
-                style: const TextStyle(
-                  decorationColor: Colors.green, // Set underline color to green
-                ),
-                ),
-            ),
-              ),
-            Expanded(
-              child: Container(
-              padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-              margin: const EdgeInsets.fromLTRB(16,8,16,8),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(181, 25, 197, 31),
-                borderRadius: BorderRadius.circular(80),
-                border: Border.all(
-                  color: Colors.green[900]!,
-                  width: 2,
-                ),
-              ),
-              child: Text(
-                "Prix",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.green[900]!,
-                ),
-              ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
-                margin: const EdgeInsets.fromLTRB(16,8,16,8),
-                decoration: BoxDecoration(
-                color: const Color.fromARGB(171, 255, 168, 55),
-                borderRadius: BorderRadius.circular(80),
-                border: Border.all(
-                  color: Colors.orange[900]!,
-                  width: 2,
-                ),
-                
-              ),
-                child: Text(
-                  "Travail",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.orange[900]!,
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    ),
-  );
-}),
-
-
+                    ...entry.value.asMap().entries.map((entry) {
+                      int index = entry.key;
+                      var equip = entry.value;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          decoration: BoxDecoration(
+                            color: index % 2 == 0 ? Colors.blue[200] : Colors.blue[300],
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Material(
+                            color: Colors.transparent, // Important pour voir l'effet d'encre
+                            child: Row(
+                              children: [
+                                Container(
+                                  margin: const EdgeInsets.symmetric(horizontal: 8),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(800),
+                                    border: Border.all(
+                                      color: Colors.red[900]!,
+                                      width: 2,
+                                    ),
+                                    color: Colors.red[700],
+                                  ),
+                                  child:
+                                IconButton(
+                                  icon: const Icon(Icons.delete),
+                                  color: Colors.black,
+                                  onPressed: () {
+                                    equipPicked.remove(equip);
+                                  },
+                                ),
+                                ),
+                                const Spacer(
+                                  flex: 1,
+                                ),
+                                  CustomFormField(
+                                    color: Colors.lightBlue, 
+                                    icon: Icons.shopping_cart, 
+                                    textSize: 32, 
+                                    width: 100,
+                                    initValue: equip.number,
+                                    onChanged: (value) {
+                                      equip.number = value;
+                                      equip.hoursExpectedNotifier.value = double.parse((equip.minutesExpected * equip.number * equip.visitsPerYear / 60).toStringAsFixed(2));
+                                      equip.priceNotifier.value = (equip.hoursExpectedNotifier.value * tauxHoraireNotifier.value).toInt();
+                                      montantHT = equipPicked.equipList.fold(0, (sum, equip) => sum + equip.priceNotifier.value);
+                                      hoursOfWorkNotifier.value = double.parse(equipPicked.equipList.fold(0.0, (sum, equip) => sum + equip.hoursExpectedNotifier.value).toStringAsFixed(2));
+                                    },
+                                  ),
+                                  
+                                    const Spacer(
+                                    flex: 1,
+                                    ), 
+                                    Flexible(fit: FlexFit.loose,
+                                    flex: 12,
+                                    child:
+                                    Container(
+                                      // margin: const EdgeInsets.fromLTRB(32,8,32,8),
+                                      // padding: const EdgeInsets.only(right: 8),
+                                      decoration: BoxDecoration(
+                                        color: Colors.deepPurple.withOpacity(0.3),
+                                        borderRadius: BorderRadius.circular(6),
+                                      ),
+                                      child: InkWell(
+                                      onTap: () {
+                                        // Action pour le bouton Désignation
+                                      },
+                                      splashColor: Colors.deepPurple.withOpacity(0.2),
+                                      hoverColor: Colors.deepPurple.withOpacity(0.1),
+                                      child: InputDecorator(
+                                        decoration: InputDecoration(
+                                          suffixIcon: Icon(Icons.arrow_drop_down_circle, color: Colors.deepPurple[800], size: 32,),
+                                          border: InputBorder.none,
+                                        ),
+                                      ),
+                                      ),
+                                    ),
+                                    
+                                    ),
+                                    const Spacer(
+                                    flex: 1,  
+                                    ),
+                                    CustomFormField(
+                                      color: Colors.lightBlue, 
+                                      icon: Icons.build, 
+                                      textSize: 32, 
+                                      width: 100,
+                                      initValue: equip.visitsPerYear,
+                                      onChanged: (value) {
+                                        equip.visitsPerYear = value;
+                                        equip.hoursExpectedNotifier.value = double.parse((equip.minutesExpected * equip.number * equip.visitsPerYear / 60).toStringAsFixed(2)); 
+                                        equip.priceNotifier.value = (equip.hoursExpectedNotifier.value * tauxHoraireNotifier.value).toInt();
+                                        montantHT = equipPicked.equipList.fold(0, (sum, equip) => sum + equip.priceNotifier.value);
+                                        hoursOfWorkNotifier.value = double.parse(equipPicked.equipList.fold(0.0, (sum, equip) => sum + equip.hoursExpectedNotifier.value).toStringAsFixed(2));
+                                      },
+                                    ),
+                                  
+                                  const Spacer(flex: 1,  
+                                  ),
+                                    CustomFormField(
+                                    color: Colors.green, 
+                                    icon: Icons.timelapse, 
+                                    textSize: 32, 
+                                    // horizontalMargin: 32,
+                                    width: 150,
+                                    initValue: equip.minutesExpected,
+                                    onChanged: (value) {
+                                      equip.minutesExpected = value;
+                                      equip.hoursExpectedNotifier.value = double.parse((equip.minutesExpected * equip.number * equip.visitsPerYear / 60).toStringAsFixed(2));
+                                      equip.priceNotifier.value = (equip.hoursExpectedNotifier.value * tauxHoraireNotifier.value).toInt();
+                                      montantHT = equipPicked.equipList.fold(0, (sum, equip) => sum + equip.priceNotifier.value);
+                                      hoursOfWorkNotifier.value = double.parse(equipPicked.equipList.fold(0.0, (sum, equip) => sum + equip.hoursExpectedNotifier.value).toStringAsFixed(2));
+                                    },
+                                    ),
+                                    
+                                    const Spacer(flex: 1,
+                                    ),
+                                  VariableIndicator(
+                                    color: Colors.green, 
+                                    icon: Icons.euro, 
+                                    variableNotifier: equip.priceNotifier, 
+                                    textSize: 24, 
+                                    width: 120, 
+                                    height: 50,
+                                  ),
+                                  const Spacer(flex: 1,
+                                  ),
+                                VariableIndicator(
+                                  color: Colors.deepOrange, 
+                                  icon: Icons.work, 
+                                  variableNotifier: equip.hoursExpectedNotifier, 
+                                  textSize: 24, 
+                                  width: 120, 
+                                  height: 50,
+                                ),
+                              const Spacer(flex: 1,
+                              ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                   ],
                 ),
               );
