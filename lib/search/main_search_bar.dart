@@ -1,11 +1,15 @@
 import 'dart:math';
-
-import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
-import 'package:contrapp/main.dart';
 
 class MainSearchBar extends StatefulWidget {
-  const MainSearchBar({super.key});
+  final String label;
+  final List<String> storeList;
+
+  final void Function(String) addElement;
+  final void Function(String) createNewElement;
+  final void Function(String) deleteElement;
+
+  const MainSearchBar({super.key, required this.label, required this.storeList, required this.addElement, required this.createNewElement, required this.deleteElement});
 
   @override
   MainSearchBarState createState() => MainSearchBarState();
@@ -20,7 +24,7 @@ class MainSearchBarState extends State<MainSearchBar> {
   final TextEditingController _filter = TextEditingController();
   String _searchText = "";
 
-  List<Equipment> _searchList = []; // Liste des résultats de la recherche
+  List<String> _searchList = []; // Liste des résultats de la recherche
   bool _isLoading = false; // Attend quand on clique sur un élément avant de fermer la barre de recherche
   bool _isSearching = false; // Si la barre de recherche est active
 
@@ -53,7 +57,7 @@ class MainSearchBarState extends State<MainSearchBar> {
 
   @override
   void initState() {
-    _searchList = equipToPick.equipList;
+    _searchList = List<String>.from(widget.storeList);
     super.initState();
   }
 
@@ -84,20 +88,20 @@ class MainSearchBarState extends State<MainSearchBar> {
             TextField( // Barre de recherche
               focusNode: _searchFocusNode,
               controller: _filter,
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.search),
-                hintText: 'Ajouter un équipement...',
+              decoration: InputDecoration(
+                prefixIcon: const Icon(Icons.search),
+                hintText: widget.label,
               ),
               onSubmitted: (value) { // Si on clique sur entrée
                 if (_searchList.isNotEmpty) {
                   // Si la liste n'est pas vide, déclencher l'action de la première entrée
-                    equipPicked.add(_searchList[0].clone());
-                  _searchFocusNode.unfocus();
-                  _filter.clear();
-                  _isLoading = false;
+                  widget.addElement(_searchList[0]);
+                  _pressEnter();
                 } else if (_searchText.isNotEmpty) {
                   // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
-                  _createNewEquipment(_searchText);
+                  widget.createNewElement(_searchText);
+                  widget.storeList.add(_searchText);
+                  _pressEnter();
                 }
               },
             ),
@@ -114,10 +118,10 @@ class MainSearchBarState extends State<MainSearchBar> {
       return const SizedBox();
     }
     if (_searchText.isNotEmpty) {
-      _searchList = filterSearchResults(equipToPick.equipList, _searchText);
+      _searchList = filterSearchResults(widget.storeList, _searchText);
     }
     else {
-      _searchList = equipToPick.equipList;
+      _searchList = widget.storeList;
     }
 
     return Expanded(
@@ -137,7 +141,9 @@ class MainSearchBarState extends State<MainSearchBar> {
             })
           },
           onTap: () {
-            _createNewEquipment(_searchText);
+            widget.createNewElement(_searchText);
+            widget.storeList.add(_searchText);
+            _pressEnter();
           },
           child: Container(
             decoration: BoxDecoration(
@@ -165,10 +171,8 @@ class MainSearchBarState extends State<MainSearchBar> {
             })
           },
           onTap: () {
-            equipPicked.add(_searchList[index].clone());
-            _searchFocusNode.unfocus();
-            _filter.clear();
-            _isLoading = false;
+            widget.addElement(_searchList[index]);
+            _pressEnter();
           },
           child: SizedBox(
             height: 100, // Définissez la hauteur souhaitée ici
@@ -177,7 +181,7 @@ class MainSearchBarState extends State<MainSearchBar> {
               children: [
                 Expanded(
                   child: Center(
-                    child: Text(_searchList[index].equipName, style: const TextStyle(fontSize: 20)),
+                    child: Text(_searchList[index], style: const TextStyle(fontSize: 20)),
                   ),
                 ),
                 Center(
@@ -196,6 +200,7 @@ class MainSearchBarState extends State<MainSearchBar> {
                               TextButton(
                                 child: const Text("Non"),
                                 onPressed: () {
+                                  widget.deleteElement(_searchList[index]);
                                   Navigator.of(context).pop(false);
                                 },
                               ),
@@ -212,7 +217,8 @@ class MainSearchBarState extends State<MainSearchBar> {
 
                       if (confirm == true) {
                         setState(() {
-                          equipToPick.remove(_searchList[index]);
+                          widget.deleteElement(_searchList[index]);
+                          widget.storeList.remove(_searchList[index]);
                         });
                       }
                     },
@@ -232,10 +238,7 @@ class MainSearchBarState extends State<MainSearchBar> {
 
   }
 
-  void _createNewEquipment(String equipName) {
-    Equipment newEquip = Equipment(equipName: _searchText);
-    equipPicked.add(newEquip);
-    equipToPick.add(newEquip);
+  void _pressEnter() {
     _searchFocusNode.unfocus();
     _filter.clear();
     _isLoading = false;
@@ -268,8 +271,8 @@ class MainSearchBarState extends State<MainSearchBar> {
   }
 
   // Filtrer les résultats de la recherche
-  List<Equipment> filterSearchResults(List<Equipment> searchList, String query) {
-    return searchList.where((equip) => containsAllCharacters(equip.equipName, query)).toList();
+  List<String> filterSearchResults(List<String> searchList, String query) {
+    return searchList.where((entry) => containsAllCharacters(entry, query)).toList();
   }
 
 }

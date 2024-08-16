@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 class SuperTitle extends StatelessWidget {
   final String title;
   final MaterialColor color;
-  const SuperTitle({super.key, required this.title, required this.color});
+  final double fontSize;
+  const SuperTitle({super.key, required this.title, required this.color, this.fontSize = 50});
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class SuperTitle extends StatelessWidget {
       title,
       style: TextStyle(
         color: color[900],
-        fontSize: 50.0,
+        fontSize: fontSize * MediaQuery.of(context).size.width / 1920,
         fontWeight: FontWeight.bold,
         letterSpacing: 2.0,
         shadows: const [

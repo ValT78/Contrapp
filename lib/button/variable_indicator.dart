@@ -71,7 +71,7 @@ class VariableIndicatorState<T> extends State<VariableIndicator<T>> {
 
   @override
   void dispose() {
-    widget.variableNotifier.dispose();
     super.dispose();
+    // widget.variableNotifier.dispose();
   }
 }

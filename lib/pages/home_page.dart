@@ -22,7 +22,7 @@ class HomePage extends StatelessWidget {
           width: 1000,
           child: Row(
             children: <Widget>[              
-                TravelButton(color: Colors.amber, icon: Icons.file_upload, label: 'Charger un contrat existant', actionFunction: charger, link: '/common', height: 500, roundedBorder: 30, textSize: 50),            
+                TravelButton(color: Colors.amber, icon: Icons.file_upload, label: 'Charger un contrat existant', actionFunction: loadContractData, link: '/common', height: 500, roundedBorder: 30, textSize: 50),            
                 const TravelButton(color: Colors.green, icon: Icons.create, label: 'Créer un nouveau contrat', link: '/common', height: 500, roundedBorder: 30, textSize: 50),
             ],
           ),
@@ -32,7 +32,7 @@ class HomePage extends StatelessWidget {
   }
 
   // Fonction pour charger les données
-Future<void> charger() async {
+Future<void> loadContractData() async {
   FilePickerResult? result = await FilePicker.platform.pickFiles(
     type: FileType.custom,
     allowedExtensions: ['cntrt'],

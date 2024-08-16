@@ -105,16 +105,16 @@ class FormFieldState<T> extends State<CustomFormField<T>> {
   }
 
   void _whenFieldChanged(String value) {
-  if (T == int) {
-    int? parsedValue = int.tryParse(value);
-    widget.onChanged((parsedValue ?? 0) as T);
-  } else if (T == double) {
-    double? parsedValue = double.tryParse(value);
-    widget.onChanged((parsedValue ?? 0.0) as T);
-  } else {
-    widget.onChanged(value as T);
-  }
-}
-
-    
+    setState(() {
+      if (T == int) {
+        int? parsedValue = int.tryParse(value);
+        widget.onChanged((parsedValue ?? 0) as T);
+      } else if (T == double) {
+        double? parsedValue = double.tryParse(value);
+        widget.onChanged((parsedValue ?? 0.0) as T);
+      } else {
+        widget.onChanged(value as T);
+      }
+    });
+  } 
 }

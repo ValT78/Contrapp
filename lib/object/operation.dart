@@ -1,9 +1,11 @@
 class Operation extends Object {
-  final String operationName;
-  final int visits;
-  final bool defaultSelected;
+  String operationName;
+  int visits;
+  bool defaultSelected;
+  bool isSelected = false;
 
-  Operation(this.operationName, {this.visits = 1, this.defaultSelected = false});
+  Operation(
+     {required this.operationName, this.visits = 1, this.defaultSelected = false});
 
   Map<String, dynamic> toJson() {
     return {
@@ -15,7 +17,7 @@ class Operation extends Object {
 
   factory Operation.fromJson(Map<String, dynamic> json) {
     return Operation(
-      json['operationName'],
+      operationName: json['operationName'],
       visits: json['visits'],
       defaultSelected: json['defaultSelected'],
     );

@@ -2,6 +2,8 @@ import 'package:contrapp/button/custom_form_field.dart';
 import 'package:contrapp/button/travel_button.dart';
 import 'package:contrapp/button/variable_indicator.dart';
 import 'package:contrapp/main.dart';
+import 'package:contrapp/object/equipment.dart';
+import 'package:contrapp/object/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/search/main_search_bar.dart';
@@ -38,7 +40,26 @@ class EquipPage extends StatelessWidget {
               ],
             ),
           ),
-            const MainSearchBar(), 
+            MainSearchBar(
+              label:'Ajouter un équipement...',
+              storeList: equipToPick.equipList.map((e) => e.equipName).toList(),
+              addElement: (String equipName) {
+                if (equipPicked.equipList.any((element) => element.equipName == equipName)) {
+                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName);
+                  equipPicked.addMachine(existingEquip, Machine());
+                } else {
+                  equipPicked.addEquipment(equipToPick.equipList.firstWhere((element) => element.equipName == equipName));
+                }
+              },
+              createNewElement: (String equipName) {
+                equipToPick.addEquipment(Equipment.oneValue(equipName: equipName));
+                equipPicked.addEquipment(Equipment.oneValue(equipName: equipName));
+              },
+              deleteElement: (String equipName) {
+                equipToPick.removeEquipmentName(equipName);
+                equipPicked.removeEquipmentName(equipName);
+              },
+            ), 
           ],
          ),
          SizedBox(
@@ -62,9 +83,17 @@ class EquipPage extends StatelessWidget {
                   onChanged: (double value) {
                     tauxHoraireNotifier.value = value;
                     for (var equip in equipPicked.equipList) {
-                      equip.priceNotifier.value = (value * equip.hoursExpectedNotifier.value).toInt();
+                      for (var machine in equip.machines) {
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).toInt();
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).toInt();
+                      }
                     }
-                    montantHT = equipPicked.equipList.fold(0, (sum, equip) => sum + equip.priceNotifier.value);
+                    montantHT = 0;
+                    for (var equip in equipPicked.equipList) {
+                      for (var machine in equip.machines) {
+                        montantHT += machine.priceNotifier.value;
+                      }
+                    }
                   }, 
                   initValue: tauxHoraireNotifier.value, 
                   label: "Taux Horaire",
