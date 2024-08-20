@@ -1,15 +1,17 @@
+import 'package:flutter/widgets.dart';
+
 class Operation extends Object {
-  String operationName;
+  ValueNotifier<String> operationNameNotifier;
   int visits;
   bool defaultSelected;
   bool isSelected = false;
 
   Operation(
-     {required this.operationName, this.visits = 1, this.defaultSelected = false});
+     {required operationName, this.visits = 1, this.defaultSelected = false}): operationNameNotifier = ValueNotifier<String>(operationName);
 
   Map<String, dynamic> toJson() {
     return {
-      'operationName': operationName,
+      'operationName': operationNameNotifier.value,
       'visits': visits,
       'defaultSelected': defaultSelected,
     };

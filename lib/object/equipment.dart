@@ -39,8 +39,11 @@ class Equipment extends Object {
     }
 
     Equipment clone() {
+      
       return Equipment(
         equipName: equipName,
+        operations: operationsNotifier.value.where(((element) => element.defaultSelected)).toList(),
+        machines: machines,
       );
     }
 

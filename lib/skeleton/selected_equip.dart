@@ -349,7 +349,7 @@ class SelectedEquip extends StatelessWidget {
                                   const Spacer(flex: 1,  
                                   ),
                                     CustomFormField(
-                                    color: Colors.green, 
+                                    color: Colors.orange, 
                                     icon: Icons.timelapse, 
                                     textSize: 32, 
                                     // horizontalMargin: 32,

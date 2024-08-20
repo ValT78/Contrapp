@@ -98,6 +98,14 @@ class EquipList extends ChangeNotifier {
       
   }
 
+  void changedDefaultSelected(String equipName, Operation operation, bool selected) {
+    _equipList.firstWhere((element) => element.equipName == equipName).operationsNotifier.value.firstWhere((element) => element.operationNameNotifier.value == operation.operationNameNotifier.value).defaultSelected = selected;
+    notifyListeners();
+    if (isModifyingApp) {
+      modifyApp();
+    }
+  }
+
   // Enregistre les modifications qui ont été effectuées dans la page des équipements de manière définitive
   Future<void> modifyApp() async {
     Map<String, dynamic> data = {

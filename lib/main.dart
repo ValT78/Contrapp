@@ -25,6 +25,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 
   // Montant HT (et TTC) du contrat
   final ValueNotifier<int> montantHTNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> montantTTCNotifier = ValueNotifier<int>(0);
 
   double get montantHT {
     return variablesContrat['montantHT'];
@@ -34,6 +35,7 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     variablesContrat['montantHT'] = value;
     montantHTNotifier.value = value.toInt();
     variablesContrat['montantTTC'] = value * 1.2;
+    montantTTCNotifier.value = (value * 1.2).toInt();
   }
   
   EquipList equipToPick = EquipList(isModifyingApp: true); // Votre liste d'équipements

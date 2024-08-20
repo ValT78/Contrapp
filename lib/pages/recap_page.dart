@@ -1,3 +1,6 @@
+import 'package:contrapp/button/custom_form_field.dart';
+import 'package:contrapp/button/variable_indicator.dart';
+import 'package:contrapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/button/travel_button.dart';
@@ -16,8 +19,8 @@ class RecapPageState extends State<RecapPage> {
  
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100),
       ),      
@@ -25,7 +28,61 @@ class RecapPageState extends State<RecapPage> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(
+              Row(
+                children: [
+                  CustomFormField(
+                  color: Colors.green, 
+                  icon: Icons.access_time, 
+                  textSize: 32, 
+                  width: 150, 
+                  onChanged: (double value) {
+                    tauxHoraireNotifier.value = value;
+                    for (var equip in equipPicked.equipList) {
+                      for (var machine in equip.machines) {
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).toInt();
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).toInt();
+                      }
+                    }
+                    montantHT = 0;
+                    for (var equip in equipPicked.equipList) {
+                      for (var machine in equip.machines) {
+                        montantHT += machine.priceNotifier.value;
+                      }
+                    }
+                  }, 
+                  initValue: tauxHoraireNotifier.value, 
+                  label: "Taux Horaire",
+                ),
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                  child: VariableIndicator(
+                    color: Colors.green, 
+                    icon: Icons.euro, 
+                    variableNotifier: montantHTNotifier, 
+                    textSize: 32, 
+                    height: 50, 
+                    width: 160,
+                  ),
+                ),
+                VariableIndicator(
+                    color: Colors.green, 
+                    icon: Icons.euro, 
+                    variableNotifier: montantTTCNotifier, 
+                    textSize: 32, 
+                    height: 50, 
+                    width: 160,
+                  ),
+                VariableIndicator(
+                  color: Colors.deepOrange, 
+                  icon: Icons.timelapse, 
+                  variableNotifier: hoursOfWorkNotifier, 
+                  textSize: 32, 
+                  height: 50, 
+                  width: 170,
+                ),
+                ],
+              ),
+              const SizedBox(
                 width: 1000,
                 child: Row(
                   children: <Widget>[              

@@ -49,7 +49,7 @@ class OperationPage extends StatelessWidget {
           ),
             MainSearchBar(
               label: 'Choisissez une Opération...',
-              storeList: equipToPick.getOperations(equipment.equipName).value.map((e) => e.operationName).toList(),
+              storeList: equipToPick.getOperations(equipment.equipName).value.map((e) => e.operationNameNotifier.value).toList(),
               addElement: (String operationName) {
                 equipPicked.addOperationName(equipment.equipName, operationName);
               },
@@ -58,8 +58,8 @@ class OperationPage extends StatelessWidget {
                 equipToPick.addOperation(equipment.equipName, Operation(operationName: operationName));
               },
               deleteElement: (String operationName) {
-                equipToPick.removeOperation(equipment.equipName, equipment.operationsNotifier.value.firstWhere((element) => element.operationName == operationName));
-                equipPicked.removeOperation(equipment.equipName, equipment.operationsNotifier.value.firstWhere((element) => element.operationName == operationName));
+                equipToPick.removeOperation(equipment.equipName, equipment.operationsNotifier.value.firstWhere((element) => element.operationNameNotifier.value == operationName));
+                equipPicked.removeOperation(equipment.equipName, equipment.operationsNotifier.value.firstWhere((element) => element.operationNameNotifier.value == operationName));
               },
               ), 
           ],
