@@ -9,6 +9,7 @@ import 'dart:convert';
 
 import 'package:contrapp/pdf/calendar_object.dart';
 import 'package:contrapp/pdf/operation_object.dart';
+import 'package:contrapp/pdf/equipment_object.dart';
 
 final titleCadre = pw.MemoryImage(
     File('assets/titleCadre.png').readAsBytesSync(),
@@ -296,11 +297,15 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
     }
   }
   else if(element.contains('calendar')) {
-    return buildCalendar(variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>);
+    return buildCalendar(variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>, classicStyle, boldStyle);
   }
 
   else if(element.contains('operation')) {
-    return buildOperation(variablesContrat['equipPicked'] as List<Equipment>);
+    return buildOperation(variablesContrat['equipPicked'] as List<Equipment>, classicStyle, boldStyle);
+  }
+
+  else if(element.contains('equipment')) {
+    return buildEquipment(variablesContrat['equipPicked'] as List<Equipment>, classicStyle, boldStyle);
   }
 
   return [pw.Container()];

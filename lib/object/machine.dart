@@ -15,7 +15,7 @@ class Machine extends Object {
     String information = "",
     String marque = "",
     this.visitsPerYear = 1, 
-    this.minutesExpected = 120, 
+    this.minutesExpected = 0, 
     this.number = 1,
   }): 
           marque = ValueNotifier<String>(marque),
