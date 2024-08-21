@@ -17,12 +17,12 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
   late FocusNode textFieldFocusNode;
   late TextEditingController textFieldController;
 
-  bool _isClicked = false;
+  bool _isClicked = variablesContrat['hasAstreinte'];
 
    @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
+      _controller = AnimationController(
       duration: const Duration(milliseconds: 500),
       vsync: this,
     );
@@ -38,7 +38,9 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
     textFieldFocusNode = FocusNode();
     textFieldController = TextEditingController(text: variablesContrat['montantAstreinte'].toString());
 
-
+    if(_isClicked) {
+      _controller.forward();
+    }
   }
 
   @override

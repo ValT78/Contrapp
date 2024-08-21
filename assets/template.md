@@ -71,7 +71,7 @@ Concernant
 ___
 # Matériel concerné
 
-== Equipement
+&& equipment
 
 # Descriptif des opérations de maintenance
 
@@ -90,7 +90,7 @@ Les prestations générales de révision de maintenance consistent à effectuer 
 -	Etablissement du certificat d’étanchéité
 
 
-==MAINTENANCE
+&& operation
 
 Dans le cadre de l’intervention d’entretien si une défectuosité est repérée par le technicien des Ets PICQUETTE et nécessite le remplacement d’une pièce une offre sera transmise au client pour approbation. (Exemple : réparations de fuites, recharge en gaz, vidange huile, pièce de rechange)
 

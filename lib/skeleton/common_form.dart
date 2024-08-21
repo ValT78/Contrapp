@@ -155,7 +155,7 @@ class CommonFormState extends State<CommonForm> {
                         label: "Capital", 
                         initValue: variablesContrat['capital'],
                         onChanged: (value) {
-                          variablesContrat['capital'];
+                          variablesContrat['capital'] = value;
                         },
                       ),
                     ),

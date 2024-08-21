@@ -44,7 +44,6 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
   // Fonction pour sauvegarder les données
   Future<void> sauvegarder() async {
     
-
     String jsonData = jsonEncode(variablesContrat);
 
     String? filePath  = await FilePicker.platform.saveFile(

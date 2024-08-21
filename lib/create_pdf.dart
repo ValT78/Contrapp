@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:contrapp/object/equipment.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/services.dart' show rootBundle;
@@ -6,7 +7,8 @@ import 'package:markdown/markdown.dart' as md;
 import 'package:contrapp/main.dart';
 import 'dart:convert';
 
-import 'package:contrapp/pdf/calendar_object.dart'; // Importez votre widget personnalisé
+import 'package:contrapp/pdf/calendar_object.dart';
+import 'package:contrapp/pdf/operation_object.dart';
 
 final titleCadre = pw.MemoryImage(
     File('assets/titleCadre.png').readAsBytesSync(),
@@ -294,7 +296,11 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
     }
   }
   else if(element.contains('calendar')) {
-    return buildCalendar(variablesContrat['selectedCalendar']);
+    return buildCalendar(variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>);
+  }
+
+  else if(element.contains('operation')) {
+    return buildOperation(variablesContrat['equipPicked'] as List<Equipment>);
   }
 
   return [pw.Container()];

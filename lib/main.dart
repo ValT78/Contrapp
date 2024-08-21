@@ -41,7 +41,11 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
   EquipList equipToPick = EquipList(isModifyingApp: true); // Votre liste d'équipements
   EquipList equipPicked = EquipList(); // Votre liste d'équipements sélectionnés
 
-  Map<String, Map<String, bool>> selectedCalendar = {};
+  Map<String, Map<String, bool>> get selectedCalendar => variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>;
+
+  set selectedCalendar(Map<String, Map<String, bool>> calendar) {
+    variablesContrat['selectedCalendar'] = calendar;
+  }
 
 
   // Liste des photos à attacher
@@ -57,17 +61,17 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'adresse1': '',
     'adresse2': '',
     'matricule': '',
-    'capital': 0,
+    'capital': '',
     'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
     'versionContrat': 1,
     'numeroContrat': '000000001',
     'attachList': <String>[],
-    'equipPicked': equipPicked.equipList,
+    'equipPicked': <Equipment>[],
     'montantHT': 0.0,
     'montantTTC': 0.0,
     'hasAstreinte': false,
     'montantAstreinte': 0.0,
-    'selectedCalendar': selectedCalendar,
+    'selectedCalendar': Map<String, Map<String, bool>>,
   };
 
   

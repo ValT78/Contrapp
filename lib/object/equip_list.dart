@@ -1,3 +1,4 @@
+import 'package:contrapp/main.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:contrapp/object/operation.dart';
@@ -13,8 +14,16 @@ class EquipList extends ChangeNotifier {
 
   List<Equipment> get equipList => _equipList;
 
+  set equipList(List<Equipment> equipList) {
+    _equipList.clear();
+    _equipList.addAll(equipList);
+    variablesContrat['equipPicked'] = equipList;
+    notifyListeners();
+  }
+
   void addEquipment(Equipment equip) {
     _equipList.add(equip);
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -23,6 +32,7 @@ class EquipList extends ChangeNotifier {
 
   void removeEquipmentName(String equipName) {
     _equipList.removeWhere((element) => element.equipName == equipName);
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -31,6 +41,7 @@ class EquipList extends ChangeNotifier {
 
   void removeEquipment(Equipment equip) {
     _equipList.remove(equip);
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -39,6 +50,7 @@ class EquipList extends ChangeNotifier {
 
   void removeMachineName(String equipName) {
     _equipList.firstWhere((element) => element.equipName == equipName).machines.removeLast();
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -47,6 +59,7 @@ class EquipList extends ChangeNotifier {
 
   void addMachine(Equipment equip, Machine machine) {
     equip.addMachine(machine);
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -55,6 +68,7 @@ class EquipList extends ChangeNotifier {
 
   void addMachineName(Equipment equip, String machineName) {
     equip.addMachine(Machine(marque: machineName));
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -63,6 +77,7 @@ class EquipList extends ChangeNotifier {
 
   void removeMachine(Equipment equip, Machine machine) {
     equip.machines.remove(machine);
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -76,6 +91,7 @@ class EquipList extends ChangeNotifier {
   void addOperation(String equipName, Operation operation) {
     _equipList.firstWhere((element) => element.equipName == equipName).addOperation(operation);
     notifyListeners();
+    variablesContrat['equipPicked'] = equipList;
     if (isModifyingApp) {
       modifyApp();
     }
@@ -84,6 +100,7 @@ class EquipList extends ChangeNotifier {
   void addOperationName(String equipName, String operationName) {
     _equipList.firstWhere((element) => element.equipName == equipName).addOperationName(operationName);
     notifyListeners();
+    variablesContrat['equipPicked'] = equipList;
     if (isModifyingApp) {
       modifyApp();
     }
@@ -91,6 +108,7 @@ class EquipList extends ChangeNotifier {
 
   void removeOperation(String equipName, Operation operation) {
     _equipList.firstWhere((element) => element.equipName == equipName).removeOperation(operation);
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
@@ -100,6 +118,7 @@ class EquipList extends ChangeNotifier {
 
   void changedDefaultSelected(String equipName, Operation operation, bool selected) {
     _equipList.firstWhere((element) => element.equipName == equipName).operationsNotifier.value.firstWhere((element) => element.operationNameNotifier.value == operation.operationNameNotifier.value).defaultSelected = selected;
+    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();

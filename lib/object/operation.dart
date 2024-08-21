@@ -4,7 +4,6 @@ class Operation extends Object {
   ValueNotifier<String> operationNameNotifier;
   int visits;
   bool defaultSelected;
-  bool isSelected = false;
 
   Operation(
      {required operationName, this.visits = 1, this.defaultSelected = false}): operationNameNotifier = ValueNotifier<String>(operationName);
