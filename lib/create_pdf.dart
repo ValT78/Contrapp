@@ -30,7 +30,7 @@ final footerImage = pw.MemoryImage(
 
 
 void createPdfFromMarkdown() async {
-  variablesContrat['numeroContrat'] = generateNumeroContrat(variablesContrat['date'], variablesContrat['versionContrat']);
+  variablesContrat['numeroContrat'] = generateNumeroContrat();
   
   final pdf = pw.Document();
 
@@ -168,15 +168,10 @@ void createPdfFromMarkdown() async {
     ),
   );
 
-  await File('Contrat/monFichier.pdf').writeAsBytes(await pdf.save());
+  await File('Contrat/${generateNomFichier()}.pdf').writeAsBytes(await pdf.save());
 }
 
-String generateNumeroContrat(String date, int versionContrat) {
-  final elements = date.split('/');
-  String version = versionContrat.toString().padLeft(3, '0');
-  
-  return '${elements[2].padLeft(2)}${elements[1]}${elements[0]}$version';
-}
+
 
 List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle) {
   return markdownParagraph.expand<pw.Widget>((element) {
@@ -201,6 +196,9 @@ String _insertInformation(String text) {
 
     final key = m.group(1);
     if(variablesContrat.containsKey(key)) {
+      if(variablesContrat[key] is double) {
+        return variablesContrat[key].toInt().toString();
+      }
       return variablesContrat[key].toString();
     }
     // Récupérer l'instance de la classe MesVariablesGlobales

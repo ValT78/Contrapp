@@ -1,4 +1,6 @@
 import 'package:contrapp/button/custom_form_field.dart';
+import 'package:contrapp/button/number_Indicator.dart';
+import 'package:contrapp/button/super_title.dart';
 import 'package:contrapp/button/variable_indicator.dart';
 import 'package:contrapp/main.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,26 @@ class RecapPage extends StatefulWidget {
 }
 
 class RecapPageState extends State<RecapPage> {
+
+  int _getNumberOfMachines() {
+    int count = 0;
+    for (var equip in equipPicked.equipList) {
+      count += equip.machines.length;
+    }
+    return count;
+  }
+
+  int _getNumberOfOperations() {
+    int count = 0;
+    for (var equip in equipPicked.equipList) {
+      count += equip.operationsNotifier.value.length;
+    }
+    return count;
+  }
+
+  int _getNumberOfAttachments() {
+    return attachList.length;
+  }
  
   @override
   Widget build(BuildContext context) {
@@ -25,16 +47,75 @@ class RecapPageState extends State<RecapPage> {
         child: CustomNavbar(height: 100),
       ),      
       body:  Center(
-        child: SingleChildScrollView(
+            child: SizedBox(
+        width: 1200, 
+        height: MediaQuery.of(context).size.height-100, 
           child: Column(
             children: [
+              const Spacer(),
+              SuperTitle(title: variablesContrat['entreprise'], color: Colors.blue, fontSize: 70,),
+              const Spacer(),
               Row(
                 children: [
+                  NumberIndicator(text: "Équipements", number: _getNumberOfMachines(), width: 300),
+                  const Spacer(),
+                  NumberIndicator(text: "Opérations", number: _getNumberOfOperations(), width: 300),
+                  const Spacer(),
+                  NumberIndicator(text: "Pièces-Jointes", number: _getNumberOfAttachments(), width: 300),
+                ],
+              ),
+              const Spacer(),
+              Column(
+                  children: [
+                    const Padding(padding: EdgeInsets.fromLTRB(40, 5, 50, 5),
+                    child: IntrinsicHeight(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Text(
+                        "Taux Horaire",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                    Expanded(
+                      flex: 1,
+                      child: Text(
+                        "Prix HT",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                    Expanded(
+                      child: Text(
+                        "Prix TTC",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                    Expanded(
+                      child: Text(
+                        "Heure de Travail",
+                        textAlign: TextAlign.center,
+                        style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            const SizedBox(height: 20),
+                Row(
+                children: [
+                  const Spacer(),
                   CustomFormField(
                   color: Colors.green, 
                   icon: Icons.access_time, 
-                  textSize: 32, 
-                  width: 150, 
+                  textSize: 40, 
+                  width: 220, 
                   onChanged: (double value) {
                     tauxHoraireNotifier.value = value;
                     for (var equip in equipPicked.equipList) {
@@ -53,35 +134,42 @@ class RecapPageState extends State<RecapPage> {
                   initValue: tauxHoraireNotifier.value, 
                   label: "Taux Horaire",
                 ),
-                Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 10),
-                  child: VariableIndicator(
+                const Spacer(),
+                VariableIndicator(
                     color: Colors.green, 
                     icon: Icons.euro, 
                     variableNotifier: montantHTNotifier, 
-                    textSize: 32, 
-                    height: 50, 
-                    width: 160,
+                    textSize: 45, 
+                    height: 70, 
+                    width: 220,
                   ),
-                ),
+                const Spacer(),
+
                 VariableIndicator(
                     color: Colors.green, 
                     icon: Icons.euro, 
                     variableNotifier: montantTTCNotifier, 
-                    textSize: 32, 
-                    height: 50, 
-                    width: 160,
+                    textSize: 45, 
+                    height: 70, 
+                    width: 220,
                   ),
+                const Spacer(),
                 VariableIndicator(
                   color: Colors.deepOrange, 
                   icon: Icons.timelapse, 
                   variableNotifier: hoursOfWorkNotifier, 
-                  textSize: 32, 
-                  height: 50, 
-                  width: 170,
+                  textSize: 45, 
+                  height: 70, 
+                  width: 220,
                 ),
+                const Spacer(),
                 ],
               ),
+              
+              const SizedBox(height: 20),
+              ],
+              ),
+              const Spacer(),
               const SizedBox(
                 width: 1000,
                 child: Row(
@@ -91,10 +179,11 @@ class RecapPageState extends State<RecapPage> {
                   ],
                 ),
               ),
+              const Spacer(),
             ],
           ),
         ),
-      )
+      ),
     );
   }
 }

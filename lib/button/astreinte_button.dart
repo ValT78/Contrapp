@@ -1,3 +1,4 @@
+import 'package:contrapp/button/custom_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:contrapp/main.dart';
@@ -14,7 +15,7 @@ class AstreinteButton extends StatefulWidget {
 class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
-  late FocusNode textFieldFocusNode;
+  late FocusNode _textFieldFocusNode;
   late TextEditingController textFieldController;
 
   bool _isClicked = variablesContrat['hasAstreinte'];
@@ -35,8 +36,16 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
       curve: Curves.easeInOut,
     ));
 
-    textFieldFocusNode = FocusNode();
+    _textFieldFocusNode = FocusNode();
     textFieldController = TextEditingController(text: variablesContrat['montantAstreinte'].toString());
+    _textFieldFocusNode.addListener(() {
+    if (_textFieldFocusNode.hasFocus) {
+      textFieldController.selection = TextSelection(
+        baseOffset: 0,
+        extentOffset: textFieldController.text.length,
+      );
+    }
+  });
 
     if(_isClicked) {
       _controller.forward();
@@ -54,47 +63,20 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
             AnimatedPositioned(
               duration: const Duration(milliseconds: 400),
               left: _isClicked ? 230 : 0,
-              child: Container(
-                height: 100,
-                width: 200,
-                padding: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: Colors.green[50], // Changer la couleur de fond en magenta
-                  borderRadius: BorderRadius.circular(10), // Ajouter des bords arrondis
-                ),
-                child: TextFormField(
-                  controller: textFieldController,
-                  focusNode: textFieldFocusNode,
-                  keyboardType: TextInputType.number,
-                  inputFormatters: <TextInputFormatter>[
-                    FilteringTextInputFormatter.digitsOnly
-                  ],
-                  maxLines: 1,
-                  decoration: InputDecoration(
-                    labelText: 'Montant',
-                    labelStyle: TextStyle(
-                      fontSize: 20.0, // Augmenter la taille du label
-                      fontWeight: FontWeight.bold, // Mettre le label en gras
-                      color: Colors.green[600], // Changer la couleur du label en magenta
-                    ),
-                    prefixIcon: Icon(Icons.euro, color: Colors.green[600], size: 60.0), // Changer la couleur et la taille de l'icône en magenta
-                  ),
-                  style: TextStyle(
-                    fontSize: 30.0, // Augmenter la taille du texte entré
-                    color: Colors.green[800], // Changer la couleur du texte entré en magenta
-                    fontWeight : FontWeight.bold
-                  ),
-                   onChanged: (value) {
+              child: CustomFormField(
+                  color: Colors.green,
+                  icon: Icons.euro,
+                  textSize: 57.0,
+                  onChanged: (value) {
                     if (value.isNotEmpty && int.tryParse(value) != null) {
                       variablesContrat['montantAstreinte'] = int.parse(value);
                     }
                   },
-                  onFieldSubmitted: (term){
-                    // Lorsque vous appuyez sur Entrée, il passe au champ suivant
-                    textFieldFocusNode.unfocus();
-                  },
-                ),
-              ),
+                  height: 100,
+                  width: 200,
+                initValue: variablesContrat['montantAstreinte'],
+                label: 'Montant',
+                )
             ),
             SlideTransition(
               position: _offsetAnimation,
@@ -105,10 +87,10 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
                     variablesContrat['hasAstreinte'] = _isClicked;
                     if (_isClicked) {
                       _controller.forward();
-                      textFieldFocusNode.requestFocus();
+                      _textFieldFocusNode.requestFocus();
                     } else {
                       _controller.reverse();
-                      textFieldFocusNode.unfocus();
+                      _textFieldFocusNode.unfocus();
                     }
                   });
                 },

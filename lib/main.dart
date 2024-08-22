@@ -64,14 +64,13 @@ final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
     'capital': '',
     'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
     'versionContrat': 1,
-    'numeroContrat': '000000001',
     'attachList': <String>[],
     'equipPicked': <Equipment>[],
     'montantHT': 0.0,
     'montantTTC': 0.0,
     'hasAstreinte': false,
     'montantAstreinte': 0.0,
-    'selectedCalendar': Map<String, Map<String, bool>>,
+    'selectedCalendar': <String, Map<String, bool>>{},
   };
 
   
@@ -103,6 +102,17 @@ Future<void> _loadAppData() async {
       }
 
     }
+  }
+
+  String generateNumeroContrat() {
+  final elements = variablesContrat['date'].split('/');
+  String version = variablesContrat['versionContrat'].toString().padLeft(3, '0');
+  
+  return '${elements[2].padLeft(2)}${elements[1]}${elements[0]}$version';
+}
+
+  String generateNomFichier() {
+    return '${variablesContrat['entreprise']}-${generateNumeroContrat()}';
   }
 
 

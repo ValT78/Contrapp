@@ -50,6 +50,7 @@ Future<void> loadContractData() async {
     attachList = List<String>.from(data['attachList']);
     equipPicked.equipList = (List<Equipment>.from(data['equipPicked'].map((e) => Equipment.fromJson(e))));
     selectedCalendar = Map<String, Map<String, bool>>.from(data['selectedCalendar'].map((key, value) => MapEntry(key, Map<String, bool>.from(value))));
+    variablesContrat['versionContrat']++;
   }
 }
 

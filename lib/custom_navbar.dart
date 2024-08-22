@@ -50,6 +50,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
       dialogTitle: 'Sauvegarder le contrat',
       type: FileType.custom,
       allowedExtensions: ['cntrt'],
+      fileName: '${generateNomFichier()}.cntrt', // Set the suggested file name here
     );
   
 

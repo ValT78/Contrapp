@@ -192,7 +192,7 @@ class CommonFormState extends State<CommonForm> {
                         label: "Version du contrat", 
                         initValue: variablesContrat['versionContrat'],
                         onChanged: (value) {
-                          variablesContrat['versionContrat'] = int.parse(value);
+                          variablesContrat['versionContrat'] = value;
                         },
                       ),
                     ),
