@@ -1,9 +1,9 @@
-import 'package:contrapp/button/super_title.dart';
-import 'package:contrapp/button/travel_button.dart';
+import 'package:contrapp/common_tiles/super_title.dart';
+import 'package:contrapp/common_tiles/bouncy_action_button.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/operation.dart';
-import 'package:contrapp/search/main_search_bar.dart';
+import 'package:contrapp/skeleton/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/main.dart';
 import 'package:contrapp/skeleton/selected_operation.dart';
@@ -40,7 +40,7 @@ class OperationPage extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 10),
                     child: SelectedOperation(
                       operationsNotifier: equipPicked.getOperations(equipment.equipName), 
-                      equipment: equipment
+                      equipment: equipment,
                     ),
                   ),
                 ),

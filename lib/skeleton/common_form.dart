@@ -1,8 +1,8 @@
-import 'package:contrapp/button/custom_form_field.dart';
+import 'package:contrapp/common_tiles/custom_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart'; // Importez le package intl
 import 'package:contrapp/main.dart'; // Importez le fichier main.dart
-import 'package:contrapp/button/super_title.dart'; // Importez le fichier super_title.dart
+import 'package:contrapp/common_tiles/super_title.dart'; // Importez le fichier super_title.dart
 
 class CommonForm extends StatefulWidget {
   const CommonForm({super.key});

@@ -1,12 +1,12 @@
-import 'package:contrapp/button/custom_form_field.dart';
-import 'package:contrapp/button/travel_button.dart';
-import 'package:contrapp/button/variable_indicator.dart';
+import 'package:contrapp/common_tiles/custom_form_field.dart';
+import 'package:contrapp/common_tiles/bouncy_action_button.dart';
+import 'package:contrapp/common_tiles/variable_indicator.dart';
 import 'package:contrapp/main.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
-import 'package:contrapp/search/main_search_bar.dart';
+import 'package:contrapp/skeleton/main_search_bar.dart';
 import 'package:contrapp/skeleton/selected_equip.dart';
 
 

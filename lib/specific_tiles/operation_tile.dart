@@ -1,6 +1,6 @@
-import 'package:contrapp/button/variable_indicator.dart';
+import 'package:contrapp/common_tiles/variable_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:contrapp/button/custom_form_field.dart';
+import 'package:contrapp/common_tiles/custom_form_field.dart';
 import 'package:contrapp/object/operation.dart';
 
 class OperationTile extends StatefulWidget {

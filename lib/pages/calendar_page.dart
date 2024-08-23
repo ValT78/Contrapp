@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/skeleton/calendar.dart';
-import 'package:contrapp/button/astreinte_button.dart';
+import 'package:contrapp/specific_tiles/astreinte_button.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});

@@ -1,8 +1,8 @@
 
-import 'package:contrapp/button/custom_form_field.dart';
-import 'package:contrapp/button/super_title.dart';
-import 'package:contrapp/button/travel_button.dart';
-import 'package:contrapp/button/variable_indicator.dart';
+import 'package:contrapp/common_tiles/custom_form_field.dart';
+import 'package:contrapp/common_tiles/super_title.dart';
+import 'package:contrapp/common_tiles/bouncy_action_button.dart';
+import 'package:contrapp/common_tiles/variable_indicator.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/pages/operation_page.dart';
 import 'package:flutter/material.dart';

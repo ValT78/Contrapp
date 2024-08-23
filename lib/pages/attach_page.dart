@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
-import 'package:contrapp/button/travel_button.dart';
+import 'package:contrapp/common_tiles/bouncy_action_button.dart';
 import 'package:contrapp/skeleton/attach_picker.dart';
 
 class AttachPage extends StatelessWidget {

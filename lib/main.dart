@@ -121,7 +121,8 @@ void main() {
   runApp(ChangeNotifierProvider<EquipList>.value(
       value: equipPicked,
       child: const MyApp(),
-    ),);
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {

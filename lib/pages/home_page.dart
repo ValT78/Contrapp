@@ -1,7 +1,7 @@
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
-import 'package:contrapp/button/travel_button.dart';
+import 'package:contrapp/common_tiles/bouncy_action_button.dart';
 import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:convert';
