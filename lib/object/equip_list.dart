@@ -17,70 +17,84 @@ class EquipList extends ChangeNotifier {
   set equipList(List<Equipment> equipList) {
     _equipList.clear();
     _equipList.addAll(equipList);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
+    if(isModifyingApp) variablesContrat['equipPicked'] = equipList;
   }
 
   void addEquipment(Equipment equip) {
     _equipList.add(equip);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void removeEquipmentName(String equipName) {
     _equipList.removeWhere((element) => element.equipName == equipName);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void removeEquipment(Equipment equip) {
     _equipList.remove(equip);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void removeMachineName(String equipName) {
     _equipList.firstWhere((element) => element.equipName == equipName).machines.removeLast();
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void addMachine(Equipment equip, Machine machine) {
     equip.addMachine(machine);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void addMachineName(Equipment equip, String machineName) {
     equip.addMachine(Machine(marque: machineName));
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void removeMachine(Equipment equip, Machine machine) {
     equip.machines.remove(machine);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
@@ -91,37 +105,45 @@ class EquipList extends ChangeNotifier {
   void addOperation(String equipName, Operation operation) {
     _equipList.firstWhere((element) => element.equipName == equipName).addOperation(operation);
     notifyListeners();
-    variablesContrat['equipPicked'] = equipList;
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void addOperationName(String equipName, String operationName) {
     _equipList.firstWhere((element) => element.equipName == equipName).addOperationName(operationName);
     notifyListeners();
-    variablesContrat['equipPicked'] = equipList;
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 
   void removeOperation(String equipName, Operation operation) {
     _equipList.firstWhere((element) => element.equipName == equipName).removeOperation(operation);
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
       
   }
 
   void changedDefaultSelected(String equipName, Operation operation, bool selected) {
     _equipList.firstWhere((element) => element.equipName == equipName).operationsNotifier.value.firstWhere((element) => element.operationNameNotifier.value == operation.operationNameNotifier.value).defaultSelected = selected;
-    variablesContrat['equipPicked'] = equipList;
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
+    }
+    else {
+      variablesContrat['equipPicked'] = equipList;
     }
   }
 

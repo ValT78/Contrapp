@@ -45,10 +45,11 @@ class EquipPage extends StatelessWidget {
               storeList: equipToPick.equipList.map((e) => e.equipName).toList(),
               addElement: (String equipName) {
                 if (equipPicked.equipList.any((element) => element.equipName == equipName)) {
-                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName);
+                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName).clone();
                   equipPicked.addMachine(existingEquip, Machine());
                 } else {
-                  equipPicked.addEquipment(equipToPick.equipList.firstWhere((element) => element.equipName == equipName).clone());
+                  Equipment newEquip = equipToPick.equipList.firstWhere((element) => element.equipName == equipName).clone();
+                  equipPicked.addEquipment(newEquip);
                 }
               },
               createNewElement: (String equipName) {

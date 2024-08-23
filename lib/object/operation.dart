@@ -23,4 +23,12 @@ class Operation extends Object {
       defaultSelected: json['defaultSelected'],
     );
   }
+
+  Operation clone() {
+    return Operation(
+      operationName: operationNameNotifier.value,
+      visits: visits,
+      defaultSelected: defaultSelected,
+    );
+  }
 }

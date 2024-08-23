@@ -48,7 +48,7 @@ List<pw.Widget> buildOperation(List<Equipment> equipments, pw.TextStyle style, p
               ),
             ],
           );
-        }).toList(),
+        }),
       ],
       border: const pw.TableBorder(
         horizontalInside: pw.BorderSide(color: PdfColors.grey300, width: 0.5),

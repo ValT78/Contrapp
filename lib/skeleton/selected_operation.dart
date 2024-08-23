@@ -35,7 +35,7 @@ class SelectedOperationState extends State<SelectedOperation> {
         return ListView(
           children: [
             const Padding(
-              padding: EdgeInsets.fromLTRB(120, 0, 0, 4),
+              padding: EdgeInsets.fromLTRB(120, 0, 0, 8),
               child: IntrinsicHeight(
                 child: Row(
                   children: [
@@ -74,9 +74,7 @@ class SelectedOperationState extends State<SelectedOperation> {
                   widget.operationsNotifier.value = List.from(operations)..remove(operation);
                 },
                 changedDefaultSelected: (bool selected) {
-                  setState(() {
-                    equipToPick.changedDefaultSelected(widget.equipment.equipName, operation, selected);
-                  });
+                  equipToPick.changedDefaultSelected(widget.equipment.equipName, operation, selected);
                 },
               );
             }),

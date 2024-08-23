@@ -42,8 +42,8 @@ class Equipment extends Object {
       
       return Equipment(
         equipName: equipName,
-        operations: operationsNotifier.value.where(((element) => element.defaultSelected)).toList(),
-        machines: machines,
+        operations: operationsNotifier.value.where((element) => element.defaultSelected).map((operation) => operation.clone()).toList(),
+        machines: machines.map((machine) => machine.clone()).toList(),
       );
     }
 
