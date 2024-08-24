@@ -195,9 +195,14 @@ String _insertInformation(String text) {
   return text.replaceAllMapped(RegExp('==(.+?)=='), (Match m) {
 
     final key = m.group(1);
+    print(key);
     if(variablesContrat.containsKey(key)) {
+      if(key == 'montantAstreinte') {
+        print(variablesContrat[key].runtimeType);
+      }
       if(variablesContrat[key] is double) {
-        return variablesContrat[key].toInt().toString();
+        print((variablesContrat[key] as double).toInt());
+        return (variablesContrat[key] as double).toInt().toString();
       }
       return variablesContrat[key].toString();
     }
@@ -286,7 +291,7 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
                   children: [
                     pw.Text("Supplément Astreinte 24/24", style: boldStyle),
                     pw.Spacer(), // Utilisez Spacer pour pousser le reste du texte à droite
-                    variablesContrat['montantAstreinte'] == 0 ? pw.Text("Offerte", style: boldStyle) : pw.Text("${variablesContrat['montantAstreinte']} €", style: boldStyle),
+                    variablesContrat['montantAstreinte'] == 0.0 ? pw.Text("Offerte", style: boldStyle) : pw.Text("${(variablesContrat['montantAstreinte'] as double).toInt()} €", style: boldStyle),
                   ],
                 )
           ),
@@ -377,6 +382,13 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
           ),
         );
       }
+      else if(mdText == '///') {
+        return pw.Divider(
+          color: PdfColors.black,
+          thickness: 1.0,
+        );
+      }
+
       else if (mdContent.tag == 'p') {
         final underlinedMatch = RegExp(r'<u>(.*?)</u>').firstMatch(mdText);
         if(underlinedMatch != null) {

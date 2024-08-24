@@ -4,22 +4,21 @@ import 'package:contrapp/main.dart';
 
 
 
-class AstreinteButton extends StatefulWidget {
-  const AstreinteButton({super.key});
+class TvaButton extends StatefulWidget {
+  const TvaButton({super.key});
 
   @override
   AstreinteButtonState createState() => AstreinteButtonState();
 }
 
-class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProviderStateMixin {
+class AstreinteButtonState extends State<TvaButton> with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<Offset> _offsetAnimation;
   late FocusNode _textFieldFocusNode;
   late TextEditingController textFieldController;
 
-  bool _isClicked = variablesContrat['hasAstreinte'];
-
-  double storedAstreinte = montantAstreinte;
+  bool _isClicked = hasCustomTva;
+  double storedTva = customTva;
 
    @override
   void initState() {
@@ -38,7 +37,7 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
     ));
 
     _textFieldFocusNode = FocusNode();
-    textFieldController = TextEditingController(text: variablesContrat['montantAstreinte'].toString());
+    textFieldController = TextEditingController(text: customTva.toString());
     _textFieldFocusNode.addListener(() {
     if (_textFieldFocusNode.hasFocus) {
       textFieldController.selection = TextSelection(
@@ -65,17 +64,17 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
               duration: const Duration(milliseconds: 400),
               left: _isClicked ? 230 : 0,
               child: CustomFormField(
-                color: Colors.green,
-                icon: Icons.euro,
+                color: Colors.teal,
+                icon: Icons.percent,
                 textSize: 57.0,
                 onChanged: (value) {
-                  montantAstreinte = value;
-                  storedAstreinte = value;
+                  customTva = value;
+                  storedTva = value;
                 },
                 height: 100,
                 width: 200,
-                initValue: montantAstreinte,
-                label: 'Montant',
+                initValue: customTva,
+                label: 'Taux TVA',
                 )
             ),
             SlideTransition(
@@ -84,15 +83,15 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
                 onTap: () {
                   setState(() {
                     _isClicked = !_isClicked;
-                    variablesContrat['hasAstreinte'] = _isClicked;
+                    hasCustomTva = _isClicked;
                     if (_isClicked) {
                       _controller.forward();
                       _textFieldFocusNode.requestFocus();
-                      montantAstreinte = storedAstreinte;
+                      customTva = storedTva;
                     } else {
                       _controller.reverse();
                       _textFieldFocusNode.unfocus();
-                      montantAstreinte = 0.0;
+                      customTva = 20;
                     }
                   });
                 },
@@ -104,19 +103,19 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
                     alignment: Alignment.centerRight,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10), // Ajouter des bords arrondis
-                      color: _isClicked ? Colors.green[600] : Colors.deepOrangeAccent[700],
+                      color: _isClicked ? Colors.teal : Colors.red[700],
                     ),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.end, // Ajout de cette ligne
                       children: [
                         Icon(
-                          _isClicked ? Icons.check_box_rounded : Icons.access_time_rounded,
+                          _isClicked ? Icons.check_box_rounded : Icons.attach_money_rounded,
                           color: Colors.white,
                           size: 60.0,
                         ),
                         const SizedBox(width: 10.0),
                         const Text(
-                          'Astreinte\n   24/24',
+                          'Modifier\n   TVA',
                           style: TextStyle(
                             fontSize: 30.0, // Augmenter la taille du texte entré
                             color: Colors.white, // Changer la couleur du texte entré en magenta

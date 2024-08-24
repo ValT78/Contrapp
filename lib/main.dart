@@ -28,6 +28,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   // Montant HT (et TTC) du contrat
   final ValueNotifier<int> montantHTNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> montantTTCNotifier = ValueNotifier<int>(0);
+  final ValueNotifier<int> totalHTNotifier = ValueNotifier<int>(0);
 
   double get montantHT {
     return variablesContrat['montantHT'];
@@ -35,9 +36,38 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   
   set montantHT(double value) {
     variablesContrat['montantHT'] = value;
-    montantHTNotifier.value = value.toInt();
-    variablesContrat['montantTTC'] = value * 1.2;
-    montantTTCNotifier.value = (value * 1.2).toInt();
+    montantHTNotifier.value = value.ceil();
+    totalHT = value+montantAstreinte;
+    montantTTC = totalHTNotifier.value * (1+variablesContrat['customTva']/100) as double;
+  }
+
+  double get montantAstreinte {
+    return variablesContrat['montantAstreinte'];
+  }
+  
+  set montantAstreinte(double value) {
+    variablesContrat['montantAstreinte'] = value;
+    totalHT = value+montantHT;
+    montantTTC = totalHTNotifier.value * (1+variablesContrat['customTva']/100) as double;
+  }
+  
+  set totalHT(double value) {
+    totalHTNotifier.value = value.ceil();
+     variablesContrat['totalHT'] = value;
+  }
+
+  double get customTva {
+    return variablesContrat['customTva'];
+  }
+  
+  set customTva(double value) {
+    variablesContrat['customTva'] = value;
+    montantTTC= totalHTNotifier.value * (1+value/100);
+  }
+
+  set montantTTC(double value) {
+    montantTTCNotifier.value = value.ceil();
+    variablesContrat['montantTTC'] = value;
   }
   
   EquipList equipToPick = EquipList(isModifyingApp: true); // Votre liste d'équipements
@@ -57,6 +87,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     variablesContrat['attachList'] = list;
   }
 
+  bool hasCustomTva = false;
 
   Map<String, dynamic> variablesContrat = {
     'entreprise': '',
@@ -70,6 +101,8 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     'equipPicked': <Equipment>[],
     'montantHT': 0.0,
     'montantTTC': 0.0,
+    'totalHT': 0.0,
+    'customTva': 20.0,
     'hasAstreinte': false,
     'montantAstreinte': 0.0,
     'selectedCalendar': <String, Map<String, bool>>{},

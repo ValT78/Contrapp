@@ -85,11 +85,11 @@ class EquipPage extends StatelessWidget {
                     tauxHoraireNotifier.value = value;
                     for (var equip in equipPicked.equipList) {
                       for (var machine in equip.machines) {
-                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).toInt();
-                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).toInt();
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).ceil();
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).ceil();
                       }
                     }
-                    montantHT = 0;
+                    montantHT = variablesContrat['montantAstreinte'];
                     for (var equip in equipPicked.equipList) {
                       for (var machine in equip.machines) {
                         montantHT += machine.priceNotifier.value;

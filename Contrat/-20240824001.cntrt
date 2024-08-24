@@ -1,1 +1,1 @@
-{"entreprise":"","adresse1":"","adresse2":"","matricule":"","capital":"","date":"24/08/2024","versionContrat":1,"attachList":[],"equipPicked":[],"montantHT":0.0,"montantTTC":0.0,"hasAstreinte":false,"montantAstreinte":0.0,"selectedCalendar":{}}
+{"entreprise":"","adresse1":"","adresse2":"","matricule":"","capital":"","date":"24/08/2024","versionContrat":1,"attachList":[],"equipPicked":[],"montantHT":40.0,"montantTTC":96.0,"totalHT":80.0,"customTva":20.0,"hasAstreinte":true,"montantAstreinte":40.0,"selectedCalendar":{},"numeroContrat":"20240824001"}

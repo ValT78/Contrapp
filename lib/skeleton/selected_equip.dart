@@ -251,7 +251,7 @@ class SelectedEquip extends StatelessWidget {
                                     onChanged: (value) {
                                       machine.number = value;
                                       machine.hoursExpectedNotifier.value = double.parse((machine.minutesExpected * machine.number * machine.visitsPerYear / 60).toStringAsFixed(2));
-                                      machine.priceNotifier.value = (machine.hoursExpectedNotifier.value * tauxHoraireNotifier.value).toInt();
+                                      machine.priceNotifier.value = (machine.hoursExpectedNotifier.value * tauxHoraireNotifier.value).ceil();
                                       montantHT = 0;
                                       hoursOfWorkNotifier.value = 0;
                                       for (var equip in equipPicked.equipList) {
@@ -333,7 +333,7 @@ class SelectedEquip extends StatelessWidget {
                                       onChanged: (value) {
                                         machine.visitsPerYear = value;
                                         machine.hoursExpectedNotifier.value = double.parse((machine.minutesExpected * machine.number * machine.visitsPerYear / 60).toStringAsFixed(2)); 
-                                        machine.priceNotifier.value = (machine.hoursExpectedNotifier.value * tauxHoraireNotifier.value).toInt();
+                                        machine.priceNotifier.value = (machine.hoursExpectedNotifier.value * tauxHoraireNotifier.value).ceil();
                                         montantHT = 0;
                                         hoursOfWorkNotifier.value = 0;
                                         for (var equip in equipPicked.equipList) {
@@ -358,7 +358,7 @@ class SelectedEquip extends StatelessWidget {
                                     onChanged: (value) {
                                       machine.minutesExpected = value;
                                       machine.hoursExpectedNotifier.value = double.parse((machine.minutesExpected * machine.number * machine.visitsPerYear / 60).toStringAsFixed(2));
-                                      machine.priceNotifier.value = (machine.hoursExpectedNotifier.value * tauxHoraireNotifier.value).toInt();
+                                      machine.priceNotifier.value = (machine.hoursExpectedNotifier.value * tauxHoraireNotifier.value).ceil();
                                       montantHT = 0;
                                       hoursOfWorkNotifier.value = 0;
                                       for (var equip in equipPicked.equipList) {

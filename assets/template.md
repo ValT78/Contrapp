@@ -539,13 +539,19 @@ ___
 
 
 
-<tab>Montant HT contrat entretien| ==montantHT== €	
+<tab>Coût Matériel HT| ==montantHT== €	
 		
 
-        
 && astreintePrice
+///
+<tab>Total contrat entretien HT| ==totalHT== €	
 
-<tab>Montant TTC contrat entretien| ==montantTTC== €
+
+
+
+
+
+<tab>Montant TTC contrat entretien (TVA: ==customTva==%)| ==montantTTC== €
 
 
 
