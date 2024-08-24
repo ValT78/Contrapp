@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -193,15 +192,18 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                               ),
                             ),
                             onPressed: () async {
-                              bool shouldClose = await showExitDialog(navigatorKey.currentContext!);
-                              if(shouldClose) exit(0);
+                              bool shouldReset = await _showResetDialog(context);
+                              if (shouldReset) {
+                                resetAppData();
+                                Navigator.pushNamed(context, '/home');
+                              }
                             },
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.exit_to_app, color: Colors.black, size: 30,), // Icone pour quitter
-                                  Text('Quit', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 19)), // Texte "Quitter"
+                                  Icon(Icons.refresh, color: Colors.black, size: 35,), // Icone pour quitter
+                                  Text('Reset', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 15)), // Texte "Quitter"
                                 ],
                               ),
                             ),
@@ -220,6 +222,63 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
     },
   );
 }
+
+Future<bool> _showResetDialog(BuildContext context) async {
+  return await showDialog<bool>(
+    context: context,
+    builder: (BuildContext context) {
+      return Dialog(
+        child: Container(
+          width: MediaQuery.of(context).size.width / 2,
+          height: MediaQuery.of(context).size.height / 2,
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const SizedBox(height: 14),
+              const Text('Voulez-vous recommencer ?', style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 30), // Espacement entre les boutons
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.yellow,
+                  minimumSize: const Size(1500, 100), // Taille du bouton
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(false);
+                },
+                child: const Text('Annuler', style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold)),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.green,
+                  minimumSize: const Size(1500, 100), // Taille du bouton
+                ),
+                onPressed: () async {
+                  await saveContract();
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Sauvegarder et recommencer', style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold)),
+              ),
+              const Spacer(),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.red,
+                  minimumSize: const Size(1500, 100), // Taille du bouton
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop(true);
+                },
+                child: const Text('Recommencer', style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold)),
+              ),
+            ],
+          ),
+        ),
+      );
+    },
+  ) ?? false; // Retourne false si le dialogue est fermé sans sélection
+}
+
 
 
 @override

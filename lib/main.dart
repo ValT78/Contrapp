@@ -98,7 +98,10 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   bool hasCustomTva = false;
 
-  Map<String, dynamic> variablesContrat = {
+  Map<String, dynamic> variablesContrat = resetVariablesContrat();
+
+  Map<String, dynamic> resetVariablesContrat() {
+  return {
     'entreprise': '',
     'adresse1': '',
     'adresse2': '',
@@ -117,7 +120,27 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     'montantAstreinte': 0.0,
     'tauxHoraire': 0.0,
     'selectedCalendar': <String, Map<String, bool>>{},
-  };
+    };
+  }
+
+  void resetAppData() {
+    variablesContrat = resetVariablesContrat();
+    equipPicked.equipList.clear();
+    attachList.clear();
+    montantHT = 0.0;
+    montantTTC = 0.0;
+    totalHT = 0.0;
+    tauxHoraire = 0.0;
+    hoursOfWorkNotifier.value = 0.0;
+    // for (var equip in equipPicked.equipList) {
+    //   for (var machine in equip.machines) {
+    //     machine.hoursExpectedNotifier.value = machine.minutesExpected * machine.number * machine.visitsPerYear/60;
+    //     machine.priceNotifier.value = (tauxHoraire * machine.hoursExpectedNotifier.value).ceil();
+    //     montantHT += machine.priceNotifier.value;
+    //     hoursOfWorkNotifier.value += machine.hoursExpectedNotifier.value;
+    //   }
+    // }
+  }
 
   
 
@@ -188,56 +211,62 @@ Future<void> _loadAppData() async {
     return '${variablesContrat['entreprise']}-${generateNumeroContrat()}';
   }
 
-Future<bool> showExitDialog(BuildContext context) {
-    showDialog(
+Future<bool> _showExitDialog(BuildContext context) async {
+    return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text('Voulez-vous vraiment quitter ?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                const SizedBox(height: 10), // Espacement entre les boutons
+        return Dialog(
+          child: Container(
+            width: MediaQuery.of(context).size.width / 2,
+            height: MediaQuery.of(context).size.height / 2,
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const SizedBox(height: 14),
+                const Text('Voulez vous quitter ?', style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold)),
+                const SizedBox(height: 30), // Espacement entre les boutons
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.yellow,
-                    minimumSize: const Size(200, 50), // Taille du bouton
+                    minimumSize: const Size(1500, 100), // Taille du bouton
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(false);
                   },
-                  child: const Text('Annuler', style: TextStyle(fontSize: 20, color: Colors.black)),
+                  child: const Text('Annuler', style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
-                const SizedBox(height: 10), // Espacement entre les boutons
+                const Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.green,
-                    minimumSize: const Size(200, 50), // Taille du bouton
+                    minimumSize: const Size(1500, 100), // Taille du bouton
                   ),
                   onPressed: () async {
                     await saveContract();
                     Navigator.of(context).pop(true);
+                    return Future.value(true);
                   },
-                  child: const Text('Sauvegarder et Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
+                  child: const Text('Sauvegarder et Quitter', style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
-                const SizedBox(height: 10), // Espacement entre les boutons
+                const Spacer(),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.red,
-                    minimumSize: const Size(200, 50), // Taille du bouton
+                    minimumSize: const Size(1500, 100), // Taille du bouton
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(true);
+                    Future.value(true);
                   },
-                  child: const Text('Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
+                  child: const Text('Quitter', style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
               ],
             ),
           ),
         );
       },
-    );
-    return Future.value(false);
+    ) ?? false;
   }
 
   
@@ -251,8 +280,7 @@ void main() {
     ),
   );
   FlutterWindowClose.setWindowShouldCloseHandler(() async {
-    print('Window close requested');
-    bool shouldClose = await showExitDialog(navigatorKey.currentContext!);
+    bool shouldClose = await _showExitDialog(navigatorKey.currentContext!);
     return shouldClose;
   });
 }

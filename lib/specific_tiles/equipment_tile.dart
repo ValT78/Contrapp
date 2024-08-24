@@ -4,6 +4,7 @@ import 'package:contrapp/main.dart';
 import 'package:contrapp/specific_tiles/machine_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/object/machine.dart';
+import 'package:flutter/widgets.dart';
 
 class EquipmentTile extends StatelessWidget {
   final Equipment equip;
@@ -106,16 +107,41 @@ class EquipmentTile extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8.0), // Coins arrondis
                       ),
                     ),
-                    child: const Row(
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
-                          Icons.add_circle, // Icône correspondante
-                          size: 36.0, // Taille de l'icône
-                          color: Color.fromARGB(255, 14, 56, 119), // Couleur de l'icône
+                        Stack(
+                          alignment: Alignment.center,
+                          children: [
+                            const Icon(
+                              Icons.add_circle, // Icône correspondante
+                              size: 36.0, // Taille de l'icône
+                              color: Color.fromARGB(255, 14, 56, 119), // Couleur de l'icône
+                            ),
+                            Positioned(
+                              top: -4,
+                              right: 0,
+                              child: Container(
+                                padding: const EdgeInsets.all(4.0),
+                                decoration: const BoxDecoration(
+                                  color: Colors.red,
+                                  shape: BoxShape.circle,
+                                ),
+                                child: Text(
+                                  equip.operationsNotifier.value.length.toString(),
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 12.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        SizedBox(width: 8.0), // Espacement entre l'icône et le texte
-                        Text("Ajouter des Opérations"),
+                        const SizedBox(width: 8.0), // Espacement entre l'icône et le texte
+                        const Text("Ajouter des Opérations"),
+                        const SizedBox(width: 8.0), // Espacement entre le texte et l'icône
                       ],
                     ),
                   ),
@@ -140,7 +166,7 @@ class EquipmentTile extends StatelessWidget {
                     flex: 4
                     ,
                     child: Text(
-                      "Désignation",
+                      "Informations",
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                     ),
