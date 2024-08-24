@@ -59,13 +59,19 @@ List<pw.Widget> buildCalendar(Map<String, Map<String, bool>> selectedCalendar, p
                     color: PdfColors.blue100,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.all(4),
-                      child: pw.Text(equip, maxLines: 3, overflow: pw.TextOverflow.clip, style: style),
+                      child: pw.Text(equip, maxLines: 4, overflow: pw.TextOverflow.clip, style: style),
                     ),
                   ),
-                  ...months.map((month) => pw.Padding(
+                  ...months.map((month) => pw.Container(
+                    alignment: pw.Alignment.center,
+                    height: 20.0*(equip.length/13).ceil(),
+                    child: pw.Center(child: 
+                    pw.Padding(
                       padding: const pw.EdgeInsets.all(2),
-                      child: pw.Center(child: selectedCalendar[equip]?[month] == true ? buildCheckmark() : pw.Container()), // Centrage vertical du widget checkMark
+                      child: selectedCalendar[equip]?[month] == true ? buildCheckmark() : pw.Container(), // Centrage vertical du widget checkMark
                     ),
+                    ),
+                  ),
                   ),
                 ],
               ),

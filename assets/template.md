@@ -583,14 +583,4 @@ Signature :
 
 
 
-
-
-
-
-
-
-
-
-
-
 Validité de l’offre : 3 mois

@@ -1,4 +1,5 @@
 import 'package:contrapp/object/equipment.dart';
+import 'package:contrapp/object/machine.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 
@@ -6,8 +7,9 @@ List<pw.Widget> buildEquipment(List<Equipment> equipments, pw.TextStyle style, p
   return equipments.map((equipment) {
     return pw.Table(
       columnWidths: {
-        0: const pw.FixedColumnWidth(300), // Largeur fixe pour la colonne des équipements
-        1: const pw.FixedColumnWidth(60), // Largeur fixe pour la colonne des visites
+        0: const pw.FixedColumnWidth(50), // Largeur fixe pour la colonne des visites
+        1: const pw.FixedColumnWidth(280), // Largeur fixe pour la colonne des équipements
+        2: const pw.FixedColumnWidth(40), // Largeur fixe pour la colonne des visites
       },
       children: [
         pw.TableRow(
@@ -21,57 +23,19 @@ List<pw.Widget> buildEquipment(List<Equipment> equipments, pw.TextStyle style, p
           children: [
             pw.Padding(
               padding: const pw.EdgeInsets.all(4),
-              child: pw.Text(equipment.equipName, textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white)),
+              child: pw.Text("Nombre", textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white), textScaleFactor: 1.0),
             ),
             pw.Padding(
               padding: const pw.EdgeInsets.all(4),
-              child: pw.Text("visites / an", textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white)),
+              child: pw.Text(equipment.equipName, textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white), textScaleFactor: 1.0),
+            ),
+            pw.Padding(
+              padding: const pw.EdgeInsets.all(4),
+              child: pw.Text("visites par an", textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white), textScaleFactor: 1.0),
             ),
           ],
         ),
-        ...equipment.machines.map((machine) {
-          return pw.TableRow(
-            children: [
-              pw.Container(
-                color: PdfColors.blue50,
-                child: pw.Padding(
-                  padding: const pw.EdgeInsets.all(4),
-                  child: pw.Row(
-                    children: [
-                      pw.Container(
-                        width: 50,
-                        child: pw.Text('x${machine.number}', textAlign: pw.TextAlign.center, style: style),
-                      ),
-                      pw.Container(
-                        width: 1,
-                        height: 15,
-                        color: PdfColors.grey300,
-                      ),
-                      pw.SizedBox(width: 10),
-                      pw.Expanded(
-                        child: pw.Row(
-                          crossAxisAlignment: pw.CrossAxisAlignment.start,
-                          children: [
-                            pw.Text(machine.marque.value, style: styleBold),
-                            pw.Text(' - '),
-                            pw.Text(machine.information.value, style: style),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              pw.Container(
-                color: PdfColors.blue100,
-                child: pw.Padding(
-                  padding: const pw.EdgeInsets.all(4),
-                  child: pw.Text(machine.visitsPerYear.toString(), textAlign: pw.TextAlign.center, style: style),
-                ),
-              ),
-            ],
-          );
-        }),
+        ...buildTableRows(equipment.machines, style),
       ],
       border: const pw.TableBorder(
         horizontalInside: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
@@ -79,4 +43,55 @@ List<pw.Widget> buildEquipment(List<Equipment> equipments, pw.TextStyle style, p
       ),
     );
   }).toList();
+}
+
+List<pw.TableRow> buildTableRows(List<Machine> machines, pw.TextStyle style) {
+  List<pw.TableRow> rows = [];
+
+  for (var machine in machines) {
+    // Calculer la hauteur maximale de la ligne
+    double maxHeight = calculateMaxHeight([
+      'x${machine.number}',
+      '${machine.marque.value} - ${machine.information.value}',
+      'x${machine.number}'
+    ], style);
+
+    rows.add(
+      pw.TableRow(
+        children: [
+          buildCell('x${machine.number}', style, maxHeight, PdfColors.blue100),
+          buildCell('${machine.marque.value} - ${machine.information.value}', style, maxHeight, PdfColors.blue50),
+          buildCell('x${machine.number}', style, maxHeight, PdfColors.blue100),
+        ],
+      ),
+    );
+  }
+
+  return rows;
+}
+
+double calculateMaxHeight(List<String> texts, pw.TextStyle style) {
+  double maxHeight = 0;
+  for (var text in texts) {
+    double height = measureTextHeight(text, style);
+    if (height > maxHeight) {
+      maxHeight = height;
+    }
+  }
+  return maxHeight;
+}
+
+double measureTextHeight(String text, pw.TextStyle style) {
+  // Implémentez une méthode pour mesurer la hauteur du texte
+  // Cela peut nécessiter des calculs personnalisés ou l'utilisation d'une bibliothèque tierce
+  return 20.0 * ((text.length/50).ceil()); // Exemple de hauteur fixe
+}
+
+pw.Widget buildCell(String text, pw.TextStyle style, double height, PdfColor? color) {
+  return pw.Container(
+    height: height,
+    alignment: pw.Alignment.center,
+    color: color,
+    child: pw.Text(text, style: style, textAlign: pw.TextAlign.center),
+  );
 }

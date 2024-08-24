@@ -300,14 +300,23 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
     }
   }
   else if(element.contains('calendar')) {
+    if(variablesContrat['selectedCalendar'].isEmpty) {
+      return [pw.Container()];
+    }
     return buildCalendar(variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>, classicStyle, boldStyle);
   }
 
   else if(element.contains('operation')) {
+    if(variablesContrat['equipPicked'].isEmpty) {
+      return [pw.Container()];
+    }
     return buildOperation(variablesContrat['equipPicked'] as List<Equipment>, classicStyle, boldStyle);
   }
 
   else if(element.contains('equipment')) {
+    if(variablesContrat['equipPicked'].isEmpty) {
+      return [pw.Container()];
+    }
     return buildEquipment(variablesContrat['equipPicked'] as List<Equipment>, classicStyle, boldStyle);
   }
 
