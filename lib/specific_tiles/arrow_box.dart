@@ -70,24 +70,31 @@ Widget build(BuildContext context) {
                       shape: BoxShape.circle,
                       border: Border.all(
                         color: Colors.black,
-                        width: 2.0,
+                        width: 1.0,
                       ),
                     ),
                     child: CircleAvatar(
                       radius: widget.width/10,
-                      backgroundColor: _isActivePage ? const Color.fromARGB(255, 186, 183, 247) : Colors.white,
+                      backgroundColor: _isActivePage ? const Color.fromARGB(255, 122, 184, 255) : Colors.white,
                       child: Text(
                         '${widget.index + 1}',
                         style: TextStyle(
                           color: const Color.fromARGB(255, 0, 0, 0),
-                          fontSize: max(10, widget.width/15 + 6),
+                          fontSize: max(10, widget.width/10 + 6),
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
                     ),
                   )
                   ),
                   Padding(padding: const EdgeInsets.fromLTRB(5, 0, 0, 0),
-                    child: Text(widget.texte, style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontSize: max(10, widget.width/15 + 6))),
+                    child: Text(
+                      widget.texte, 
+                      style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), 
+                        fontSize: max(10, widget.width/15 + 6),
+                        fontWeight: FontWeight.bold
+                      ),
+                    ),
                   ),
                 ],
               ),

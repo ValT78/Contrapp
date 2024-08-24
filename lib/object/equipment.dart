@@ -1,6 +1,6 @@
 import 'package:contrapp/object/machine.dart';
 import 'package:contrapp/object/operation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show ValueNotifier;
 
 class Equipment extends Object {
 

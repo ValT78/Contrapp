@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
-import 'package:contrapp/skeleton/calendar.dart';
+import 'package:contrapp/skeleton/calendar_container.dart';
 import 'package:contrapp/specific_tiles/astreinte_button.dart';
 
 class CalendarPage extends StatelessWidget {
@@ -19,7 +19,7 @@ class CalendarPage extends StatelessWidget {
              SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 500,
-              child: const Calendar(),
+              child: const CalendarContainer(),
             ),
             const Center(
               child: 

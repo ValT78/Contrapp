@@ -1,10 +1,8 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'specific_tiles/arrow_box.dart';
-import 'package:file_picker/file_picker.dart';
-import 'dart:io';
-import 'dart:convert';
 import 'package:contrapp/main.dart';
 
 class CustomNavbar extends StatefulWidget {
@@ -25,9 +23,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
   final int arrowNumber = 5;
   final List<String> textes = ['Information', 'Equipement', 'Calendrier', 'Pièce-Jointe', 'Récapitulatif'];
   final List<String> link = ['common', 'equip', 'calendar', 'attach', 'recap'];
-  
-  CustomNavbarState();
-  
+    
   @override
   void initState() {
     super.initState();
@@ -39,31 +35,6 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
 
     _scale = Tween<double>(begin: 1.0, end: 1.0).animate(_controller);
     _color = ColorTween(begin: Colors.blue[100], end: Colors.blue[100]).animate(_controller);
-  }
-
-  // Fonction pour sauvegarder les données
-  Future<void> sauvegarder() async {
-    
-    String jsonData = jsonEncode(variablesContrat);
-
-    String? filePath  = await FilePicker.platform.saveFile(
-      dialogTitle: 'Sauvegarder le contrat',
-      type: FileType.custom,
-      allowedExtensions: ['cntrt'],
-      fileName: '${generateNomFichier()}.cntrt', // Set the suggested file name here
-    );
-  
-
-    if (filePath != null) {
-
-      // Vérifiez si le fichier a l'extension .cntrt
-      if (!filePath.endsWith('.cntrt')) {
-        filePath += '.cntrt';
-      }
-
-      File file = File(filePath);
-      await file.writeAsString(jsonData);
-    }
   }
 
   @override
@@ -177,14 +148,14 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                               ),
                             ),
                             onPressed: () {
-                              sauvegarder();
+                              saveContract();
                             },
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.save, color: Colors.black), // Icone de sauvegarde
-                                  Text('Save', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1),)), // Texte "Save"
+                                  Icon(Icons.save, color: Colors.black, size: 30,), // Icone de sauvegarde
+                                  Text('Save', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 19)), // Texte "Save"
                                 ],
                               ),
                             ),
@@ -221,62 +192,16 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                 ),
                               ),
                             ),
-                            onPressed: () {
-                              showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Voulez-vous vraiment quitter ?'),
-                            content: SingleChildScrollView(
-                              child: ListBody(
-                                children: <Widget>[
-                                  const SizedBox(height: 10), // Espacement entre les boutons
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.yellow,
-                                      minimumSize: const Size(200, 50), // Taille du bouton
-                                    ),
-                                    onPressed: () {
-                                      Navigator.of(context).pop();
-                                    },
-                                    child: const Text('Annuler', style: TextStyle(fontSize: 20, color: Colors.black)),
-                                  ),
-                                  const SizedBox(height: 10), // Espacement entre les boutons
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.green,
-                                      minimumSize: const Size(200, 50), // Taille du bouton
-                                    ),
-                                    onPressed: () async {
-                                      await sauvegarder();
-                                      exit(0);
-                                    },
-                                    child: const Text('Sauvegarder et Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
-                                  ),
-                                  const SizedBox(height: 10), // Espacement entre les boutons
-                                  ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      backgroundColor: Colors.red,
-                                      minimumSize: const Size(200, 50), // Taille du bouton
-                                    ),
-                                    onPressed: () {
-                                      exit(0);
-                                    },
-                                    child: const Text('Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                            onPressed: () async {
+                              bool shouldClose = await showExitDialog(navigatorKey.currentContext!);
+                              if(shouldClose) exit(0);
                             },
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.exit_to_app, color: Colors.black), // Icone pour quitter
-                                  Text('Quit', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1),)), // Texte "Quitter"
+                                  Icon(Icons.exit_to_app, color: Colors.black, size: 30,), // Icone pour quitter
+                                  Text('Quit', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 19)), // Texte "Quitter"
                                 ],
                               ),
                             ),

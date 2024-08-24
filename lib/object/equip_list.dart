@@ -1,9 +1,9 @@
-import 'package:contrapp/main.dart';
+import 'package:contrapp/main.dart' show variablesContrat;
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:contrapp/object/operation.dart';
-import 'package:flutter/material.dart';
-import 'dart:convert';
+import 'package:flutter/foundation.dart' show ChangeNotifier, ValueNotifier;
+import 'dart:convert' show jsonEncode;
 import 'dart:io';
 
 class EquipList extends ChangeNotifier {

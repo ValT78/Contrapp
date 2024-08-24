@@ -2,7 +2,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -14,9 +13,12 @@ import 'pages/attach_page.dart';
 import 'pages/recap_page.dart';
 import 'object/equip_list.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_window_close/flutter_window_close.dart';
+import 'package:file_picker/file_picker.dart';
 
 
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   final ValueNotifier<double> tauxHoraireNotifier = ValueNotifier<double>(80);
 
@@ -104,6 +106,33 @@ Future<void> _loadAppData() async {
     }
   }
 
+  
+  // Fonction pour sauvegarder les données
+  Future<void> saveContract() async {
+    
+    String jsonData = jsonEncode(variablesContrat);
+
+    String? filePath  = await FilePicker.platform.saveFile(
+      dialogTitle: 'Sauvegarder le contrat',
+      type: FileType.custom,
+      allowedExtensions: ['cntrt'],
+      fileName: '${generateNomFichier()}.cntrt', // Set the suggested file name here
+    );
+  
+
+    if (filePath != null) {
+
+      // Vérifiez si le fichier a l'extension .cntrt
+      if (!filePath.endsWith('.cntrt')) {
+        filePath += '.cntrt';
+      }
+
+      File file = File(filePath);
+      await file.writeAsString(jsonData);
+    }
+  }
+  
+
   String generateNumeroContrat() {
   final elements = variablesContrat['date'].split('/');
   String version = variablesContrat['versionContrat'].toString().padLeft(3, '0');
@@ -115,6 +144,60 @@ Future<void> _loadAppData() async {
     return '${variablesContrat['entreprise']}-${generateNumeroContrat()}';
   }
 
+Future<bool> showExitDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Voulez-vous vraiment quitter ?'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                const SizedBox(height: 10), // Espacement entre les boutons
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.yellow,
+                    minimumSize: const Size(200, 50), // Taille du bouton
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(false);
+                  },
+                  child: const Text('Annuler', style: TextStyle(fontSize: 20, color: Colors.black)),
+                ),
+                const SizedBox(height: 10), // Espacement entre les boutons
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.green,
+                    minimumSize: const Size(200, 50), // Taille du bouton
+                  ),
+                  onPressed: () async {
+                    await saveContract();
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Sauvegarder et Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
+                ),
+                const SizedBox(height: 10), // Espacement entre les boutons
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    minimumSize: const Size(200, 50), // Taille du bouton
+                  ),
+                  onPressed: () {
+                    Navigator.of(context).pop(true);
+                  },
+                  child: const Text('Quitter', style: TextStyle(fontSize: 20, color: Colors.black)),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    return Future.value(false);
+  }
+
+  
+
 
 void main() {
   _loadAppData();
@@ -123,6 +206,11 @@ void main() {
       child: const MyApp(),
     ),
   );
+  FlutterWindowClose.setWindowShouldCloseHandler(() async {
+    print('Window close requested');
+    bool shouldClose = await showExitDialog(navigatorKey.currentContext!);
+    return shouldClose;
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -131,6 +219,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         fontFamily: 'Gotham',
       ),
@@ -147,7 +236,6 @@ class MyApp extends StatelessWidget {
       
     );
   }
-
   
 }
 

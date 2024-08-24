@@ -1,19 +1,19 @@
 import 'dart:io';
-import 'package:contrapp/main.dart';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:contrapp/common_tiles/bouncy_action_button.dart';
 import 'package:image/image.dart' as img;
 import 'dart:convert';
+import 'package:contrapp/main.dart'; // Assurez-vous que le chemin est correct
+import 'package:contrapp/specific_tiles/attach_picker_button.dart'; // Assurez-vous que le chemin est correct
 
 class AttachPicker extends StatefulWidget {
   const AttachPicker({super.key});
 
   @override
-  AttachPickerState createState() => AttachPickerState();
+  AttachPickerContainerState createState() => AttachPickerContainerState();
 }
 
-class AttachPickerState extends State<AttachPicker> {
+class AttachPickerContainerState extends State<AttachPicker> {
 
   Future<void> pickPhotos() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
@@ -47,46 +47,9 @@ class AttachPickerState extends State<AttachPicker> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Container(
-          width: 1000,
-          margin: const EdgeInsets.fromLTRB(30, 50, 30, 10),
-          child: TravelButton(
-            color: Colors.amber,
-            icon: Icons.attach_file,
-            label: 'Ajouter une Image',
-            actionFunction: pickPhotos,
-            height: 300,
-            roundedBorder: 30,
-            textSize: 80,
-          ),
-        ),
-        Container(
-          margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-          width: 1400,
-          height: 300,
-          child: Center(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 4,
-                childAspectRatio: attachList.isNotEmpty && attachList.length <= 4 ? 1.2 : 3,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-              ),
-              itemCount: attachList.length,
-              itemBuilder: (context, index) {
-                return SizedBox(
-                  child: Image.memory(
-                    base64Decode(attachList[index]),
-                    fit: BoxFit.fill,
-                  ),
-                );
-              },
-            ),
-          ),
-        ),
-      ],
+    return AttachPickerButton(
+      attachList: attachList,
+      onPickPhotos: pickPhotos,
     );
   }
 }

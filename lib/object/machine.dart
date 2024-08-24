@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show ValueNotifier;
 
 class Machine extends Object {
   ValueNotifier<String> information;
