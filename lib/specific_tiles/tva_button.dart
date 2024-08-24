@@ -17,7 +17,7 @@ class AstreinteButtonState extends State<TvaButton> with SingleTickerProviderSta
   late FocusNode _textFieldFocusNode;
   late TextEditingController textFieldController;
 
-  bool _isClicked = hasCustomTva;
+  bool _isClicked = variablesContrat['hasCustomTva'];
   double storedTva = customTva;
 
    @override
@@ -83,7 +83,7 @@ class AstreinteButtonState extends State<TvaButton> with SingleTickerProviderSta
                 onTap: () {
                   setState(() {
                     _isClicked = !_isClicked;
-                    hasCustomTva = _isClicked;
+                    variablesContrat['hasCustomTva'] = _isClicked;
                     if (_isClicked) {
                       _controller.forward();
                       _textFieldFocusNode.requestFocus();

@@ -90,7 +90,7 @@ class RecapPage extends StatelessWidget {
               height: 100,
               width: 300,
               onChanged: (double value) {
-            tauxHoraireNotifier.value = value;
+            tauxHoraire = value;
             for (var equip in equipPicked.equipList) {
               for (var machine in equip.machines) {
                 machine.priceNotifier.value =
@@ -108,7 +108,7 @@ class RecapPage extends StatelessWidget {
               }
             }
               },
-              initValue: tauxHoraireNotifier.value,
+              initValue: tauxHoraire,
               label: "Taux Horaire",
             ),
           ],

@@ -51,6 +51,16 @@ Future<void> loadContractData() async {
     equipPicked.equipList = (List<Equipment>.from(data['equipPicked'].map((e) => Equipment.fromJson(e))));
     selectedCalendar = Map<String, Map<String, bool>>.from(data['selectedCalendar'].map((key, value) => MapEntry(key, Map<String, bool>.from(value))));
     variablesContrat['versionContrat']++;
+    montantHT = variablesContrat['montantAstreinte'];
+    hoursOfWorkNotifier.value = 0.0;
+    for (var equip in equipPicked.equipList) {
+      for (var machine in equip.machines) {
+        machine.hoursExpectedNotifier.value = machine.minutesExpected * machine.number * machine.visitsPerYear/60;
+        machine.priceNotifier.value = (tauxHoraire * machine.hoursExpectedNotifier.value).ceil();
+        montantHT += machine.priceNotifier.value;
+        hoursOfWorkNotifier.value += machine.hoursExpectedNotifier.value;
+      }
+    }
   }
 }
 

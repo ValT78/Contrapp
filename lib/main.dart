@@ -20,7 +20,7 @@ import 'package:file_picker/file_picker.dart';
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-  final ValueNotifier<double> tauxHoraireNotifier = ValueNotifier<double>(80);
+  final ValueNotifier<double> tauxHoraireNotifier = ValueNotifier<double>(0);
 
   final ValueNotifier<double> hoursOfWorkNotifier = ValueNotifier<double>(0);
 
@@ -29,6 +29,15 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
   final ValueNotifier<int> montantHTNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> montantTTCNotifier = ValueNotifier<int>(0);
   final ValueNotifier<int> totalHTNotifier = ValueNotifier<int>(0);
+
+  double get tauxHoraire {
+    return variablesContrat['tauxHoraire'];
+  }
+
+  set tauxHoraire(double value) {
+    variablesContrat['tauxHoraire'] = value;
+    tauxHoraireNotifier.value = value;
+  }
 
   double get montantHT {
     return variablesContrat['montantHT'];
@@ -104,7 +113,9 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     'totalHT': 0.0,
     'customTva': 20.0,
     'hasAstreinte': false,
+    'hasCustomTva': false,
     'montantAstreinte': 0.0,
+    'tauxHoraire': 0.0,
     'selectedCalendar': <String, Map<String, bool>>{},
   };
 

@@ -45,7 +45,7 @@ class EquipPage extends StatelessWidget {
               storeList: equipToPick.equipList.map((e) => e.equipName).toList(),
               addElement: (String equipName) {
                 if (equipPicked.equipList.any((element) => element.equipName == equipName)) {
-                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName).clone();
+                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName);
                   equipPicked.addMachine(existingEquip, Machine());
                 } else {
                   Equipment newEquip = equipToPick.equipList.firstWhere((element) => element.equipName == equipName).clone();
@@ -82,21 +82,17 @@ class EquipPage extends StatelessWidget {
                   textSize: 32, 
                   width: 150, 
                   onChanged: (double value) {
-                    tauxHoraireNotifier.value = value;
-                    for (var equip in equipPicked.equipList) {
-                      for (var machine in equip.machines) {
-                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).ceil();
-                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).ceil();
-                      }
-                    }
+                    tauxHoraire = value;
                     montantHT = variablesContrat['montantAstreinte'];
+
                     for (var equip in equipPicked.equipList) {
                       for (var machine in equip.machines) {
+                        machine.priceNotifier.value = (value * machine.hoursExpectedNotifier.value).ceil();
                         montantHT += machine.priceNotifier.value;
                       }
                     }
                   }, 
-                  initValue: tauxHoraireNotifier.value, 
+                  initValue: tauxHoraire, 
                   label: "Taux Horaire",
                 ),
                 Container(
