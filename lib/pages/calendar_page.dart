@@ -1,7 +1,7 @@
+import 'package:contrapp/common_tiles/bouncy_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/skeleton/calendar_container.dart';
-import 'package:contrapp/specific_tiles/astreinte_button.dart';
 
 class CalendarPage extends StatelessWidget {
   const CalendarPage({super.key});
@@ -18,15 +18,34 @@ class CalendarPage extends StatelessWidget {
           children: [
              SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
-              height: 500,
+              height: MediaQuery.of(context).size.height - 200,
               child: const CalendarContainer(),
             ),
-            const Center(
-              child: 
-              SizedBox(
-                child: AstreinteButton(),
+            const SizedBox(
+                width: 1000,
+                child: Row(
+                  children: <Widget>[
+                    TravelButton(
+                      color: Colors.deepPurple,
+                      icon: Icons.navigate_before,
+                      label: 'Précédent',
+                      link: '/home',
+                      height: 100,
+                      roundedBorder: 50,
+                      textSize: 30,
+                    ),
+                    TravelButton(
+                      color: Colors.green,
+                      icon: Icons.navigate_next,
+                      label: 'Suivant',
+                      link: '/equip',
+                      height: 100,
+                      roundedBorder: 50,
+                      textSize: 30,
+                    ),
+                  ],
+                ),
               ),
-            ),
           ],
         ),
       ),

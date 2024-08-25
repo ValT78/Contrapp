@@ -1,10 +1,8 @@
-import 'package:contrapp/main.dart' show variablesContrat;
+import 'package:contrapp/main.dart' show modifyApp, variablesContrat;
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:contrapp/object/operation.dart';
 import 'package:flutter/foundation.dart' show ChangeNotifier, ValueNotifier;
-import 'dart:convert' show jsonEncode;
-import 'dart:io';
 
 class EquipList extends ChangeNotifier {
   final List<Equipment> _equipList = [];
@@ -147,23 +145,6 @@ class EquipList extends ChangeNotifier {
     }
   }
 
-  // Enregistre les modifications qui ont été effectuées dans la page des équipements de manière définitive
-  Future<void> modifyApp() async {
-    Map<String, dynamic> data = {
-      'equipToPick': _equipList.map((e) => e.toJson()).toList(),
-    };
-    String jsonData = jsonEncode(data);
-    Directory projectDir = Directory.current;
-    List<FileSystemEntity> files = projectDir.listSync(recursive: false);
-    File? targetFile;
-    for (var file in files) {
-      if (file is File && file.path.endsWith('.contrapp')) {
-      targetFile = file;
-      break;
-      }
-    }
-    targetFile ??= File('default.contrapp');
-    await targetFile.writeAsString(jsonData);
-  }
+  
 }
 

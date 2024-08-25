@@ -31,11 +31,12 @@ class EquipPage extends StatelessWidget {
                 const SizedBox(
                   height: 100,
                 ),
-
+                Center(child:
                 SizedBox(
                   width: MediaQuery.of(context).size.width * 0.9,
                   height: MediaQuery.of(context).size.height - 320,
                   child: const SelectedEquip(),
+                ),
                 ),
               ],
             ),

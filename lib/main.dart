@@ -96,6 +96,9 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     variablesContrat['attachList'] = list;
   }
 
+  Map<String, Map<String, String>> oldContractPaths = {};
+
+  //Pour ouvrir le bouton s'il y en a
   bool hasCustomTva = false;
 
   Map<String, dynamic> variablesContrat = resetVariablesContrat();
@@ -132,14 +135,6 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
     totalHT = 0.0;
     tauxHoraire = 0.0;
     hoursOfWorkNotifier.value = 0.0;
-    // for (var equip in equipPicked.equipList) {
-    //   for (var machine in equip.machines) {
-    //     machine.hoursExpectedNotifier.value = machine.minutesExpected * machine.number * machine.visitsPerYear/60;
-    //     machine.priceNotifier.value = (tauxHoraire * machine.hoursExpectedNotifier.value).ceil();
-    //     montantHT += machine.priceNotifier.value;
-    //     hoursOfWorkNotifier.value += machine.hoursExpectedNotifier.value;
-    //   }
-    // }
   }
 
   
@@ -164,6 +159,7 @@ Future<void> _loadAppData() async {
       try {
         Map<String, dynamic> data = jsonDecode(jsonData);
         equipToPick.equipList.addAll(List<Equipment>.from(data['equipToPick'].map((e) => Equipment.fromJson(e))));
+        oldContractPaths = Map<String, Map<String, String>>.from(data['oldContractPaths']);
 
       } catch (e) {
         // Handle decoding error
@@ -179,11 +175,13 @@ Future<void> _loadAppData() async {
     
     String jsonData = jsonEncode(variablesContrat);
 
+    String fileName = generateNomFichier();
+
     String? filePath  = await FilePicker.platform.saveFile(
       dialogTitle: 'Sauvegarder le contrat',
       type: FileType.custom,
       allowedExtensions: ['cntrt'],
-      fileName: '${generateNomFichier()}.cntrt', // Set the suggested file name here
+      fileName: '$fileName.cntrt', // Set the suggested file name here
     );
   
 
@@ -196,22 +194,46 @@ Future<void> _loadAppData() async {
 
       File file = File(filePath);
       await file.writeAsString(jsonData);
+      addContractToHistoric(fileName, filePath);
+      modifyApp();
     }
   }
+
+  void addContractToHistoric(String fileName, String filePath) {
+  // Obtenir la date actuelle
+  String currentDate = DateTime.now().toIso8601String();
+
+  // Ajouter le fichier avec la date
+  oldContractPaths[fileName] = {
+    'path': filePath,
+    'date': currentDate,
+  };
+
+  // Vérifier le nombre de fichiers et supprimer le plus ancien si nécessaire
+  if (oldContractPaths.length > 15) {
+    // Trouver le fichier le plus ancien
+    String oldestFile = oldContractPaths.entries
+        .reduce((a, b) => a.value['date']!.compareTo(b.value['date']!) < 0 ? a : b)
+        .key;
+
+    // Supprimer le fichier le plus ancien
+    oldContractPaths.remove(oldestFile);
+  }
+}
   
 
   String generateNumeroContrat() {
-  final elements = variablesContrat['date'].split('/');
-  String version = variablesContrat['versionContrat'].toString().padLeft(3, '0');
-  
-  return '${elements[2].padLeft(2)}${elements[1]}${elements[0]}$version';
-}
+    final elements = variablesContrat['date'].split('/');
+    String version = variablesContrat['versionContrat'].toString().padLeft(3, '0');
+
+    return '${elements[2].substring(2)}${elements[1]}${elements[0]}$version';
+  }
 
   String generateNomFichier() {
     return '${variablesContrat['entreprise']}-${generateNumeroContrat()}';
   }
 
-Future<bool> _showExitDialog(BuildContext context) async {
+Future<bool> showExitDialog(BuildContext context) async {
     return await showDialog<bool>(
       context: context,
       builder: (BuildContext context) {
@@ -245,7 +267,6 @@ Future<bool> _showExitDialog(BuildContext context) async {
                   onPressed: () async {
                     await saveContract();
                     Navigator.of(context).pop(true);
-                    return Future.value(true);
                   },
                   child: const Text('Sauvegarder et Quitter', style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
@@ -257,7 +278,6 @@ Future<bool> _showExitDialog(BuildContext context) async {
                   ),
                   onPressed: () {
                     Navigator.of(context).pop(true);
-                    Future.value(true);
                   },
                   child: const Text('Quitter', style: TextStyle(fontSize: 60, color: Colors.black, fontWeight: FontWeight.bold)),
                 ),
@@ -269,18 +289,36 @@ Future<bool> _showExitDialog(BuildContext context) async {
     ) ?? false;
   }
 
-  
+  // Enregistre les modifications qui ont été effectuées dans la page des équipements de manière définitive
+  Future<void> modifyApp() async {
+    Map<String, dynamic> data = {
+      'equipToPick': equipToPick.equipList.map((e) => e.toJson()).toList(),
+      'oldContractPaths': oldContractPaths,
+    };
+    String jsonData = jsonEncode(data);
+    Directory projectDir = Directory.current;
+    List<FileSystemEntity> files = projectDir.listSync(recursive: false);
+    File? targetFile;
+    for (var file in files) {
+      if (file is File && file.path.endsWith('.contrapp')) {
+      targetFile = file;
+      break;
+      }
+    }
+    targetFile ??= File('default.contrapp');
+    await targetFile.writeAsString(jsonData);
+  }
 
 
-void main() {
-  _loadAppData();
+void main() async{
+  await _loadAppData();
   runApp(ChangeNotifierProvider<EquipList>.value(
       value: equipPicked,
       child: const MyApp(),
     ),
   );
   FlutterWindowClose.setWindowShouldCloseHandler(() async {
-    bool shouldClose = await _showExitDialog(navigatorKey.currentContext!);
+    bool shouldClose = await showExitDialog(navigatorKey.currentContext!);
     return shouldClose;
   });
 }
@@ -305,7 +343,6 @@ class MyApp extends StatelessWidget {
         '/attach': (context) => const AttachPage(),
         '/recap': (context) => const RecapPage(),
       },
-      
     );
   }
   

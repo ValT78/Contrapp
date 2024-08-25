@@ -41,6 +41,14 @@ class VariableIndicatorState<T> extends State<VariableIndicator<T>> {
           color: widget.color[800]!,
           width: 2,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.8), // Increase opacity to make the shadow more visible
+            spreadRadius: 7,
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -48,7 +56,7 @@ class VariableIndicatorState<T> extends State<VariableIndicator<T>> {
           ValueListenableBuilder<dynamic>(
             valueListenable: widget.variableNotifier,
             builder: (context, value, child) {
-                return Text(
+              return Text(
                 value.toString(),
                 textAlign: TextAlign.center,
                 style: TextStyle(
@@ -56,7 +64,7 @@ class VariableIndicatorState<T> extends State<VariableIndicator<T>> {
                   fontWeight: FontWeight.bold,
                   color: widget.color[800]!,
                 ),
-                );
+              );
             },
           ),
           Icon(

@@ -1,3 +1,4 @@
+import 'package:contrapp/common_tiles/super_title.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
@@ -6,41 +7,134 @@ import 'package:file_picker/file_picker.dart';
 import 'dart:io';
 import 'dart:convert';
 import 'package:contrapp/main.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: const PreferredSize(
-        preferredSize: Size.fromHeight(100),
-        child: CustomNavbar(height: 100,),
-      ),
-      body: Center(
-        child: SizedBox(
-          width: 1000,
-          child: Row(
-            children: <Widget>[              
-                TravelButton(color: Colors.amber, icon: Icons.file_upload, label: 'Charger un contrat existant', actionFunction: loadContractData, link: '/common', height: 500, roundedBorder: 30, textSize: 50),            
-                const TravelButton(color: Colors.green, icon: Icons.create, label: 'Créer un nouveau contrat', link: '/common', height: 500, roundedBorder: 30, textSize: 50),
+Widget build(BuildContext context) {
+  return Scaffold(
+    appBar: const PreferredSize(
+      preferredSize: Size.fromHeight(100),
+      child: CustomNavbar(height: 100,),
+    ),
+    body: Center(
+      child: SizedBox(
+        width: 1000,
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              const SizedBox(
+                height: 20,
+              ),
+              SizedBox(
+                height: 150,
+                child: TravelButton(
+                  color: Colors.red,
+                  icon: Icons.exit_to_app,
+                  label: "Quitter l'application",
+                  height: 100,
+                  roundedBorder: 30,
+                  textSize: 50,
+                  actionFunction: () => buttonQuitApp(context),
+                ),
+              ),
+              const SizedBox(height: 30,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  TravelButton(
+                    color: Colors.amber,
+                    icon: Icons.file_upload,
+                    label: 'Charger un contrat existant',
+                    actionFunction: () => loadContractData(null, null),
+                    link: '/common',
+                    height: 400,
+                    roundedBorder: 30,
+                    textSize: 50,
+                  ),
+                  const TravelButton(
+                    color: Colors.green,
+                    icon: Icons.create,
+                    label: 'Créer un nouveau contrat',
+                    link: '/common',
+                    height: 400,
+                    roundedBorder: 30,
+                    textSize: 50,
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20,),
+              const SuperTitle(title: "Ouverts Récemment", color: Colors.grey),
+              const Divider(),
+                ...oldContractPaths.keys.toList().reversed.map((key) {
+                return Column(
+                  children: [
+                    InkWell(
+                      onTap: () async {
+                      bool asLoaded = await loadContractData(oldContractPaths[key]?['path'], context);
+                      if(asLoaded) Navigator.pushNamed(context, '/common');
+                      },
+                      child: ListTile(
+                      leading: const Icon(Icons.insert_drive_file, size: 30,), // Ajout de l'icône de fichier
+                      title: Row (
+                        children: [
+                        Text(key, style: const TextStyle(fontSize: 20)), // Ajout du nom du f ichier
+                        const Spacer(),
+                        Text(oldContractPaths[key]?['date'] != null ? DateFormat('yyyy-MM-dd HH:mm').format(DateTime.parse(oldContractPaths[key]!['date']!)) : '', style: const TextStyle(fontSize: 15)), // Ajout de la date de dernière modification
+                        ],
+                      ),
+                      ),
+                    ),
+                    const Divider(), // Ajout du trait entre les tiles
+                  ],
+                );
+              }
+              ),
             ],
           ),
         ),
-      )
-    );
-  }
+      ),
+    ),
+  );
+}
 
   // Fonction pour charger les données
-Future<void> loadContractData() async {
-  FilePickerResult? result = await FilePicker.platform.pickFiles(
-    type: FileType.custom,
-    allowedExtensions: ['cntrt'],
-  );
+Future<bool> loadContractData(String? contractPath, BuildContext? context) async {
+  
+  FilePickerResult? contract;
+  String? jsonData;
+  if (contractPath == null) {
+    print('contractPath is null');
+    contract = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['cntrt'],
+    );
+    if (contract != null && contract.files.single.path != null) {
+      contractPath = contract.files.single.path!;
+      File file = File(contract.files.single.path!);
+       jsonData = await file.readAsString();
+    }
+  }
+  else {
+    try {
+      File file = File(contractPath);
+      
+      jsonData = await file.readAsString();
+      // Traitez les données du fichier ici
+    } catch (e) {
+      ScaffoldMessenger.of(context!).showSnackBar(
+        const SnackBar(
+          content: Text('Aucun fichier trouvé'),
+        ),
+      );
+      return false;
+    }
+  }
 
-  if (result != null) {
-    File file = File(result.files.single.path!);
-    String jsonData = await file.readAsString();
+  if (jsonData != null) {
 
     Map<String, dynamic> data = jsonDecode(jsonData);
 
@@ -60,7 +154,22 @@ Future<void> loadContractData() async {
         hoursOfWorkNotifier.value += machine.hoursExpectedNotifier.value;
       }
     }
+    if(contractPath != null) {
+      addContractToHistoric(generateNomFichier(), contractPath);
+      await modifyApp();
+    }
+    return true;
   }
+  else {
+    return false;
+  }
+}
+
+void buttonQuitApp(BuildContext context) async {
+  bool shouldClose = await showExitDialog(context);
+    if(shouldClose) {
+      exit(0);
+    }
 }
 
 }

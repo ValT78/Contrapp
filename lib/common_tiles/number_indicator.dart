@@ -26,6 +26,14 @@ class NumberIndicator extends StatelessWidget {
           width: 3.0,
         ),
         borderRadius: BorderRadius.circular(10.0),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.8), // Increase opacity to make the shadow more visible
+            spreadRadius: 10,
+            blurRadius: 14,
+            offset: const Offset(5, 5),
+          ),
+        ],
       ),
       child: Column(
         children: [

@@ -59,7 +59,7 @@ class FormFieldState<T> extends State<CustomFormField<T>> {
         height: widget.height,
         margin: EdgeInsets.symmetric(horizontal: widget.horizontalMargin),
         decoration: BoxDecoration(
-            color: widget.color[100]!.withOpacity(0.50),
+          color: widget.color[100]!.withOpacity(0.50),
           borderRadius: BorderRadius.circular(6),
         ),
       child: TextFormField(
