@@ -25,6 +25,7 @@ class AttachPickerButton extends StatelessWidget {
             label: 'Ajouter une Image',
             actionFunction: onPickPhotos,
             height: 300,
+            width: 1000,
             roundedBorder: 30,
             textSize: 80,
           ),

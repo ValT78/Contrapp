@@ -129,6 +129,7 @@ void createPdfFromMarkdown() async {
   // Ensuite, générez les pages suivantes avec le thème mainPageTheme
   pdf.addPage(
   pw.MultiPage(
+    maxPages: 50,
     pageTheme: mainPageTheme,
     build: (pw.Context context) {
       return [
@@ -195,13 +196,8 @@ String _insertInformation(String text) {
   return text.replaceAllMapped(RegExp('==(.+?)=='), (Match m) {
 
     final key = m.group(1);
-    print(key);
     if(variablesContrat.containsKey(key)) {
-      if(key == 'montantAstreinte') {
-        print(variablesContrat[key].runtimeType);
-      }
       if(variablesContrat[key] is double) {
-        print((variablesContrat[key] as double).toInt());
         return (variablesContrat[key] as double).toInt().toString();
       }
       return variablesContrat[key].toString();
@@ -398,6 +394,32 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
         );
       }
 
+      else if(mdText.startsWith('<cadre>')) {
+        final phrases = mdText.substring(7).split('|');
+        // Create two lists to hold the phrases for each box
+        List<String> box1 = [];
+        List<String> box2 = [];
+
+        // Distribute the phrases between the two boxes
+        for (int i = 0; i < phrases.length; i++) {
+          if (i % 2 == 0) {
+            box1.add(phrases[i]);
+          } else {
+            box2.add(phrases[i]);
+          }
+        }
+        return pw.Row(
+          mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+          children: [
+            _buildBox(box1),
+            pw.Spacer(),
+            _buildBox(box2),
+          ],
+        );
+
+
+      }
+
       else if (mdContent.tag == 'p') {
         final underlinedMatch = RegExp(r'<u>(.*?)</u>').firstMatch(mdText);
         if(underlinedMatch != null) {
@@ -408,4 +430,19 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
     }
     
     return pw.Container();
+  }
+
+  pw.Widget _buildBox(List<String> phrases) {
+    return pw.Container(
+      width: 200,
+      height: 80,
+      decoration: pw.BoxDecoration(
+        border: pw.Border.all(color: PdfColors.black),
+        color: PdfColors.white,
+      ),
+      child: pw.Column(
+        mainAxisAlignment: pw.MainAxisAlignment.center,
+        children: phrases.map((phrase) => pw.Text(phrase)).toList(),
+      ),
+    );
   }

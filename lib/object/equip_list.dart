@@ -16,7 +16,7 @@ class EquipList extends ChangeNotifier {
     _equipList.clear();
     _equipList.addAll(equipList);
     notifyListeners();
-    if(isModifyingApp) variablesContrat['equipPicked'] = equipList;
+    if(isModifyingApp) variablesContrat['equipPicked'];
   }
 
   void addEquipment(Equipment equip) {

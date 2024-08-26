@@ -4,7 +4,6 @@ import 'package:contrapp/main.dart';
 import 'package:contrapp/specific_tiles/machine_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/object/machine.dart';
-import 'package:flutter/widgets.dart';
 
 class EquipmentTile extends StatelessWidget {
   final Equipment equip;

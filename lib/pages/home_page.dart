@@ -22,6 +22,7 @@ Widget build(BuildContext context) {
     body: Center(
       child: SizedBox(
         width: 1000,
+        height: MediaQuery.of(context).size.height - 100,
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -36,6 +37,7 @@ Widget build(BuildContext context) {
                   icon: Icons.exit_to_app,
                   label: "Quitter l'application",
                   height: 100,
+                  width: 1000,
                   roundedBorder: 30,
                   textSize: 50,
                   actionFunction: () => buttonQuitApp(context),
@@ -52,6 +54,7 @@ Widget build(BuildContext context) {
                     actionFunction: () => loadContractData(null, null),
                     link: '/common',
                     height: 400,
+                    width: 450,
                     roundedBorder: 30,
                     textSize: 50,
                   ),
@@ -61,6 +64,7 @@ Widget build(BuildContext context) {
                     label: 'Créer un nouveau contrat',
                     link: '/common',
                     height: 400,
+                    width: 450,
                     roundedBorder: 30,
                     textSize: 50,
                   ),
@@ -107,7 +111,6 @@ Future<bool> loadContractData(String? contractPath, BuildContext? context) async
   FilePickerResult? contract;
   String? jsonData;
   if (contractPath == null) {
-    print('contractPath is null');
     contract = await FilePicker.platform.pickFiles(
       type: FileType.custom,
       allowedExtensions: ['cntrt'],
@@ -142,6 +145,7 @@ Future<bool> loadContractData(String? contractPath, BuildContext? context) async
 
     attachList = List<String>.from(data['attachList']);
     equipPicked.equipList = (List<Equipment>.from(data['equipPicked'].map((e) => Equipment.fromJson(e))));
+    variablesContrat['equipPicked'] = (List<Equipment>.from(data['equipPicked'].map((e) => Equipment.fromJson(e))));
     selectedCalendar = Map<String, Map<String, bool>>.from(data['selectedCalendar'].map((key, value) => MapEntry(key, Map<String, bool>.from(value))));
     variablesContrat['versionContrat']++;
     montantHT = variablesContrat['montantAstreinte'];

@@ -23,8 +23,8 @@ class AttachPage extends StatelessWidget {
           width: 1000,
           child: Row(
             children: <Widget>[              
-              TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/calendar', height: 100, roundedBorder: 50, textSize: 30),            
-              TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/recap', height: 100, roundedBorder: 50, textSize: 30),
+              TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/calendar', height: 100, width: 450, roundedBorder: 50, textSize: 30),            
+              TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/recap', height: 100, width: 450, roundedBorder: 50, textSize: 30),
             ],
           ),
         ),

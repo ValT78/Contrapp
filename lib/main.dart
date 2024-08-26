@@ -159,8 +159,7 @@ Future<void> _loadAppData() async {
       try {
         Map<String, dynamic> data = jsonDecode(jsonData);
         equipToPick.equipList.addAll(List<Equipment>.from(data['equipToPick'].map((e) => Equipment.fromJson(e))));
-        oldContractPaths = Map<String, Map<String, String>>.from(data['oldContractPaths']);
-
+        oldContractPaths = Map<String, Map<String, String>>.from(data['oldContractPaths'].map((key, value) => MapEntry(key, Map<String, String>.from(value))));
       } catch (e) {
         // Handle decoding error
         print('Error decoding JSON data: $e');

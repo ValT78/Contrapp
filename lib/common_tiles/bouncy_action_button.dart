@@ -6,12 +6,13 @@ class TravelButton extends StatefulWidget {
   final IconData icon;
   final String label;
   final double height;
+  final double width;
   final double roundedBorder;
   final double textSize;
   final String? link;
   final Function? actionFunction;
 
-  const TravelButton({super.key, required this.color, required this.icon, required this.label, required this.height, required this.roundedBorder, required this.textSize, this.link, this.actionFunction});
+  const TravelButton({super.key, required this.color, required this.icon, required this.label, required this.height, required this.roundedBorder, required this.textSize, this.link, this.actionFunction, required this.width});
 
   static TravelButtonState? of(BuildContext context) => context.findAncestorStateOfType<TravelButtonState>();
 
@@ -25,7 +26,10 @@ class TravelButtonState extends State<TravelButton> {
     
   @override
   Widget build(BuildContext context) {
-    return Expanded(
+    return SizedBox(
+        height: widget.height,
+        width: widget.width,
+        
       child: MouseRegion(
       onEnter: (PointerEnterEvent event) => setState(() => _isHoveringButton = true),
       onExit: (PointerExitEvent event) => setState(() => _isHoveringButton = false),

@@ -491,13 +491,6 @@ Le bénéficiaire de la prestation accepte le contenu de ces conditions généra
 
 
 Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécution de ce contrat seront de la compétence des juridictions d'Angers, quelles que soient les modalités de paiement acceptées, même en cas d'appel en garantie ou de pluralité de défendeurs, et nonobstant toute clause contraire. Il est convenu que tout droit d'enregistrement, le cas échéant, ainsi que toute demande, droit encouru et amende, seront à la charge de la partie qui a rendu nécessaire la formalité d'enregistrement.
-
-
-
-# Remise spécial
-
-
-
 Remise de 10% sur l'ensemble des pièces Dans le cadre de ce contrat et blalblal ballblalb blalballba balblalbalbllalb ablmalblalba
 
 
@@ -505,38 +498,29 @@ Remise de 10% sur l'ensemble des pièces Dans le cadre de ce contrat et blalblal
 
 && attachList
 ___
-
 # Tarifs et signatures
+
 
 
 <u>Durée du contrat :</u>
 
 
-
 -	1 an renouvelable par tacite reconduction
 
 
-
 <u>Périodicité :</u>
-
 
  
 -	Suivre la catégorie « Planning Prévisionnel des visites » 
 		
 
-
-
 <u>Dépannage :</u>
-
-
 
 
 && astreinteTexte
 
 
-
 <u>Montant du contrat d’entretien :</u>
-
 
 
 <tab>Coût Matériel HT| ==montantHT== €	
@@ -549,18 +533,11 @@ ___
 
 
 
-
-
 <tab>Montant TTC contrat entretien (TVA: ==customTva==%)| ==montantTTC== €
 
 
+<cadre>==entreprise== |Ets PICQUETTE |==adresse1== |Route de Sainte-Cécile |==adresse2== |84830 - SERIGNAN
 
-
-
-
-<tab>==entreprise== |Ets PICQUETTE
-<tab>==adresse1== |Route de Sainte-Cécile
-<tab>==adresse2== |84830 - SERIGNAN
 
 
 <tab>Date: ............................. |Date : ==date==      

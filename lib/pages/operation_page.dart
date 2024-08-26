@@ -34,7 +34,7 @@ class OperationPage extends StatelessWidget {
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height - 380,
+                        height: MediaQuery.of(context).size.height - 440,
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: SelectedOperation(
@@ -65,12 +65,13 @@ class OperationPage extends StatelessWidget {
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
-              child: const TravelButton(
+              child: TravelButton(
                 color: Colors.green, 
                 icon: Icons.check,
                 label: 'Valider', 
                 link: '/equip', 
                 height: 100, 
+                width: MediaQuery.of(context).size.width * 0.8,
                 roundedBorder: 50, 
                 textSize: 30
               ),

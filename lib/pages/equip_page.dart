@@ -74,6 +74,7 @@ class EquipPage extends StatelessWidget {
                   label: 'Précédent', 
                   link: '/common', 
                   height: 100, 
+                  width: 600,
                   roundedBorder: 50, 
                   textSize: 30
                 ),
@@ -121,6 +122,7 @@ class EquipPage extends StatelessWidget {
                   label: 'Suivant', 
                   link: '/calendar', 
                   height: 100, 
+                  width: 600,
                   roundedBorder: 50, 
                   textSize: 30
                 ),

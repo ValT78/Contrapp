@@ -273,6 +273,7 @@ class MachineTile extends StatelessWidget {
                     label: "Valider", 
                     roundedBorder: 16, 
                     height: 150 * screenWidth/1920,
+                    width: screenWidth * 2 / 3 -32,
                     textSize: 50 * screenWidth/1920,
                     actionFunction: () {
                       Navigator.of(context).pop();
