@@ -11,25 +11,33 @@ import 'package:contrapp/pdf/calendar_object.dart';
 import 'package:contrapp/pdf/operation_object.dart';
 import 'package:contrapp/pdf/equipment_object.dart';
 
-final titleCadre = pw.MemoryImage(
-    File('assets/titleCadre.png').readAsBytesSync(),
-);
-
-final footerImage = pw.MemoryImage(
-  File('assets/footer.png').readAsBytesSync(),
-  );
-  final headerImage = pw.MemoryImage(
-  File('assets/header.png').readAsBytesSync(),
-  );
-  final signatureImage = pw.MemoryImage(
-  File('assets/signature.png').readAsBytesSync(),
-  );
-  final bulletImage = pw.MemoryImage(
-  File('assets/bulletPoint.png').readAsBytesSync(),
-  );
 
 
+
+
+  
 void createPdfFromMarkdown() async {
+  print("ce que tu veux");
+
+  
+    print("pleeeeeeeeeease");
+
+  try {
+
+
+    final bytes5 = await rootBundle.load('assets/titleCadre.png');
+    pw.MemoryImage titleCadre = pw.MemoryImage(bytes5.buffer.asUint8List());
+    final bytes = await rootBundle.load('assets/footer.png');
+    pw.MemoryImage footerImage = pw.MemoryImage(bytes.buffer.asUint8List());
+    final bytes2 = await rootBundle.load('assets/header.png');
+    pw.MemoryImage headerImage = pw.MemoryImage(bytes2.buffer.asUint8List());
+    final bytes3 = await rootBundle.load('assets/signature.png');
+    pw.MemoryImage signatureImage = pw.MemoryImage(bytes3.buffer.asUint8List());
+    final bytes4 = await rootBundle.load('assets/bulletPoint.png');
+    pw.MemoryImage bulletImage = pw.MemoryImage(bytes4.buffer.asUint8List());
+    // Utilisez `buffer` pour générer votre PDF
+  
+  print("ce que tu veux");
   variablesContrat['numeroContrat'] = generateNumeroContrat();
   
   final pdf = pw.Document();
@@ -110,6 +118,7 @@ void createPdfFromMarkdown() async {
     },
   );
 
+  
 // Ensuite, ajoutez les pages suivantes sans l'image dans l'en-tête
 // Générez d'abord la première page avec le thème firstPageTheme
   pdf.addPage(
@@ -118,33 +127,31 @@ void createPdfFromMarkdown() async {
       build: (pw.Context context) {
         return pw.Column(
           mainAxisSize: pw.MainAxisSize.min,
-          children: _markdownToWidget(markdownParagraph[0], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle),
+          children: _markdownToWidget(markdownParagraph[0], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre),
         );
       },
     ),
   );
 
 
-
   // Ensuite, générez les pages suivantes avec le thème mainPageTheme
   pdf.addPage(
   pw.MultiPage(
-    maxPages: 50,
+    maxPages: 100,
     pageTheme: mainPageTheme,
     build: (pw.Context context) {
       return [
         pw.Padding(
           padding: const pw.EdgeInsets.only(bottom: 20), // Ajustez cette valeur selon vos besoins
           child: pw.Column(
-            children: _markdownToWidget(markdownParagraph[1], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle)
+            children: _markdownToWidget(markdownParagraph[1], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre)
           ),
         ),
       ];
     },
   ),
 );
-
-
+  
 
   // Ajouter l'image de signature en bas à droite de la feuille
   pdf.addPage(
@@ -156,7 +163,7 @@ void createPdfFromMarkdown() async {
             pw.Column(
               mainAxisSize: pw.MainAxisSize.min,
               crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: _markdownToWidget(markdownParagraph[2], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle),
+              children: _markdownToWidget(markdownParagraph[2], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre),
             ),
             pw.Positioned(
               bottom: 0,
@@ -168,24 +175,35 @@ void createPdfFromMarkdown() async {
       },
     ),
   );
+    final directory = Directory('Contrat');
+  if (!await directory.exists()) {
+    await directory.create();
+  }
 
   await File('Contrat/${generateNomFichier()}.pdf').writeAsBytes(await pdf.save());
+
+  
+  }
+  catch (e) {
+    print('Erreur lors du chargement de l\'asset: $e');
+  }
 }
 
 
 
-List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle) {
+
+List<pw.Widget> _markdownToWidget(List<String> markdownParagraph, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle, pw.MemoryImage bulletImage, pw.MemoryImage titleCadre) {
   return markdownParagraph.expand<pw.Widget>((element) {
   if(element == ' ') {
     return [pw.SizedBox(height: 12)]; // Réduisez l'espace entre les paragraphes en ajustant la hauteur
   }
   else if(element.startsWith('&&')) {
-    return _insertGraph(element, titleStyle, classicStyle, boldStyle, italicStyle, underlineStyle, highlightedStyle);
+    return _insertGraph(element, titleStyle, classicStyle, boldStyle, italicStyle, underlineStyle, highlightedStyle, bulletImage, titleCadre);
   }
   else {
     final mdElement = md.Document().parse(element).firstOrNull;
     if(mdElement is md.Element) {
-      return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle)];
+      return [_formatMarkdown(mdElement, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre)];
     }          
   }
   return [pw.Container()];
@@ -208,7 +226,7 @@ String _insertInformation(String text) {
   });
 }
 
-List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle highlightedStyle) {
+List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle highlightedStyle, pw.MemoryImage bulletImage, pw.MemoryImage titleCadre) {
   if(element.contains('attachList')) {
     // Vérifiez si attachList est vide
     if (attachList.isEmpty) {
@@ -320,7 +338,7 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
 }
 
 
-  pw.Widget _formatMarkdown(mdContent, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle) {
+  pw.Widget _formatMarkdown(mdContent, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle, pw.MemoryImage bulletImage, pw.MemoryImage titleCadre) {
 
     String mdText = _insertInformation(mdContent.textContent);
 
@@ -341,7 +359,7 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
           ),
         );
       }
-      else if(child is md.Element && child.tag == 'strong') {
+      if(child is md.Element && child.tag == 'strong') {
         final highlightedMatch = RegExp(r'<s>(.*?)</s>').firstMatch(mdText);
         if(highlightedMatch != null) {
           return pw.Text(highlightedMatch.group(1)!, style: underlineStyle);
@@ -420,7 +438,7 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
 
       }
 
-      else if (mdContent.tag == 'p') {
+      if (mdContent.tag == 'p') {
         final underlinedMatch = RegExp(r'<u>(.*?)</u>').firstMatch(mdText);
         if(underlinedMatch != null) {
           return pw.Text(underlinedMatch.group(1)!, style: underlineStyle);

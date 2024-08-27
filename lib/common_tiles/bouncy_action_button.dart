@@ -71,7 +71,18 @@ class TravelButtonState extends State<TravelButton> {
           ),
           onPressed: () async {
             if (widget.actionFunction != null) {
-              await widget.actionFunction!();
+              try {
+                if (widget.actionFunction != null) {
+                  await widget.actionFunction!();
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Succès !')),
+                  );
+                }
+              } catch (e) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text('Erreur : $e')),
+                );
+              }
             }
             if (widget.link != null) {
               Navigator.pushNamed(context, widget.link!);

@@ -38,6 +38,7 @@ dependencies:
   provider: ^6.1.2
   image: ^4.2.0
   flutter_window_close: ^1.0.0
+  path_provider: ^2.1.4
 
 
 
