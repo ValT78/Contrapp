@@ -224,6 +224,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
 }
 
 Future<bool> _showResetDialog(BuildContext context) async {
+  final widthScreen = MediaQuery.of(context).size.width;
   return await showDialog<bool>(
     context: context,
     builder: (BuildContext context) {
@@ -236,40 +237,40 @@ Future<bool> _showResetDialog(BuildContext context) async {
             mainAxisSize: MainAxisSize.min,
             children: [
               const SizedBox(height: 14),
-              const Text('Voulez-vous recommencer ?', style: TextStyle(fontSize: 60, fontWeight: FontWeight.bold)),
+              Text('Voulez-vous recommencer ?', style: TextStyle(fontSize: 60 * widthScreen/1920, fontWeight: FontWeight.bold)),
               const SizedBox(height: 30), // Espacement entre les boutons
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.yellow,
-                  minimumSize: const Size(1500, 100), // Taille du bouton
+                  minimumSize: Size(1500, 100 * widthScreen/1920), // Taille du bouton
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(false);
                 },
-                child: const Text('Annuler', style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold)),
+                child: Text('Annuler', style: TextStyle(fontSize: 50 * widthScreen/1920, color: Colors.black, fontWeight: FontWeight.bold)),
               ),
               const Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.green,
-                  minimumSize: const Size(1500, 100), // Taille du bouton
+                  minimumSize: Size(1500, 100 * widthScreen/1920), // Taille du bouton
                 ),
                 onPressed: () async {
                   await saveContract();
                   Navigator.of(context).pop(true);
                 },
-                child: const Text('Sauvegarder et recommencer', style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold)),
+                child: Text('Sauvegarder et recommencer', style: TextStyle(fontSize: 50 * widthScreen/1920, color: Colors.black, fontWeight: FontWeight.bold)),
               ),
               const Spacer(),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.red,
-                  minimumSize: const Size(1500, 100), // Taille du bouton
+                  minimumSize: Size(1500, 100 * widthScreen/1920), // Taille du bouton
                 ),
                 onPressed: () {
                   Navigator.of(context).pop(true);
                 },
-                child: const Text('Recommencer', style: TextStyle(fontSize: 50, color: Colors.black, fontWeight: FontWeight.bold)),
+                child: Text('Recommencer', style: TextStyle(fontSize: 50 * widthScreen/1920, color: Colors.black, fontWeight: FontWeight.bold)),
               ),
             ],
           ),
