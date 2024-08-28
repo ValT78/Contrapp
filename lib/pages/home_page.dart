@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:contrapp/common_tiles/super_title.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/object/equipment.dart';
@@ -14,14 +16,15 @@ class HomePage extends StatelessWidget {
 
   @override
 Widget build(BuildContext context) {
+  double widthFactor = MediaQuery.of(context).size.width / 1920;
   return Scaffold(
-    appBar: const PreferredSize(
-      preferredSize: Size.fromHeight(100),
-      child: CustomNavbar(height: 100,),
+    appBar: PreferredSize(
+      preferredSize: Size.fromHeight(max(100 * widthFactor, 100)),
+      child: CustomNavbar(height: max(100 * widthFactor, 100)),
     ),
     body: Center(
       child: SizedBox(
-        width: 1000,
+        width: max(1000 * MediaQuery.of(context).size.width / 1920, 1000),
         height: MediaQuery.of(context).size.height - 100,
         child: SingleChildScrollView(
           child: Column(
@@ -30,6 +33,7 @@ Widget build(BuildContext context) {
               const SizedBox(
                 height: 20,
               ),
+              
               SizedBox(
                 height: 150,
                 child: TravelButton(
@@ -41,6 +45,7 @@ Widget build(BuildContext context) {
                   roundedBorder: 30,
                   textSize: 50,
                   actionFunction: () => buttonQuitApp(context),
+                  scaleWidthFactor: 2,
                 ),
               ),
               const SizedBox(height: 30,),
@@ -54,9 +59,10 @@ Widget build(BuildContext context) {
                     actionFunction: () => loadContractData(null, null),
                     link: '/common',
                     height: 400,
-                    width: 450,
+                    width: 500,
                     roundedBorder: 30,
                     textSize: 50,
+                    scaleWidthFactor: 2,
                   ),
                   const TravelButton(
                     color: Colors.green,
@@ -64,9 +70,10 @@ Widget build(BuildContext context) {
                     label: 'Créer un nouveau contrat',
                     link: '/common',
                     height: 400,
-                    width: 450,
+                    width: 500,
                     roundedBorder: 30,
                     textSize: 50,
+                    scaleWidthFactor: 2,
                   ),
                 ],
               ),

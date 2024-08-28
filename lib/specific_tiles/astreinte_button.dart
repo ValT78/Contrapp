@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:contrapp/common_tiles/custom_form_field.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/main.dart';
@@ -55,25 +57,26 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
 
   @override
   Widget build(BuildContext context) {
+    double widthFactor = (MediaQuery.of(context).size.width/ 1920);
     return ClipRect(
       child: SizedBox(
-        width: 430,
-        height: 100,
+        width: 430 * widthFactor,
+        height: max(100* widthFactor, 100),
         child: Stack(
           children: [
             AnimatedPositioned(
               duration: const Duration(milliseconds: 400),
-              left: _isClicked ? 230 : 0,
+              left: _isClicked ? 230 * widthFactor : 0,
               child: CustomFormField(
                 color: Colors.green,
                 icon: Icons.euro,
-                textSize: 57.0,
+                textSize: 57.0 * widthFactor,
                 onChanged: (value) {
                   montantAstreinte = value;
                   storedAstreinte = value;
                 },
-                height: 100,
-                width: 200,
+                height: max(100* widthFactor, 100),
+                width: 200 * widthFactor,
                 initValue: montantAstreinte,
                 label: 'Montant',
                 )
@@ -99,7 +102,7 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
                 child: Material(
                   color: Colors.transparent, // Pour que le Material soit transparent
                   child: Container(
-                    width: 330,
+                    width: 330 * widthFactor,
                     padding: const EdgeInsets.all(10.0),
                     alignment: Alignment.centerRight,
                     decoration: BoxDecoration(
@@ -112,13 +115,13 @@ class AstreinteButtonState extends State<AstreinteButton> with SingleTickerProvi
                         Icon(
                           _isClicked ? Icons.check_box_rounded : Icons.access_time_rounded,
                           color: Colors.white,
-                          size: 60.0,
+                          size: 60.0 * widthFactor,
                         ),
                         const SizedBox(width: 10.0),
-                        const Text(
+                        Text(
                           'Astreinte\n   24/24',
                           style: TextStyle(
-                            fontSize: 30.0, // Augmenter la taille du texte entré
+                            fontSize: 30.0 * widthFactor, // Augmenter la taille du texte entré
                             color: Colors.white, // Changer la couleur du texte entré en magenta
                             fontWeight: FontWeight.bold,
                           ),

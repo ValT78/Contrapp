@@ -1,26 +1,30 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:contrapp/custom_navbar.dart';
 import 'package:contrapp/skeleton/common_form.dart';
 import 'package:contrapp/common_tiles/bouncy_action_button.dart';
+import 'package:flutter/widgets.dart';
 
 class CommonPage extends StatelessWidget {
   const CommonPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: PreferredSize(
+    return Scaffold(
+      appBar: const PreferredSize(
         preferredSize: Size.fromHeight(100),
         child: CustomNavbar(height: 100),
       ),
       body: Center(
-        child: SingleChildScrollView(
+        child: SizedBox(
+                width: max(1000 * MediaQuery.of(context).size.width / 1920, 1000),
+                child: const SingleChildScrollView(
           child: Column(
             children: [
               CommonForm(),
-              SizedBox(
-                width: 1000,
-                child: Row(
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TravelButton(
                       color: Colors.deepPurple,
@@ -28,9 +32,10 @@ class CommonPage extends StatelessWidget {
                       label: 'Précédent',
                       link: '/home',
                       height: 100,
-                      width: 400,
+                      width: 500,
                       roundedBorder: 50,
                       textSize: 30,
+                      scaleWidthFactor: 2,
                     ),
                     TravelButton(
                       color: Colors.green,
@@ -38,14 +43,16 @@ class CommonPage extends StatelessWidget {
                       label: 'Suivant',
                       link: '/equip',
                       height: 100,
-                      width: 400,
+                      width: 500,
                       roundedBorder: 50,
                       textSize: 30,
+                      scaleWidthFactor: 2,
                     ),
                   ],
                 ),
-              ),
             ],
+              ),
+
           ),
         ),
       ),

@@ -14,6 +14,7 @@ class CalendarPage extends StatelessWidget {
         child: CustomNavbar(height: 100,),
       ),  
       body: SingleChildScrollView(
+        child: Center(
         child: Column(
           children: [
              SizedBox(
@@ -21,34 +22,37 @@ class CalendarPage extends StatelessWidget {
               height: MediaQuery.of(context).size.height - 200,
               child: const CalendarContainer(),
             ),
-            const SizedBox(
-                width: 1000,
-                child: Row(
+            SizedBox(
+                width: 1200 * MediaQuery.of(context).size.width * 0.9/1920,
+                child: const Row(
                   children: <Widget>[
                     TravelButton(
                       color: Colors.deepPurple,
                       icon: Icons.navigate_before,
                       label: 'Précédent',
-                      link: '/home',
+                      link: '/equip',
                       height: 100,
-                      width: 450,
+                      width: 500,
                       roundedBorder: 50,
                       textSize: 30,
+                      scaleWidthFactor: 1,
                     ),
                     TravelButton(
                       color: Colors.green,
                       icon: Icons.navigate_next,
                       label: 'Suivant',
-                      link: '/equip',
+                      link: '/attach',
                       height: 100,
-                      width: 450,
+                      width: 500,
                       roundedBorder: 50,
                       textSize: 30,
+                      scaleWidthFactor: 1,
                     ),
                   ],
                 ),
               ),
           ],
+        ),
         ),
       ),
     );

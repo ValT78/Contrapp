@@ -5,6 +5,7 @@ class NumberIndicator extends StatelessWidget {
   final int number;
   final double width;
   final double height;
+  final double widthScaleFactor;
 
   const NumberIndicator({
     super.key,
@@ -12,12 +13,14 @@ class NumberIndicator extends StatelessWidget {
     required this.number,
     required this.width,
     this.height = 250.0,
+    this.widthScaleFactor = 1.0,
   });
 
   @override
   Widget build(BuildContext context) {
+    double widthFactor = (1 + (MediaQuery.of(context).size.width - 1920) / 1920 / widthScaleFactor);
     return Container(
-      width: width,
+      width: width * widthFactor,
       height: height,
       decoration: BoxDecoration(
         color: Colors.blue[300],
@@ -41,18 +44,18 @@ class NumberIndicator extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               text,
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 32.0,
+                fontSize: 32.0 * widthFactor,
                 fontWeight: FontWeight.bold
               ),
             ),
           ),
           Text(
               number.toString(),
-              style: const TextStyle(
+              style: TextStyle(
                 color: Colors.white,
-                fontSize: 100.0,
+                fontSize: 100.0 * widthFactor,
                 fontWeight: FontWeight.bold
               ),
             ),

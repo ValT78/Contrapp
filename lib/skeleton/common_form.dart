@@ -79,7 +79,6 @@ class CommonFormState extends State<CommonForm> {
     return Container(
         margin: const EdgeInsets.fromLTRB(20, 10, 20, 20),
         padding: const EdgeInsets.all(20),
-        width: 1000, // Définissez la largeur de votre choix
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.black, width: 2),

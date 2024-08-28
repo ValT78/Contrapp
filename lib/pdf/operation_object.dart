@@ -47,15 +47,15 @@ List<pw.TableRow> buildTableRows(List<Operation> operations, pw.TextStyle style)
   for (var operation in operations) {
     // Calculer la hauteur maximale de la ligne
     double maxHeight = calculateMaxHeight([
-      'x${operation.operationNameNotifier.value}',
-      'x${operation.visits}'
+      (operation.operationNameNotifier.value),
+      '${operation.visits}'
     ], style);
 
     rows.add(
       pw.TableRow(
         children: [
           buildCell(operation.operationNameNotifier.value, style, maxHeight, PdfColors.blue50),
-          buildCell('x${operation.visits}', style, maxHeight, PdfColors.blue100),
+          buildCell('${operation.visits}', style, maxHeight, PdfColors.blue100),
         ],
       ),
     );

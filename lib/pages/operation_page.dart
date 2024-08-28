@@ -73,7 +73,8 @@ class OperationPage extends StatelessWidget {
                 height: 100, 
                 width: MediaQuery.of(context).size.width * 0.8,
                 roundedBorder: 50, 
-                textSize: 30
+                textSize: 30,
+                scaleWidthFactor: 1,
               ),
             ),
           ],

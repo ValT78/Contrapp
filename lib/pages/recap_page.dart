@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:contrapp/common_tiles/custom_form_field.dart';
 import 'package:contrapp/common_tiles/number_indicator.dart';
 import 'package:contrapp/common_tiles/super_title.dart';
@@ -43,8 +45,8 @@ Widget build(BuildContext context) {
     body: Center(
         child: SingleChildScrollView(
       child: SizedBox(
-          width: 1200,
-          height: 900,
+          width: max(1200 * MediaQuery.of(context).size.width / 1920, 1200),
+          height: max(900 * MediaQuery.of(context).size.width / 1920, 900),
           child: Column(
             children: [
               const Spacer(),
@@ -60,18 +62,21 @@ Widget build(BuildContext context) {
                     text: "Équipements",
                     number: _getNumberOfMachines(),
                     width: 300,
+                    widthScaleFactor: 3,
                   ),
                   const Spacer(),
                   NumberIndicator(
                     text: "Opérations",
                     number: _getNumberOfOperations(),
                     width: 300,
+                    widthScaleFactor: 3,
                   ),
                   const Spacer(),
                   NumberIndicator(
                     text: "Pièces-Jointes",
                     number: _getNumberOfAttachments(),
                     width: 300,
+                    widthScaleFactor: 3,
                   ),
                 ],
               ),
@@ -230,9 +235,8 @@ Widget build(BuildContext context) {
                 ],
               ),
               const Spacer(),
-              const SizedBox(
-                width: 1000,
-                child: Row(
+              const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TravelButton(
                       color: Colors.deepPurple,
@@ -240,9 +244,10 @@ Widget build(BuildContext context) {
                       label: 'Précédent',
                       link: '/attach',
                       height: 100,
-                      width: 450,
+                      width: 500,
                       roundedBorder: 50,
                       textSize: 30,
+                      scaleWidthFactor: 2,
                     ),
                     TravelButton(
                       color: Colors.green,
@@ -250,14 +255,13 @@ Widget build(BuildContext context) {
                       label: 'Générer le PDF',
                       actionFunction: createPdfFromMarkdown,
                       height: 100,
-                      width: 450,
+                      width: 500,
                       roundedBorder: 50,
                       textSize: 30,
+                      scaleWidthFactor: 2,
                     ),
-                    const Spacer(),
                   ],
                 ),
-              ),
             ],
           ),
         ),

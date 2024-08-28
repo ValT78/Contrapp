@@ -25,6 +25,7 @@ class OperationTileState extends State<OperationTile> {
 
   @override
   Widget build(BuildContext context) {
+    double scaleWidth = MediaQuery.of(context).size.width / 1920;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0),
       decoration: BoxDecoration(
@@ -33,7 +34,7 @@ class OperationTileState extends State<OperationTile> {
       ),
       padding: const EdgeInsets.all(8.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Center(child:
           Container(
@@ -74,7 +75,7 @@ class OperationTileState extends State<OperationTile> {
               color: Colors.blue,
               icon: Icons.build,
               variableNotifier: widget.operation.operationNameNotifier,
-              textSize: 32,
+              textSize: 24*scaleWidth,
               height: 50,
             ),
           ),

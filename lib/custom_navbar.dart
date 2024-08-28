@@ -38,10 +38,8 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
 
   @override
   Widget build(BuildContext context) {
-
-  double height = widget.height;
-
-  return LayoutBuilder(
+    double widthFactor = (MediaQuery.of(context).size.width/ 1920);
+    return LayoutBuilder(
     builder: (context, constraints) {
       final totalWidth = constraints.maxWidth-8;
       final buttonWidth = min(totalWidth * 0.3 / 3, 100).toDouble() ;
@@ -53,7 +51,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
         children: [
           Center(
             child: SizedBox(
-              height: height,
+              height: widget.height,
               child: Container(
                 color: const Color.fromARGB(255, 8, 46, 102),
                 child: Row(
@@ -83,7 +81,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                           return Transform.scale(
                             scale: _scale.value,
                             child: Container(
-                              height: 100, // Ajustez la hauteur comme vous le souhaitez
+                              height: max(100*widthFactor, 100), // Ajustez la hauteur comme vous le souhaitez
                               width: 100, // Ajustez la largeur comme vous le souhaitez
                               color: _color.value, // Ajoutez votre couleur de fond ici
                               child: Padding(
@@ -111,10 +109,10 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                     child: Stack(
                       children: List.generate(arrowNumber, (index) => Positioned(
                         left: index * arrowWidth - overlap,
-                        height: height,
+                        height: widget.height,
                         width: arrowWidth / overlapFactor,
 
-                        child: ArrowBox(index: index, width: arrowWidth / overlapFactor, height: height, overlapFactor: overlapFactor, texte: textes[index], link: link[index]),
+                        child: ArrowBox(index: index, width: arrowWidth / overlapFactor, height: widget.height, overlapFactor: overlapFactor, texte: textes[index], link: link[index]),
                       )).reversed.toList(),
                     ),
                   ),
@@ -123,7 +121,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                     child: Container(
                       color: const Color.fromARGB(255, 8, 46, 102),
                       child: SizedBox(
-                        height: height,
+                        height: widget.height,
                         width: buttonWidth,
                         child: Container(
                           margin: const EdgeInsets.fromLTRB(0, 4, 4, 4),
@@ -149,12 +147,12 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                             onPressed: () {
                               saveContract();
                             },
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.save, color: Colors.black, size: 30,), // Icone de sauvegarde
-                                  Text('Save', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 19)), // Texte "Save"
+                                  const Icon(Icons.save, color: Colors.black, size: 30,), // Icone de sauvegarde
+                                  Text('Save', style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 19*widthFactor)), // Texte "Save"
                                 ],
                               ),
                             ),
@@ -168,7 +166,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                     child: Container(
                       color: const Color.fromARGB(255, 8, 46, 102),
                       child: SizedBox(
-                        height: height,
+                        height: widget.height,
                         width: buttonWidth,
                         child: Container(
                           margin: const EdgeInsets.all(4),
@@ -198,12 +196,12 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                 Navigator.pushNamed(context, '/home');
                               }
                             },
-                            child: const Center(
+                            child: Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
-                                  Icon(Icons.refresh, color: Colors.black, size: 35,), // Icone pour quitter
-                                  Text('Reset', style: TextStyle(color: Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 15)), // Texte "Quitter"
+                                  const Icon(Icons.refresh, color: Colors.black, size: 35,), // Icone pour quitter
+                                  Text('Reset', style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 15*widthFactor)), // Texte "Quitter"
                                 ],
                               ),
                             ),

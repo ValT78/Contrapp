@@ -11,8 +11,9 @@ class TravelButton extends StatefulWidget {
   final double textSize;
   final String? link;
   final Function? actionFunction;
+  final double scaleWidthFactor;
 
-  const TravelButton({super.key, required this.color, required this.icon, required this.label, required this.height, required this.roundedBorder, required this.textSize, this.link, this.actionFunction, required this.width});
+  const TravelButton({super.key, required this.color, required this.icon, required this.label, required this.height, required this.roundedBorder, required this.textSize, this.link, this.actionFunction, required this.width, required this.scaleWidthFactor});
 
   static TravelButtonState? of(BuildContext context) => context.findAncestorStateOfType<TravelButtonState>();
 
@@ -26,11 +27,12 @@ class TravelButtonState extends State<TravelButton> {
     
   @override
   Widget build(BuildContext context) {
+    double _widthFactor = (1 + (MediaQuery.of(context).size.width - 1920) / 1920 / widget.scaleWidthFactor);
     return SizedBox(
-        height: widget.height,
-        width: widget.width,
-        
-      child: MouseRegion(
+      height: widget.height,
+      width: widget.width * _widthFactor,
+      child: 
+    MouseRegion(
       onEnter: (PointerEnterEvent event) => setState(() => _isHoveringButton = true),
       onExit: (PointerExitEvent event) => setState(() => _isHoveringButton = false),
       child: AnimatedContainer(
@@ -59,14 +61,15 @@ class TravelButtonState extends State<TravelButton> {
             foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
             overlayColor: WidgetStateProperty.all<Color>(widget.color[100]!), // couleur quand on clique sur le bouton
           ),
-          icon: Icon(widget.icon, size: widget.textSize * 2),
+          icon: Icon(widget.icon, size: widget.textSize * 2 * _widthFactor),
           label: Center(
             child: Align(
               alignment: Alignment.center,
-              child: Text(
+                child: Text(
                 widget.label,
-                style: TextStyle(fontSize: widget.textSize, fontWeight: FontWeight.bold),
-              ),
+                style: TextStyle(fontSize: widget.textSize * _widthFactor, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
+                ),
             ),
           ),
           onPressed: () async {

@@ -11,7 +11,7 @@ class EquipmentTile extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
+    double scaleWidth = MediaQuery.of(context).size.width / 1920;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0), // Marge légère
       decoration: BoxDecoration(
@@ -64,9 +64,9 @@ class EquipmentTile extends StatelessWidget {
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.build, // Icône symbolisant un équipement
-                            size: 36.0, // Taille de l'icône
+                            size: 36.0 * scaleWidth, // Taille de l'icône
                             color: Colors.white, // Couleur de l'icône
                           ),
                           const SizedBox(width: 8.0), // Espacement entre l'icône et le texte
@@ -74,7 +74,7 @@ class EquipmentTile extends StatelessWidget {
                             equip.equipName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 36 * screenWidth / 1920, // Taille de la police en fonction de l'espace disponible
+                              fontSize: 30 * scaleWidth, // Taille de la police en fonction de l'espace disponible
                               fontWeight: FontWeight.bold, // Poids de la police
                               color: Colors.white, // Couleur du texte
                             ),
@@ -98,10 +98,10 @@ class EquipmentTile extends StatelessWidget {
                       backgroundColor: Colors.white, // Couleur de fond
                       foregroundColor:const Color.fromARGB(255, 14, 56, 119),
                       textStyle: TextStyle(
-                        fontSize: 36.0 * screenWidth / 1920, // Taille du texte
+                        fontSize: 36.0 * scaleWidth, // Taille du texte
                         fontWeight: FontWeight.bold, // Poids du texte
                       ),
-                      minimumSize: Size(screenWidth * 0.4, 70), // Taille minimale du bouton (largeur, hauteur)
+                      minimumSize: Size(70 * scaleWidth, 70), // Taille minimale du bouton (largeur, hauteur)
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8.0), // Coins arrondis
                       ),
@@ -157,7 +157,7 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Quantité",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
@@ -167,7 +167,7 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Informations",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
@@ -175,7 +175,7 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Visite / an",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
@@ -183,7 +183,7 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Temps (minute)",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
@@ -191,7 +191,7 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Prix",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                   VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
@@ -199,7 +199,7 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Travail (heure)",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],

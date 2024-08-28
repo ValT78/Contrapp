@@ -67,6 +67,7 @@ class EquipPage extends StatelessWidget {
          SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[              
                 const TravelButton(
                   color: Colors.deepPurple, 
@@ -76,7 +77,9 @@ class EquipPage extends StatelessWidget {
                   height: 100, 
                   width: 600,
                   roundedBorder: 50, 
-                  textSize: 30
+                  textSize: 35,
+                  scaleWidthFactor: 0.7,
+
                 ),
                 CustomFormField(
                   color: Colors.green, 
@@ -124,7 +127,8 @@ class EquipPage extends StatelessWidget {
                   height: 100, 
                   width: 600,
                   roundedBorder: 50, 
-                  textSize: 30
+                  textSize: 35,
+                  scaleWidthFactor: 0.7,
                 ),
               ],
             ),

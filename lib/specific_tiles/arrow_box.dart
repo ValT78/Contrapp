@@ -1,4 +1,3 @@
-import 'dart:math';
 
 import 'package:contrapp/main.dart';
 import 'package:flutter/material.dart';
@@ -27,7 +26,7 @@ class ArrowBoxState extends State<ArrowBox> with RouteAware {
 @override
 Widget build(BuildContext context) {
   Color? color = Colors.blue[(widget.index) * 200 + 100];
-
+    double widthFactor = (1 + (MediaQuery.of(context).size.width - 1920) / 1920 / 0.8);
  return MouseRegion(
       onHover: (event) => setState(() => _hovering = true),
       onExit: (event) => setState(() => _hovering = false),
@@ -80,7 +79,7 @@ Widget build(BuildContext context) {
                         '${widget.index + 1}',
                         style: TextStyle(
                           color: const Color.fromARGB(255, 0, 0, 0),
-                          fontSize: max(10, widget.width/10 + 6),
+                          fontSize: 40 * widthFactor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -91,7 +90,7 @@ Widget build(BuildContext context) {
                     child: Text(
                       widget.texte, 
                       style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), 
-                        fontSize: max(10, widget.width/15 + 6),
+                        fontSize: 28 * widthFactor,
                         fontWeight: FontWeight.bold
                       ),
                     ),

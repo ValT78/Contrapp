@@ -19,15 +19,13 @@ class AttachPage extends StatelessWidget {
     child: Column(
       children: [
         AttachPicker(),
-        SizedBox(
-          width: 1000,
-          child: Row(
+        Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[              
-              TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/calendar', height: 100, width: 450, roundedBorder: 50, textSize: 30),            
-              TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/recap', height: 100, width: 450, roundedBorder: 50, textSize: 30),
+              TravelButton(color: Colors.deepPurple, icon: Icons.navigate_before, label: 'Précédent', link: '/calendar', height: 100, width: 500, roundedBorder: 50, textSize: 30, scaleWidthFactor: 2,),            
+              TravelButton(color: Colors.green, icon: Icons.navigate_next, label: 'Suivant', link: '/recap', height: 100, width: 500, roundedBorder: 50, textSize: 30, scaleWidthFactor: 2,),
             ],
           ),
-        ),
       ],
     ),
   ),

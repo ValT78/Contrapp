@@ -238,7 +238,7 @@ class MachineTile extends StatelessWidget {
                 SuperTitle(
                   title: equip.equipName, 
                   color: Colors.purple,
-                  fontSize: 49,
+                  fontSize: 45,
                 ),
                 const Spacer(flex: 1),
                 CustomFormField(
@@ -278,6 +278,7 @@ class MachineTile extends StatelessWidget {
                     actionFunction: () {
                       Navigator.of(context).pop();
                     },
+                    scaleWidthFactor: 1,
                   )
                 ),
               ],

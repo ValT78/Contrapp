@@ -491,7 +491,6 @@ Le bénéficiaire de la prestation accepte le contenu de ces conditions généra
 
 
 Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécution de ce contrat seront de la compétence des juridictions d'Angers, quelles que soient les modalités de paiement acceptées, même en cas d'appel en garantie ou de pluralité de défendeurs, et nonobstant toute clause contraire. Il est convenu que tout droit d'enregistrement, le cas échéant, ainsi que toute demande, droit encouru et amende, seront à la charge de la partie qui a rendu nécessaire la formalité d'enregistrement.
-Remise de 10% sur l'ensemble des pièces Dans le cadre de ce contrat et blalblal ballblalb blalballba balblalbalbllalb ablmalblalba
 
 
 

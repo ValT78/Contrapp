@@ -57,7 +57,7 @@ class VariableIndicatorState<T> extends State<VariableIndicator<T>> {
             valueListenable: widget.variableNotifier,
             builder: (context, value, child) {
               return Text(
-                value.toString(),
+                T==String ? value : T==int ? value.toString() : value.toStringAsFixed(1),
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: widget.textSize,
