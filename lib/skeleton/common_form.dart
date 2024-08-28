@@ -15,61 +15,24 @@ class CommonForm extends StatefulWidget {
 
 class CommonFormState extends State<CommonForm> {  
 
-  // // Création des FocusNodes
-  // late FocusNode entrepriseFocusNode;
-  // late FocusNode adresse1FocusNode;
-  // late FocusNode adresse2FocusNode;
-  // late FocusNode matriculeFocusNode;
-  // late FocusNode capitalFocusNode;
-  // late FocusNode dateFocusNode;
-  // late FocusNode versionContratFocusNode;
-
-  //  // Création des TextEditingController
-  // late TextEditingController adresse1Controller;
-  // late TextEditingController adresse2Controller;
-  // late TextEditingController matriculeController;
-  // late TextEditingController capitalController;
-  // late TextEditingController dateController;
-  // late TextEditingController versionContratController;
+  // Création des FocusNodes
+  late FocusNode entrepriseFocusNode;
 
   @override
   void initState() {
     super.initState();
 
-    // // Initialisation des FocusNodes
-    // entrepriseFocusNode = FocusNode();
-    // adresse1FocusNode = FocusNode();
-    // adresse2FocusNode = FocusNode();
-    // matriculeFocusNode = FocusNode();
-    // capitalFocusNode = FocusNode();
-    // dateFocusNode = FocusNode();
-    // versionContratFocusNode = FocusNode();
+    // Initialisation des FocusNodes
+    entrepriseFocusNode = FocusNode();
 
-    // // Initialisation des TextEditingController avec les valeurs actuelles
-    // adresse1Controller = TextEditingController(text: variablesContrat['adresse1']);
-    // adresse2Controller = TextEditingController(text: variablesContrat['adresse2']);
-    // matriculeController = TextEditingController(text: variablesContrat['matricule']);
-    // capitalController = TextEditingController(text: variablesContrat['capital'] == 0 ? '' : variablesContrat['capital'].toString());
-    // dateController = TextEditingController(text: variablesContrat['date']);
-    // versionContratController = TextEditingController(text: variablesContrat['versionContrat'].toString());
-
-    // // Demande le focus sur le premier champ du formulaire
-    // entrepriseFocusNode.requestFocus();
+    // Demande le focus sur le premier champ du formulaire
+    entrepriseFocusNode.requestFocus();
   }
 
   @override
   void dispose() {
     // Nettoyage des FocusNodes
-    // entrepriseFocusNode.dispose();
-    // adresse1FocusNode.dispose();
-    // adresse2FocusNode.dispose();
-    // matriculeFocusNode.dispose();
-    // capitalFocusNode.dispose();
-    // dateFocusNode.dispose();
-    // versionContratFocusNode.dispose();
-
-    // // Nettoyage du TextEditingController
-    // dateController.dispose();
+    entrepriseFocusNode.dispose();
 
     super.dispose();
   }
@@ -108,6 +71,7 @@ class CommonFormState extends State<CommonForm> {
                   onChanged: (value) {
                     variablesContrat['entreprise'] = value;
                   },
+                  focusNode: entrepriseFocusNode,
                 ),
                 const SizedBox(height: 20,),
                 Row(

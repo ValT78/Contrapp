@@ -31,7 +31,7 @@ class CalendarPage extends StatelessWidget {
                 ),
             ),
             SizedBox(
-                width: 1200 * MediaQuery.of(context).size.width * 0.9/1920,
+                width: 1200 * MediaQuery.of(context).size.width/1920,
                 child: const Row(
                   children: <Widget>[
                     TravelButton(

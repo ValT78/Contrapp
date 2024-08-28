@@ -516,7 +516,7 @@ ___
 <u>Dépannage :</u>
 
 
-&& astreinteTexte
+&& astreinteTexte |Accès au service de dépannage 24h/24 et 7j/7|Pas d'astreinte
 
 
 <u>Montant du contrat d’entretien :</u>
@@ -525,7 +525,7 @@ ___
 <tab>Coût Matériel HT| ==montantHT== €	
 		
 
-&& astreintePrice
+&& astreintePrice |Supplément Astreinte 24/24
 ///
 <tab>Total contrat entretien HT| ==totalHT== €	
 

@@ -281,10 +281,10 @@ for (int i = 0; i < attachList.length; i += 2) {
   else if(element.contains('astreinteTexte')) {
     final String astreinteTexte;
     if(variablesContrat['hasAstreinte']) {
-      astreinteTexte = "Accès au service de dépannage 24h/24 et 7j/7";
+      astreinteTexte = element.split("|")[1];
     }
     else {
-      astreinteTexte = "Pas d'astreinte";
+      astreinteTexte = element.split("|")[2];
     }
     return [pw.Padding(
           padding: const pw.EdgeInsets.only(left: 20), 
@@ -304,12 +304,13 @@ for (int i = 0; i < attachList.length; i += 2) {
 
   else if(element.contains('astreintePrice')) {
     if(variablesContrat['hasAstreinte']) {
+      
       return [pw.Padding(
           padding: const pw.EdgeInsets.only(left: 20), // Utilisez la valeur de leftPadding
           child: pw.Expanded(
             child: pw.Row(
                   children: [
-                    pw.Text("Supplément Astreinte 24/24", style: boldStyle),
+                    pw.Text(element.split("|")[1], style: boldStyle),
                     pw.Spacer(), // Utilisez Spacer pour pousser le reste du texte à droite
                     variablesContrat['montantAstreinte'] == 0.0 ? pw.Text("Offerte", style: boldStyle) : pw.Text("${(variablesContrat['montantAstreinte'] as double).toInt()} €", style: boldStyle),
                   ],

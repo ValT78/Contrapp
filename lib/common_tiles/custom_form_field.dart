@@ -9,6 +9,7 @@ class CustomFormField<T> extends StatefulWidget {
   final bool textAlign;
   final String? label;
   final double horizontalMargin;
+  final FocusNode? focusNode;
 
   final T initValue;
   final ValueChanged<T> onChanged;
@@ -16,7 +17,7 @@ class CustomFormField<T> extends StatefulWidget {
   final void Function(TextEditingController)? onTap;
 
 
-  const CustomFormField({super.key, required this.color, required this.icon, required this.textSize, this.height, this.width, this.textAlign = false, this.label, required this.onChanged, required this.initValue, this.horizontalMargin = 0, this.onTap});
+  const CustomFormField({super.key, required this.color, required this.icon, required this.textSize, this.height, this.width, this.textAlign = false, this.label, required this.onChanged, required this.initValue, this.horizontalMargin = 0, this.onTap, this.focusNode});
 
   static FormFieldState? of(BuildContext context) => context.findAncestorStateOfType<FormFieldState>();
 
@@ -28,12 +29,13 @@ class FormFieldState<T> extends State<CustomFormField<T>> {
 
   // ignore: unused_field
   late TextEditingController _textController;
-  final FocusNode _focusNode = FocusNode();
+  late FocusNode _focusNode;
 
   @override
   void initState() {
     super.initState();
     _textController = TextEditingController(text: widget.initValue.toString());
+    _focusNode = widget.focusNode ?? FocusNode();
     _focusNode.addListener(() {
     if (_focusNode.hasFocus) {
       _textController.selection = TextSelection(
