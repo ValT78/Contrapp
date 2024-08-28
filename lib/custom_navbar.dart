@@ -152,7 +152,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   const Icon(Icons.save, color: Colors.black, size: 30,), // Icone de sauvegarde
-                                  Text('Save', style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 19*widthFactor)), // Texte "Save"
+                                  Text('Save', style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: min(19*widthFactor, 19))), // Texte "Save"
                                 ],
                               ),
                             ),
@@ -201,7 +201,7 @@ class CustomNavbarState extends State<CustomNavbar> with TickerProviderStateMixi
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: <Widget>[
                                   const Icon(Icons.refresh, color: Colors.black, size: 35,), // Icone pour quitter
-                                  Text('Reset', style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: 15*widthFactor)), // Texte "Quitter"
+                                  Text('Reset', style: TextStyle(color: const Color.fromRGBO(0, 0, 0, 1), fontWeight: FontWeight.bold, fontSize: min(15*widthFactor, 15))), // Texte "Quitter"
                                 ],
                               ),
                             ),

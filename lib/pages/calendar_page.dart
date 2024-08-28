@@ -18,9 +18,17 @@ class CalendarPage extends StatelessWidget {
         child: Column(
           children: [
              SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
+              width: MediaQuery.of(context).size.width * 0.98,
               height: MediaQuery.of(context).size.height - 200,
-              child: const CalendarContainer(),
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 20),
+                  padding: const EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                  color: const Color.fromARGB(255, 239, 243, 255),
+                  borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const CalendarContainer(),
+                ),
             ),
             SizedBox(
                 width: 1200 * MediaQuery.of(context).size.width * 0.9/1920,
