@@ -17,11 +17,6 @@ import 'package:contrapp/pdf/equipment_object.dart';
 
   
 void createPdfFromMarkdown() async {
-  print("ce que tu veux");
-
-  
-    print("pleeeeeeeeeease");
-
   try {
 
 
@@ -37,7 +32,6 @@ void createPdfFromMarkdown() async {
     pw.MemoryImage bulletImage = pw.MemoryImage(bytes4.buffer.asUint8List());
     // Utilisez `buffer` pour générer votre PDF
   
-  print("ce que tu veux");
   variablesContrat['numeroContrat'] = generateNumeroContrat();
   
   final pdf = pw.Document();
@@ -137,7 +131,7 @@ void createPdfFromMarkdown() async {
   // Ensuite, générez les pages suivantes avec le thème mainPageTheme
   pdf.addPage(
   pw.MultiPage(
-    maxPages: 100,
+    maxPages: 200,
     pageTheme: mainPageTheme,
     build: (pw.Context context) {
       return [
@@ -255,19 +249,31 @@ List<pw.Widget> _insertGraph(String element, pw.TextStyle titleStyle, pw.TextSty
       ),
     );
 
-    // Ajoutez vos images à la liste
-    widgets.addAll(
-      attachList.map((imageItem) {
-        return pw.Padding(
-          padding: const pw.EdgeInsets.all(10), // Ajoutez un espace autour de l'image
-          child: pw.Container(
-            width: 500, // Contrôlez la largeur de l'image
-            height: 500, // Contrôlez la hauteur de l'image
-            child: pw.Image(pw.MemoryImage(base64Decode(imageItem))),
+
+for (int i = 0; i < attachList.length; i += 2) {
+  widgets.add(
+    pw.Padding(
+      padding: const pw.EdgeInsets.all(10), // Ajoutez un espace autour des images
+      child: pw.Row(
+        mainAxisAlignment: pw.MainAxisAlignment.spaceEvenly,
+        children: [
+          pw.Container(
+            width: 240, // Ajustez la largeur pour permettre deux images côte à côte
+            height: 330, // Ajustez la hauteur pour permettre deux images par page
+            child: pw.Image(pw.MemoryImage(base64Decode(attachList[i]))),
           ),
-        );
-      }).toList(),
-    );
+          if (i + 1 < attachList.length) // Vérifiez s'il y a une deuxième image
+            pw.Container(
+              width: 240, // Ajustez la largeur pour permettre deux images côte à côte
+              height: 330, // Ajustez la hauteur pour permettre deux images par page
+              child: pw.Image(pw.MemoryImage(base64Decode(attachList[i + 1]))),
+            ),
+        ],
+      ),
+    ),
+  );
+}
+
 
     // Renvoie la liste de widgets
     return widgets;

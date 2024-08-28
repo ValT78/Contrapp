@@ -5,8 +5,8 @@ List<String> months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jui', 'Jul', 'Aoû',
 
 pw.Widget buildCheckmark() {
   return pw.Container(
-    width: 19,
-    height: 19,
+    width: 17,
+    height: 17,
     decoration: const pw.BoxDecoration(
       color: PdfColors.blue800,
       shape: pw.BoxShape.circle,
@@ -17,6 +17,7 @@ pw.Widget buildCheckmark() {
         style: pw.TextStyle(
           color: PdfColors.white,
           fontWeight: pw.FontWeight.bold,
+          fontSize: 8,
         ),
       ),
     ),
@@ -59,17 +60,15 @@ List<pw.Widget> buildCalendar(Map<String, Map<String, bool>> selectedCalendar, p
                     color: PdfColors.blue100,
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.all(4),
-                      child: pw.Text(equip, maxLines: 4, overflow: pw.TextOverflow.clip, style: style),
+                      child: pw.Text(equip, maxLines: 4, overflow: pw.TextOverflow.clip, style: style.copyWith(fontSize: 7)),
                     ),
                   ),
                   ...months.map((month) => pw.Container(
                     alignment: pw.Alignment.center,
-                    height: 20.0*(equip.length/13).ceil(),
+                    height: 15.0*(equip.length/25).ceil(),
                     child: pw.Center(child: 
-                    pw.Padding(
-                      padding: const pw.EdgeInsets.all(2),
-                      child: selectedCalendar[equip]?[month] == true ? buildCheckmark() : pw.Container(), // Centrage vertical du widget checkMark
-                    ),
+                    selectedCalendar[equip]?[month] == true ? buildCheckmark() : pw.Container(), // Centrage vertical du widget checkMark
+                  
                     ),
                   ),
                   ),
