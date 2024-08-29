@@ -1,4 +1,4 @@
-import 'package:contrapp/main.dart' show modifyApp, variablesContrat;
+import 'package:contrapp/main.dart' show modifyApp;
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:contrapp/object/operation.dart';
@@ -16,7 +16,6 @@ class EquipList extends ChangeNotifier {
     _equipList.clear();
     _equipList.addAll(equipList);
     notifyListeners();
-    if(isModifyingApp) variablesContrat['equipPicked'];
   }
 
   void addEquipment(Equipment equip) {
@@ -24,9 +23,6 @@ class EquipList extends ChangeNotifier {
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
-    }
-    else {
-      variablesContrat['equipPicked'] = equipList;
     }
   }
 
@@ -36,9 +32,6 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) {
       modifyApp();
     }
-    else {
-      variablesContrat['equipPicked'] = equipList;
-    }
   }
 
   void removeEquipment(Equipment equip) {
@@ -46,9 +39,6 @@ class EquipList extends ChangeNotifier {
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
-    }
-    else {
-      variablesContrat['equipPicked'] = equipList;
     }
   }
 
@@ -58,9 +48,6 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) {
       modifyApp();
     }
-    else {
-      variablesContrat['equipPicked'] = equipList;
-    }
   }
 
   void addMachine(Equipment equip, Machine machine) {
@@ -68,9 +55,6 @@ class EquipList extends ChangeNotifier {
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
-    }
-    else {
-      variablesContrat['equipPicked'] = equipList;
     }
   }
 
@@ -80,9 +64,6 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) {
       modifyApp();
     }
-    else {
-      variablesContrat['equipPicked'] = equipList;
-    }
   }
 
   void removeMachine(Equipment equip, Machine machine) {
@@ -90,9 +71,6 @@ class EquipList extends ChangeNotifier {
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
-    }
-    else {
-      variablesContrat['equipPicked'] = equipList;
     }
   }
 
@@ -106,9 +84,6 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) {
       modifyApp();
     }
-    else {
-      variablesContrat['equipPicked'] = equipList;
-    }
   }
 
   void addOperationName(String equipName, String operationName) {
@@ -116,9 +91,6 @@ class EquipList extends ChangeNotifier {
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
-    }
-    else {
-      variablesContrat['equipPicked'] = equipList;
     }
   }
 
@@ -128,9 +100,6 @@ class EquipList extends ChangeNotifier {
     if (isModifyingApp) {
       modifyApp();
     }
-    else {
-      variablesContrat['equipPicked'] = equipList;
-    }
       
   }
 
@@ -139,9 +108,6 @@ class EquipList extends ChangeNotifier {
     notifyListeners();
     if (isModifyingApp) {
       modifyApp();
-    }
-    else {
-      variablesContrat['equipPicked'] = equipList;
     }
   }
 

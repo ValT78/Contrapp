@@ -33,6 +33,7 @@ void createPdfFromMarkdown() async {
     // Utilisez `buffer` pour générer votre PDF
   
   variablesContrat['numeroContrat'] = generateNumeroContrat();
+  variablesContrat['equipPicked'] = equipPicked.equipList;
   
   final pdf = pw.Document();
 

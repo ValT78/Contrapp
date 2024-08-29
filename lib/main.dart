@@ -171,6 +171,8 @@ Future<void> _loadAppData() async {
   
   // Fonction pour sauvegarder les données
   Future<void> saveContract() async {
+
+    variablesContrat['equipPicked'] = equipPicked.equipList;
     
     String jsonData = jsonEncode(variablesContrat);
 
