@@ -52,7 +52,7 @@ List<pw.TableRow> buildTableRows(List<Machine> machines, pw.TextStyle style) {
     // Calculer la hauteur maximale de la ligne
     double maxHeight = calculateMaxHeight([
       '${machine.number}',
-      '${machine.marque.value} - ${machine.information.value}',
+      (machine.information.value),
       '${machine.visitsPerYear}'
     ], style);
 
@@ -60,7 +60,7 @@ List<pw.TableRow> buildTableRows(List<Machine> machines, pw.TextStyle style) {
       pw.TableRow(
         children: [
           buildCell('${machine.number}', style, maxHeight, PdfColors.blue100),
-          buildCell('${machine.marque.value} - ${machine.information.value}', style, maxHeight, PdfColors.blue50),
+          buildCell(machine.information.value, style, maxHeight, PdfColors.blue50),
           buildCell('${machine.visitsPerYear}', style, maxHeight, PdfColors.blue100),
         ],
       ),

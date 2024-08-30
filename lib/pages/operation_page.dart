@@ -34,7 +34,7 @@ class OperationPage extends StatelessWidget {
                       ),
                       SizedBox(
                         width: MediaQuery.of(context).size.width * 0.9,
-                        height: MediaQuery.of(context).size.height - 440,
+                        height: MediaQuery.of(context).size.height - 380,
                         child: Container(
                           margin: const EdgeInsets.symmetric(vertical: 10),
                           child: SelectedOperation(
@@ -43,11 +43,26 @@ class OperationPage extends StatelessWidget {
                           ),
                         ),
                       ),
+                      SizedBox(
+                      width: MediaQuery.of(context).size.width * 0.9,
+                      child: TravelButton(
+                        color: Colors.green, 
+                        icon: Icons.check,
+                        label: 'Valider', 
+                        link: '/equip', 
+                        height: 100, 
+                        width: MediaQuery.of(context).size.width * 0.8,
+                        roundedBorder: 50, 
+                        textSize: 40,
+                        scaleWidthFactor: 1,
+                      ),
+                    ),
                     ],
                   ),
                 ),
                 MainSearchBar(
                   label: 'Choisissez une Opération...',
+                  yPosition: 250,
                   storeList: equipToPick.getOperations(equipment.equipName).value.map((e) => e.operationNameNotifier.value).toList(),
                   addElement: (String operationName) {
                     equipPicked.addOperationName(equipment.equipName, operationName);
@@ -63,20 +78,7 @@ class OperationPage extends StatelessWidget {
                 ), 
               ],
             ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.9,
-              child: TravelButton(
-                color: Colors.green, 
-                icon: Icons.check,
-                label: 'Valider', 
-                link: '/equip', 
-                height: 100, 
-                width: MediaQuery.of(context).size.width * 0.8,
-                roundedBorder: 50, 
-                textSize: 30,
-                scaleWidthFactor: 1,
-              ),
-            ),
+            
           ],
         ),
       ),

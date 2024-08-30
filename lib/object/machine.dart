@@ -2,7 +2,6 @@ import 'package:flutter/foundation.dart' show ValueNotifier;
 
 class Machine extends Object {
   ValueNotifier<String> information;
-  ValueNotifier<String> marque;
   int number;
   int visitsPerYear;
   int minutesExpected;
@@ -18,15 +17,12 @@ class Machine extends Object {
     this.minutesExpected = 0, 
     this.number = 1,
   }): 
-          marque = ValueNotifier<String>(marque),
-
   information = ValueNotifier<String>(information);
 
 
   Map<String, dynamic> toJson() {
     return {
       'information': information.value,
-      'marque': marque.value,
       'visitsPerYear': visitsPerYear,
       'minutesExpected': minutesExpected,
       'number': number,
@@ -36,7 +32,6 @@ class Machine extends Object {
   factory Machine.fromJson(Map<String, dynamic> json) {
     return Machine(
       information: json['information'],
-      marque: json['marque'],
       visitsPerYear: json['visitsPerYear'],
       minutesExpected: json['minutesExpected'],
       number: json['number'],
@@ -46,7 +41,6 @@ class Machine extends Object {
   Machine clone() {
     return Machine(
       information: information.value,
-      marque: marque.value,
       visitsPerYear: visitsPerYear,
       minutesExpected: minutesExpected,
       number: number,

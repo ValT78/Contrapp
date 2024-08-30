@@ -4,6 +4,7 @@ import 'package:contrapp/common_tiles/variable_indicator.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/main.dart';
 import 'package:contrapp/common_tiles/custom_form_field.dart';
+import 'package:contrapp/skeleton/main_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:flutter/services.dart';
@@ -92,13 +93,10 @@ class MachineTile extends StatelessWidget {
                         children: [
                           Center(
                             child: ValueListenableBuilder(
-                              valueListenable: machine.marque,
-                              builder: (context, marque, child) {
-                                return ValueListenableBuilder(
-                                  valueListenable: machine.information,
-                                  builder: (context, information, child) {
-                                    return Text(
-                                      '$marque - $information',
+                              valueListenable: machine.information,
+                              builder: (context, information, child) {
+                                return Text(
+                                      information,
                                       style: const TextStyle(
                                         color: Colors.white,
                                         fontSize: 16,
@@ -106,8 +104,6 @@ class MachineTile extends StatelessWidget {
                                       ),
                                     );
                                   },
-                                );
-                              },
                             ),
                           ),
                           Positioned.fill(
@@ -212,27 +208,30 @@ class MachineTile extends StatelessWidget {
     );
   }
 
-  void _showPopup(BuildContext context2, Equipment equip, Machine machine, double screenWidth) {
+  void _showPopup(BuildContext context, Equipment equip, Machine machine, double screenWidth) {
   FocusNode focusNode = FocusNode();
-
+  TextEditingController informationController = TextEditingController();
   showDialog(
-    context: context2,
-    builder: (BuildContext context) {
+    context: context,
+    builder: (BuildContext context2) {
       return KeyboardListener(
         focusNode: focusNode,
         onKeyEvent: (KeyEvent event) {
           if (event is KeyDownEvent) {
-            if (event.logicalKey == LogicalKeyboardKey.escape || event.logicalKey == LogicalKeyboardKey.enter) {
-              Navigator.of(context).pop();
+            if (event.logicalKey == LogicalKeyboardKey.escape) {
+              Navigator.of(context2).pop();
             }
           }
         },
         child: Dialog(
           child: Container(
             width: screenWidth * 2 / 3,
-            height: MediaQuery.of(context).size.height * 2 / 3,
+            height: MediaQuery.of(context2).size.height * 2 / 3,
             padding: const EdgeInsets.all(16.0),
-            child: Column(
+            child: Stack(
+            children: [
+              
+              Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 SuperTitle(
@@ -241,30 +240,20 @@ class MachineTile extends StatelessWidget {
                   fontSize: 45,
                 ),
                 const Spacer(flex: 1),
-                CustomFormField(
-                  color: Colors.purple, 
-                  icon: Icons.build, 
-                  textSize: 50, 
-                  width: screenWidth * 2 / 3 -200,
-                  label: "Marque de l'équipement",
-                  onChanged: (value) {
-                    machine.marque.value = value;
-                  }, 
-                  initValue: machine.marque.value
-                ),
-                const Spacer(flex: 1),
+                
                 CustomFormField(
                   color: Colors.deepPurple, 
                   icon: Icons.info, 
                   textSize: 50, 
-                  width: screenWidth * 2 / 3 -200,
-                  label: "Informations",
+                  width: screenWidth * 2 / 3 -100,
+                  label: "Marque - Modèle - Emplacement - Informations",
                   onChanged: (value) {
                     machine.information.value = value;
                   }, 
-                  initValue: machine.information.value
+                  initValue: machine.information.value,
+                  controller: informationController,
                 ),
-                const Spacer(flex: 1),
+                const SizedBox(height: 20),
                 Container(
                   margin: const EdgeInsets.fromLTRB(128.0, 0, 128, 16),
                   child: TravelButton(
@@ -276,12 +265,48 @@ class MachineTile extends StatelessWidget {
                     width: screenWidth * 2 / 3 -32,
                     textSize: 50 * screenWidth/1920,
                     actionFunction: () {
-                      Navigator.of(context).pop();
+                      Navigator.of(context2).pop();
                     },
                     scaleWidthFactor: 1,
                   )
                 ),
               ],
+            ),
+            Column(
+               children: [
+                const SizedBox(height: 60),
+                MainSearchBar(
+                  label: "Ajouter une information...", 
+                  storeList: equipInformations.toList(), 
+                  yPosition: MediaQuery.of(context2).size.height * 2 / 3 -200,
+                  addElement: (String information) {
+                    if (machine.information.value != "") {
+                      machine.information.value += " - $information";
+                      informationController.text = machine.information.value;
+                    } else {
+                      machine.information.value = information;
+                      informationController.text = information;
+                    }
+                  },
+                  createNewElement: (String information) {
+                    equipInformations.add(information);
+                    if (machine.information.value != "") {
+                      machine.information.value += " - $information";
+                      informationController.text = machine.information.value;
+                    } else {
+                      machine.information.value = information;
+                      informationController.text = information;
+                    }
+                    modifyApp();                    
+                  },
+                  deleteElement: (String information) {
+                    equipInformations.remove(information);
+                    modifyApp();
+                  },
+                ),
+               ]
+              ),
+            ],
             ),
           ),
         ),

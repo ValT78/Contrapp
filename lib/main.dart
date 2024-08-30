@@ -98,6 +98,8 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
   Map<String, Map<String, String>> oldContractPaths = {};
 
+  List<String> equipInformations = [];
+
   //Pour ouvrir le bouton s'il y en a
   bool hasCustomTva = false;
 
@@ -159,7 +161,13 @@ Future<void> _loadAppData() async {
       try {
         Map<String, dynamic> data = jsonDecode(jsonData);
         equipToPick.equipList.addAll(List<Equipment>.from(data['equipToPick'].map((e) => Equipment.fromJson(e))));
-        oldContractPaths = Map<String, Map<String, String>>.from(data['oldContractPaths'].map((key, value) => MapEntry(key, Map<String, String>.from(value))));
+        if (data['oldContractPaths'] == null || data['oldContractPaths'].isEmpty) {
+          oldContractPaths = {};
+        } else {
+          oldContractPaths = Map<String, Map<String, String>>.from(data['oldContractPaths'].map((key, value) => MapEntry(key, Map<String, String>.from(value))));
+        }
+        equipInformations = List<String>.from(data['equipInformation'] ?? []);
+
       } catch (e) {
         // Handle decoding error
         print('Error decoding JSON data: $e');
@@ -296,6 +304,7 @@ Future<bool> showExitDialog(BuildContext context) async {
     Map<String, dynamic> data = {
       'equipToPick': equipToPick.equipList.map((e) => e.toJson()).toList(),
       'oldContractPaths': oldContractPaths,
+      'equipInformation': equipInformations,
     };
     String jsonData = jsonEncode(data);
     Directory projectDir = Directory.current;

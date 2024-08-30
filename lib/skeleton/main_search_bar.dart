@@ -1,15 +1,17 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
+import 'package:diacritic/diacritic.dart';
 
 class MainSearchBar extends StatefulWidget {
   final String label;
   final List<String> storeList;
+  final double yPosition;
 
   final void Function(String) addElement;
   final void Function(String) createNewElement;
   final void Function(String) deleteElement;
 
-  const MainSearchBar({super.key, required this.label, required this.storeList, required this.addElement, required this.createNewElement, required this.deleteElement});
+  const MainSearchBar({super.key, required this.label, required this.storeList, required this.addElement, required this.createNewElement, required this.deleteElement, required this.yPosition});
 
   @override
   MainSearchBarState createState() => MainSearchBarState();
@@ -63,180 +65,186 @@ class MainSearchBarState extends State<MainSearchBar> {
 
 // Corps du widget
   @override
-  Widget build(BuildContext context) {
+Widget build(BuildContext context) {
   return Center(
-      child: Container(
-        width: MediaQuery.of(context).size.width * 0.8, // Occupera 80% de la largeur de l'écran
-        height: _isSearching ? min( (70 + 50 * ((_searchList.length + 1) ~/ 2 + 1)).toDouble(), MediaQuery.of(context).size.height * 0.75) : 72,
-        margin: const EdgeInsets.all(20.0),
-        padding: const EdgeInsets.all(10.0),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          // border: Border.all(color: const Color.fromARGB(255, 150, 150, 150), width: 2),
-          borderRadius: _isSearching ? BorderRadius.circular(40) : BorderRadius.circular(100),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey[300]!.withOpacity(0.5), // Increase opacity to make the shadow more visible
-              spreadRadius: 10,
-              blurRadius: 14,
-              offset: const Offset(5, -5),
-            ),
-          ],
-        ),
-        child: Column(
-          children: <Widget>[
-            TextField( // Barre de recherche
-              focusNode: _searchFocusNode,
-              controller: _filter,
-              decoration: InputDecoration(
-                prefixIcon: const Icon(Icons.search),
-                hintText: widget.label,
+    child: LayoutBuilder(
+      builder: (context, constraints) {
+        return Container(
+          width: MediaQuery.of(context).size.width * 0.8,
+          height: _isSearching
+              ? min(
+                  (90 + 50 * ((_searchList.length + 3) ~/ 2)).toDouble(),
+                  MediaQuery.of(context).size.height - widget.yPosition,
+                )
+              : 72,
+          margin: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(10.0),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: _isSearching ? BorderRadius.circular(35) : BorderRadius.circular(100),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey[300]!.withOpacity(0.5),
+                spreadRadius: 10,
+                blurRadius: 14,
+                offset: const Offset(5, -5),
               ),
-              onSubmitted: (value) { // Si on clique sur entrée
-                if (_searchList.isNotEmpty) {
-                  // Si la liste n'est pas vide, déclencher l'action de la première entrée
-                  widget.addElement(_searchList[0]);
-                  _pressEnter();
-                } else if (_searchText.isNotEmpty) {
-                  // Si la liste est vide mais _searchText n'est pas vide, déclencher l'action du bouton "Ajouter"
-                  widget.createNewElement(_searchText);
-                  widget.storeList.add(_searchText);
-                  _pressEnter();
-                }
-              },
-            ),
-            _buildSearchList(),
-          ],
-        ),
-      )
-    );
+            ],
+          ),
+          child: Column(
+            children: <Widget>[
+              TextField(
+                focusNode: _searchFocusNode,
+                controller: _filter,
+                decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.search),
+                  hintText: widget.label,
+                ),
+                onSubmitted: (value) {
+                  setState(() {
+                    if (_searchList.isNotEmpty) {
+                      widget.addElement(_searchList[0]);
+                      _pressEnter();
+                    } else if (_searchText.isNotEmpty) {
+                      widget.createNewElement(_searchText);
+                      widget.storeList.add(_searchText);
+                      _pressEnter();
+                    }
+                  });
+                },
+              ),
+              _buildSearchList(),
+            ],
+          ),
+        );
+      },
+    ),
+  );
+}
+
+Widget _buildSearchList() {
+  if (!_isSearching) {
+    return const SizedBox();
+  }
+  if (_searchText.isNotEmpty) {
+    _searchList = filterSearchResults(widget.storeList, _searchText);
+  } else {
+    _searchList = widget.storeList;
   }
 
+  return Expanded(
+    child: GridView.builder(
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 17, // Ajustez ceci pour contrôler la hauteur des éléments
+        mainAxisExtent: 60,
 
-  Widget _buildSearchList() {
-    if(!_isSearching) {
-      return const SizedBox();
-    }
-    if (_searchText.isNotEmpty) {
-      _searchList = filterSearchResults(widget.storeList, _searchText);
-    }
-    else {
-      _searchList = widget.storeList;
-    }
-
-    return Expanded(
-  child: GridView.builder(
-    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-      crossAxisCount: 2, // Nombre de colonnes
-      childAspectRatio: 15, // Ajustez ceci pour contrôler la largeur des éléments
-    ),
-    itemCount: _searchList.length + (_searchText.isNotEmpty ? 1 : 0), // Ajoutez 1 pour l'élément "Ajouter" si _searchText n'est pas vide
-    itemBuilder: (BuildContext context, int index) {
-      if (index == _searchList.length && _searchText.isNotEmpty) {
-        // Case "Ajouter"
-        return InkWell(
-          onHover: (value) => {
-            setState(() {
-              _isLoading = value;
-            })
-          },
-          onTap: () {
-            widget.createNewElement(_searchText);
-            widget.storeList.add(_searchText);
-            _pressEnter();
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.green,
-              border: Border.all(color: Colors.green[900]!),
-              borderRadius: BorderRadius.circular(8),
+      ),
+      itemCount: _searchList.length + (_searchText.isNotEmpty ? 1 : 0),
+      itemBuilder: (BuildContext context, int index) {
+        if (index == _searchList.length && _searchText.isNotEmpty) {
+          return InkWell(
+            onHover: (value) {
+              setState(() {
+                _isLoading = value;
+              });
+            },
+            onTap: () {
+              setState(() {
+                widget.createNewElement(_searchText);
+                widget.storeList.add(_searchText);
+                _pressEnter();
+              });
+            },
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+              decoration: BoxDecoration(
+                color: Colors.green,
+                border: Border.all(color: Colors.green[900]!),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Center(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Icon(Icons.add, color: Colors.white),
+                    Text("Ajouter '$_searchText'", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                  ],
+                ),
+              ),
             ),
-            child: Center(
+          );
+        } else {
+          return InkWell(
+            onHover: (value) {
+              setState(() {
+                _isLoading = value;
+              });
+            },
+            onTap: () {
+              setState(() {
+                widget.addElement(_searchList[index]);
+                _pressEnter();
+              });
+            },
+            child: SizedBox(
+              height: 100,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.add, color: Colors.white),
-                  Text("Ajouter '$_searchText'", style: const TextStyle(color: Colors.white, fontSize: 20)),
+                  Expanded(
+                    child: Center(
+                      child: Text(_searchList[index], style: const TextStyle(fontSize: 20), textAlign: TextAlign.center,),
+                    ),
+                  ),
+                  Center(
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white, backgroundColor: Colors.red,
+                      ),
+                      onPressed: () async {
+                        await showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text("Confirmation"),
+                              content: Text("Supprimer ${_searchList[index]} ?"),
+                              actions: <Widget>[
+                                TextButton(
+                                  child: const Text("Non"),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                ),
+                                TextButton(
+                                  child: const Text("Oui"),
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.storeList.remove(_searchList[index]);
+                                      widget.deleteElement(_searchList[index]);
+                                    });
+                                    Navigator.of(context).pop(true);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        },
+                      child: const Icon(Icons.delete),
+                    ),
+                  ),
                 ],
               ),
             ),
-          ),
-        );
-      } else {
-        // Autres éléments de la liste
-        return InkWell(
-          onHover: (value) => {
-            setState(() {
-              _isLoading = value;
-            })
-          },
-          onTap: () {
-            widget.addElement(_searchList[index]);
-            _pressEnter();
-          },
-          child: SizedBox(
-            height: 100, // Définissez la hauteur souhaitée ici
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Expanded(
-                  child: Center(
-                    child: Text(_searchList[index], style: const TextStyle(fontSize: 20)),
-                  ),
-                ),
-                Center(
-                  child: ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white, backgroundColor: Colors.red, // foreground
-                    ),
-                    onPressed: () async {
-                      bool? confirm = await showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text("Confirmation"),
-                            content: Text("Supprimer ${_searchList[index]} ?"),
-                            actions: <Widget>[
-                              TextButton(
-                                child: const Text("Non"),
-                                onPressed: () {
-                                  widget.deleteElement(_searchList[index]);
-                                  Navigator.of(context).pop(false);
-                                },
-                              ),
-                              TextButton(
-                                child: const Text("Oui"),
-                                onPressed: () {
-                                  Navigator.of(context).pop(true);
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
-
-                      if (confirm == true) {
-                        setState(() {
-                          widget.deleteElement(_searchList[index]);
-                          widget.storeList.remove(_searchList[index]);
-                        });
-                      }
-                    },
-                    child: const Icon(Icons.delete),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        );
-      }
-    },
-  ),
-);
+          );
+        }
+      },
+    ),
+  );
+}
 
 
-
-  }
 
   void _pressEnter() {
     _searchFocusNode.unfocus();
@@ -245,34 +253,24 @@ class MainSearchBarState extends State<MainSearchBar> {
   }
 
 
-  // Vérifier si un mot contient tous les caractères d'une requête
-  bool containsAllCharacters(String word, String query) {
-    Map<String, int> wordCharCount = {};
-    Map<String, int> queryCharCount = {};
 
-    // Compter les occurrences de chaque caractère dans le mot
-    for (var char in word.split('')) {
-      wordCharCount[char] = (wordCharCount[char] ?? 0) + 1;
-    }
+List<String> filterSearchResults(List<String> searchList, String query) {
+  query = removeDiacritics(query.toLowerCase());
+  List<String> queryWords = query.split(RegExp(r'\W+')); // Diviser la requête sur les caractères non alphanumériques
 
-    // Compter les occurrences de chaque caractère dans la requête
-    for (var char in query.split('')) {
-      queryCharCount[char] = (queryCharCount[char] ?? 0) + 1;
-    }
+  return searchList.where((entry) {
+    String lowerEntry = removeDiacritics(entry.toLowerCase());
+    List<String> entryWords = lowerEntry.split(RegExp(r'\W+')); // Diviser l'entrée sur les caractères non alphanumériques
 
-    // Vérifier si le mot contient au moins autant de chaque caractère que la requête
-    for (var char in queryCharCount.keys) {
-      if (wordCharCount[char] == null || wordCharCount[char]! < queryCharCount[char]!) {
-        return false;
-      }
-    }
+    // Vérifier si chaque mot de la requête correspond au début de l'un des mots de l'entrée
+    bool matches = queryWords.every((queryWord) {
+      return entryWords.any((entryWord) => entryWord.startsWith(queryWord));
+    });
 
-    return true;
-  }
+    return matches;
+  }).toList();
+}
 
-  // Filtrer les résultats de la recherche
-  List<String> filterSearchResults(List<String> searchList, String query) {
-    return searchList.where((entry) => containsAllCharacters(entry, query)).toList();
-  }
+
 
 }

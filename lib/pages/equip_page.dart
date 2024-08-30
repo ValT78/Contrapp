@@ -38,33 +38,7 @@ class EquipPage extends StatelessWidget {
                   child: const SelectedEquip(),
                 ),
                 ),
-              ],
-            ),
-          ),
-            MainSearchBar(
-              label:'Ajouter un équipement...',
-              storeList: equipToPick.equipList.map((e) => e.equipName).toList(),
-              addElement: (String equipName) {
-                if (equipPicked.equipList.any((element) => element.equipName == equipName)) {
-                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName);
-                  equipPicked.addMachine(existingEquip, Machine());
-                } else {
-                  Equipment newEquip = equipToPick.equipList.firstWhere((element) => element.equipName == equipName).clone();
-                  equipPicked.addEquipment(newEquip);
-                }
-              },
-              createNewElement: (String equipName) {
-                equipToPick.addEquipment(Equipment.oneValue(equipName: equipName));
-                equipPicked.addEquipment(Equipment.oneValue(equipName: equipName));
-              },
-              deleteElement: (String equipName) {
-                equipToPick.removeEquipmentName(equipName);
-                equipPicked.removeEquipmentName(equipName);
-              },
-            ), 
-          ],
-         ),
-         SizedBox(
+                SizedBox(
             width: MediaQuery.of(context).size.width * 0.9,
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -133,6 +107,34 @@ class EquipPage extends StatelessWidget {
               ],
             ),
           ),
+              ],
+            ),
+          ),
+            MainSearchBar(
+              label:'Ajouter un équipement...',
+              yPosition: 150,
+              storeList: equipToPick.equipList.map((e) => e.equipName).toList(),
+              addElement: (String equipName) {
+                if (equipPicked.equipList.any((element) => element.equipName == equipName)) {
+                  Equipment existingEquip = equipPicked.equipList.firstWhere((element) => element.equipName == equipName);
+                  equipPicked.addMachine(existingEquip, Machine());
+                } else {
+                  Equipment newEquip = equipToPick.equipList.firstWhere((element) => element.equipName == equipName).clone();
+                  equipPicked.addEquipment(newEquip);
+                }
+              },
+              createNewElement: (String equipName) {
+                equipToPick.addEquipment(Equipment.oneValue(equipName: equipName));
+                equipPicked.addEquipment(Equipment.oneValue(equipName: equipName));
+              },
+              deleteElement: (String equipName) {
+                equipToPick.removeEquipmentName(equipName);
+                equipPicked.removeEquipmentName(equipName);
+              },
+            ), 
+          ],
+         ),
+         
           
         
         ],
