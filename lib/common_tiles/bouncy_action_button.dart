@@ -12,8 +12,9 @@ class TravelButton extends StatefulWidget {
   final String? link;
   final Function? actionFunction;
   final double scaleWidthFactor;
+  final bool showSnackBar;
 
-  const TravelButton({super.key, required this.color, required this.icon, required this.label, required this.height, required this.roundedBorder, required this.textSize, this.link, this.actionFunction, required this.width, required this.scaleWidthFactor});
+  const TravelButton({super.key, required this.color, required this.icon, required this.label, required this.height, required this.roundedBorder, required this.textSize, this.link, this.actionFunction, required this.width, required this.scaleWidthFactor, this.showSnackBar = false});
 
   static TravelButtonState? of(BuildContext context) => context.findAncestorStateOfType<TravelButtonState>();
 
@@ -27,10 +28,10 @@ class TravelButtonState extends State<TravelButton> {
     
   @override
   Widget build(BuildContext context) {
-    double _widthFactor = (1 + (MediaQuery.of(context).size.width - 1920) / 1920 / widget.scaleWidthFactor);
+    double widthFactor = (1 + (MediaQuery.of(context).size.width - 1920) / 1920 / widget.scaleWidthFactor);
     return SizedBox(
       height: widget.height,
-      width: widget.width * _widthFactor,
+      width: widget.width * widthFactor,
       child: 
     MouseRegion(
       onEnter: (PointerEnterEvent event) => setState(() => _isHoveringButton = true),
@@ -61,13 +62,13 @@ class TravelButtonState extends State<TravelButton> {
             foregroundColor: WidgetStateProperty.all<Color>(Colors.white),
             overlayColor: WidgetStateProperty.all<Color>(widget.color[100]!), // couleur quand on clique sur le bouton
           ),
-          icon: Icon(widget.icon, size: widget.textSize * 2 * _widthFactor),
+          icon: Icon(widget.icon, size: widget.textSize * 2 * widthFactor),
           label: Center(
             child: Align(
               alignment: Alignment.center,
                 child: Text(
                 widget.label,
-                style: TextStyle(fontSize: widget.textSize * _widthFactor, fontWeight: FontWeight.bold),
+                style: TextStyle(fontSize: widget.textSize * widthFactor, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
                 ),
             ),
@@ -77,9 +78,11 @@ class TravelButtonState extends State<TravelButton> {
               try {
                 if (widget.actionFunction != null) {
                   await widget.actionFunction!();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Succès !')),
-                  );
+                  if (widget.showSnackBar) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Succès !')),
+                    );
+                  }
                 }
               } catch (e) {
                 ScaffoldMessenger.of(context).showSnackBar(

@@ -259,6 +259,7 @@ Widget build(BuildContext context) {
                       roundedBorder: 50,
                       textSize: 30,
                       scaleWidthFactor: 2,
+                      showSnackBar: true,
                     ),
                   ],
                 ),

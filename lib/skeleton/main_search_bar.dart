@@ -73,7 +73,7 @@ Widget build(BuildContext context) {
           width: MediaQuery.of(context).size.width * 0.8,
           height: _isSearching
               ? min(
-                  (90 + 50 * ((_searchList.length + 3) ~/ 2)).toDouble(),
+                  (72 + 51 * ((_searchList.length + 3) / 2)).toDouble(),
                   MediaQuery.of(context).size.height - widget.yPosition,
                 )
               : 72,
@@ -143,101 +143,122 @@ Widget _buildSearchList() {
       itemCount: _searchList.length + (_searchText.isNotEmpty ? 1 : 0),
       itemBuilder: (BuildContext context, int index) {
         if (index == _searchList.length && _searchText.isNotEmpty) {
-          return InkWell(
-            onHover: (value) {
-              setState(() {
-                _isLoading = value;
-              });
-            },
-            onTap: () {
-              setState(() {
-                widget.createNewElement(_searchText);
-                widget.storeList.add(_searchText);
-                _pressEnter();
-              });
-            },
-            child: Container(
-              margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.green,
-                border: Border.all(color: Colors.green[900]!),
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Center(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(Icons.add, color: Colors.white),
-                    Text("Ajouter '$_searchText'", style: const TextStyle(color: Colors.white, fontSize: 20)),
-                  ],
-                ),
+          return Material(
+  color: Colors.transparent, // ou une autre couleur de fond
+  child: Container(
+    margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 10), // Ajout de la marge ici
+    child: Ink(
+      
+      decoration: BoxDecoration(
+        color: Colors.green,
+        border: Border.all(color: Colors.green[900]!),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: InkWell(
+        onHover: (value) {
+          setState(() {
+            _isLoading = value;
+          });
+        },
+        onTap: () {
+          setState(() {
+            widget.createNewElement(_searchText);
+            widget.storeList.add(_searchText);
+            _pressEnter();
+          });
+        },
+        // hoverColor: Colors.green.withOpacity(0.2), // Couleur de survol
+        borderRadius: BorderRadius.circular(8),
+        splashColor: Color.fromARGB(255, 13, 32, 14).withOpacity(0.2), // Couleur de survol
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.add, color: Colors.white),
+              Text("Ajouter '$_searchText'", style: const TextStyle(color: Colors.white, fontSize: 20)),
+            ],
+          ),
+        ),
+      ),
+    ),
+  ),
+);
+} else {
+          return Material(
+  color: Colors.transparent, // ou une autre couleur de fond
+  child: InkWell(
+    onHover: (value) {
+      setState(() {
+        _isLoading = value;
+      });
+    },
+    onTap: () {
+      setState(() {
+        widget.addElement(_searchList[index]);
+        _pressEnter();
+      });
+    },
+    hoverColor: Colors.grey.withOpacity(0.2), // Couleur de survol
+    child: SizedBox(
+      height: 100,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Expanded(
+            child: Center(
+              child: Text(
+                _searchList[index],
+                style: const TextStyle(fontSize: 20),
+                textAlign: TextAlign.center,
               ),
             ),
-          );
-        } else {
-          return InkWell(
-            onHover: (value) {
-              setState(() {
-                _isLoading = value;
-              });
-            },
-            onTap: () {
-              setState(() {
-                widget.addElement(_searchList[index]);
-                _pressEnter();
-              });
-            },
-            child: SizedBox(
-              height: 100,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Center(
-                      child: Text(_searchList[index], style: const TextStyle(fontSize: 20), textAlign: TextAlign.center,),
-                    ),
-                  ),
-                  Center(
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        foregroundColor: Colors.white, backgroundColor: Colors.red,
-                      ),
-                      onPressed: () async {
-                        await showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              title: const Text("Confirmation"),
-                              content: Text("Supprimer ${_searchList[index]} ?"),
-                              actions: <Widget>[
-                                TextButton(
-                                  child: const Text("Non"),
-                                  onPressed: () {
-                                    Navigator.of(context).pop(false);
-                                  },
-                                ),
-                                TextButton(
-                                  child: const Text("Oui"),
-                                  onPressed: () {
-                                    setState(() {
-                                      widget.storeList.remove(_searchList[index]);
-                                      widget.deleteElement(_searchList[index]);
-                                    });
-                                    Navigator.of(context).pop(true);
-                                  },
-                                ),
-                              ],
-                            );
+          ),
+          Center(
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                foregroundColor: Colors.white,
+                backgroundColor: Colors.red,
+              ),
+              onPressed: () async {
+                await showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text("Confirmation"),
+                      content: Text("Supprimer ${_searchList[index]} ?"),
+                      actions: <Widget>[
+                        TextButton(
+                          child: const Text("Non"),
+                          onPressed: () {
+                            Navigator.of(context).pop(false);
                           },
-                        );
-                        },
-                      child: const Icon(Icons.delete),
-                    ),
-                  ),
-                ],
-              ),
+                        ),
+                        TextButton(
+                          child: const Text("Oui"),
+                          onPressed: () {
+                            setState(() {
+                              widget.deleteElement(_searchList[index]);
+                              widget.storeList.remove(_searchList[index]);
+                            });
+                            Navigator.of(context).pop(true);
+                          },
+                        ),
+                      ],
+                    );
+                  },
+                );
+              },
+              child: const Icon(Icons.delete),
             ),
-          );
+          ),
+        ],
+      ),
+    ),
+  ),
+);
+
+
+
         }
       },
     ),

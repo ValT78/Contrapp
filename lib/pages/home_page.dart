@@ -63,6 +63,7 @@ Widget build(BuildContext context) {
                     roundedBorder: 30,
                     textSize: 50,
                     scaleWidthFactor: 2,
+                    showSnackBar: true,
                   ),
                   const TravelButton(
                     color: Colors.green,

@@ -130,24 +130,25 @@ void createPdfFromMarkdown() async {
 
 
   // Ensuite, générez les pages suivantes avec le thème mainPageTheme
-  pdf.addPage(
-  pw.MultiPage(
-    maxPages: 200,
-    pageTheme: mainPageTheme,
-    build: (pw.Context context) {
-      return [
-        pw.Padding(
-          padding: const pw.EdgeInsets.only(bottom: 20), // Ajustez cette valeur selon vos besoins
-          child: pw.Column(
-            children: _markdownToWidget(markdownParagraph[1], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre)
-          ),
-        ),
-      ];
-    },
-  ),
-);
+  for (int i = 1; i < markdownParagraph.length - 1; i++) {
+    pdf.addPage(
+      pw.MultiPage(
+        maxPages: 200,
+        pageTheme: mainPageTheme,
+        build: (pw.Context context) {
+          return [
+            pw.Padding(
+              padding: const pw.EdgeInsets.only(bottom: 20), // Ajustez cette valeur selon vos besoins
+              child: pw.Column(
+                children: _markdownToWidget(markdownParagraph[i], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre)
+              ),
+            ),
+          ];
+        },
+      ),
+    );
+  }
   
-
   // Ajouter l'image de signature en bas à droite de la feuille
   pdf.addPage(
     pw.Page(
@@ -158,7 +159,7 @@ void createPdfFromMarkdown() async {
             pw.Column(
               mainAxisSize: pw.MainAxisSize.min,
               crossAxisAlignment: pw.CrossAxisAlignment.start,
-              children: _markdownToWidget(markdownParagraph[2], classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre),
+                children: _markdownToWidget(markdownParagraph.last, classicStyle, boldStyle, italicStyle, underlineStyle, titleStyle, highlightedStyle, bulletImage, titleCadre),
             ),
             pw.Positioned(
               bottom: 0,
