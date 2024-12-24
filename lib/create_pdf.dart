@@ -10,16 +10,9 @@ import 'dart:convert';
 import 'package:contrapp/pdf/calendar_object.dart';
 import 'package:contrapp/pdf/operation_object.dart';
 import 'package:contrapp/pdf/equipment_object.dart';
-
-
-
-
-
   
 void createPdfFromMarkdown() async {
   try {
-
-
     final bytes5 = await rootBundle.load('assets/titleCadre.png');
     pw.MemoryImage titleCadre = pw.MemoryImage(bytes5.buffer.asUint8List());
     final bytes = await rootBundle.load('assets/footer.png');
