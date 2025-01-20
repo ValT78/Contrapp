@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:pdf/widgets.dart' as pw;
 import 'package:pdf/pdf.dart';
 
@@ -56,16 +58,20 @@ List<pw.Widget> buildCalendar(Map<String, Map<String, bool>> selectedCalendar, p
             for (var equip in selectedCalendar.keys)
               pw.TableRow(
                 children: [
-                  pw.Container(
+                    pw.Container(
                     color: PdfColors.blue100,
+                    height: max(15.0*(equip.length/25).ceil(), 30), // Hauteur de la cellule en fonction de la longueur du texte
                     child: pw.Padding(
                       padding: const pw.EdgeInsets.all(4),
+                      child: pw.Align(
+                      alignment: pw.Alignment.centerLeft,
                       child: pw.Text(equip, maxLines: 4, overflow: pw.TextOverflow.clip, style: style.copyWith(fontSize: 7)),
+                      ),
                     ),
-                  ),
+                    ),
                   ...months.map((month) => pw.Container(
                     alignment: pw.Alignment.center,
-                    height: 15.0*(equip.length/25).ceil(),
+                    height: max(15.0*(equip.length/25).ceil(), 30), // Hauteur de la cellule en fonction de la longueur du texte
                     child: pw.Center(child: 
                     selectedCalendar[equip]?[month] == true ? buildCheckmark() : pw.Container(), // Centrage vertical du widget checkMark
                   
