@@ -174,7 +174,8 @@ void createPdfFromMarkdown() async {
   
   }
   catch (e) {
-    print('Erreur lors du chargement de l\'asset: $e');
+    print(e);
+    throw Exception('Erreur lors de la génération du PDF: $e');    
   }
 }
 

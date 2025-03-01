@@ -53,7 +53,7 @@ Widget build(BuildContext context) {
               SuperTitle(
                 title: variablesContrat['entreprise'],
                 color: Colors.blue,
-                fontSize: 70,
+                fontSize: 60,
               ),
               const Spacer(),
               Row(
