@@ -21,12 +21,16 @@ List<pw.Widget> buildOperation(List<Equipment> equipments, pw.TextStyle style, p
             ),
           ),
           children: [
-            pw.Padding(
+           pw.Container(
+              alignment: pw.Alignment.center,
               padding: const pw.EdgeInsets.all(4),
+              height: 35,
               child: pw.Text(equipment.equipName, textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white)),
             ),
-            pw.Padding(
+            pw.Container(
+              alignment: pw.Alignment.center,
               padding: const pw.EdgeInsets.all(4),
+              height: 35,
               child: pw.Text("visites par an", textAlign: pw.TextAlign.center, style: styleBold.copyWith(color: PdfColors.white)),
             ),
           ],
