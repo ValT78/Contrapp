@@ -169,7 +169,7 @@ Widget _buildSearchList() {
         },
         // hoverColor: Colors.green.withOpacity(0.2), // Couleur de survol
         borderRadius: BorderRadius.circular(8),
-        splashColor: Color.fromARGB(255, 13, 32, 14).withOpacity(0.2), // Couleur de survol
+        splashColor: const Color.fromARGB(255, 13, 32, 14).withOpacity(0.2), // Couleur de survol
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
