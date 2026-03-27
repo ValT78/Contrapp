@@ -8,7 +8,7 @@ import 'package:contrapp/object/machine.dart';
 class EquipmentTile extends StatelessWidget {
   final Equipment equip;
   const EquipmentTile({super.key, required this.equip});
-  
+
   @override
   Widget build(BuildContext context) {
     double scaleWidth = MediaQuery.of(context).size.width / 1920;
@@ -27,24 +27,23 @@ class EquipmentTile extends StatelessWidget {
           GestureDetector(
             onTap: () {
               Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => OperationPage(
-                    equipment: equip,
-                  ),
-                )
-              );
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => OperationPage(
+                      equipment: equip,
+                    ),
+                  ));
             },
             child: Container(
               padding: const EdgeInsets.fromLTRB(16.0, 0, 0, 0),
               decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 12, 57, 126), // Couleur de fond green[100]
+                color: const Color.fromARGB(
+                    255, 12, 57, 126), // Couleur de fond green[100]
                 // border: Border.all(color: Colors.black), // Bordure noire
                 borderRadius: BorderRadius.circular(8.0), // Coins arrondis
               ),
               child: Row(
                 children: [
-                  
                   Container(
                     margin: const EdgeInsets.only(left: 8),
                     decoration: BoxDecoration(
@@ -69,12 +68,15 @@ class EquipmentTile extends StatelessWidget {
                             size: 36.0 * scaleWidth, // Taille de l'icône
                             color: Colors.white, // Couleur de l'icône
                           ),
-                          const SizedBox(width: 8.0), // Espacement entre l'icône et le texte
+                          const SizedBox(
+                              width:
+                                  8.0), // Espacement entre l'icône et le texte
                           Text(
                             equip.equipName,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              fontSize: 30 * scaleWidth, // Taille de la police en fonction de l'espace disponible
+                              fontSize: 30 *
+                                  scaleWidth, // Taille de la police en fonction de l'espace disponible
                               fontWeight: FontWeight.bold, // Poids de la police
                               color: Colors.white, // Couleur du texte
                             ),
@@ -86,24 +88,25 @@ class EquipmentTile extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => OperationPage(
-                          equipment: equip,
-                        ),
-                      )
-                      );
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => OperationPage(
+                              equipment: equip,
+                            ),
+                          ));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.white, // Couleur de fond
-                      foregroundColor:const Color.fromARGB(255, 14, 56, 119),
+                      foregroundColor: const Color.fromARGB(255, 14, 56, 119),
                       textStyle: TextStyle(
                         fontSize: 36.0 * scaleWidth, // Taille du texte
                         fontWeight: FontWeight.bold, // Poids du texte
                       ),
-                      minimumSize: Size(70 * scaleWidth, 70), // Taille minimale du bouton (largeur, hauteur)
+                      minimumSize: Size(70 * scaleWidth,
+                          70), // Taille minimale du bouton (largeur, hauteur)
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(8.0), // Coins arrondis
+                        borderRadius:
+                            BorderRadius.circular(8.0), // Coins arrondis
                       ),
                     ),
                     child: Row(
@@ -115,7 +118,8 @@ class EquipmentTile extends StatelessWidget {
                             const Icon(
                               Icons.add_circle, // Icône correspondante
                               size: 36.0, // Taille de l'icône
-                              color: Color.fromARGB(255, 14, 56, 119), // Couleur de l'icône
+                              color: Color.fromARGB(
+                                  255, 14, 56, 119), // Couleur de l'icône
                             ),
                             Positioned(
                               top: -4,
@@ -126,21 +130,28 @@ class EquipmentTile extends StatelessWidget {
                                   color: Colors.red,
                                   shape: BoxShape.circle,
                                 ),
-                                child: Text(
-                                  equip.operationsNotifier.value.length.toString(),
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 12.0,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                child: ValueListenableBuilder(
+                                  valueListenable: equip.operationsNotifier,
+                                  builder: (context, operations, child) {
+                                    return Text(
+                                      operations.length.toString(),
+                                      style: const TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 12.0,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    );
+                                  },
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(width: 8.0), // Espacement entre l'icône et le texte
+                        const SizedBox(
+                            width: 8.0), // Espacement entre l'icône et le texte
                         const Text("Ajouter des Opérations"),
-                        const SizedBox(width: 8.0), // Espacement entre le texte et l'icône
+                        const SizedBox(
+                            width: 8.0), // Espacement entre le texte et l'icône
                       ],
                     ),
                   ),
@@ -157,49 +168,74 @@ class EquipmentTile extends StatelessWidget {
                     child: Text(
                       "Quantité",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                  VerticalDivider(
+                      thickness: 2,
+                      color: Colors.black,
+                      indent: 2,
+                      endIndent: 2),
                   Expanded(
-                    flex: 4
-                    ,
+                    flex: 4,
                     child: Text(
                       "Informations",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                  VerticalDivider(
+                      thickness: 2,
+                      color: Colors.black,
+                      indent: 2,
+                      endIndent: 2),
                   Expanded(
                     child: Text(
                       "Visite / an",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                  VerticalDivider(
+                      thickness: 2,
+                      color: Colors.black,
+                      indent: 2,
+                      endIndent: 2),
                   Expanded(
                     child: Text(
                       "Temps (minute)",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                  VerticalDivider(
+                      thickness: 2,
+                      color: Colors.black,
+                      indent: 2,
+                      endIndent: 2),
                   Expanded(
                     child: Text(
                       "Prix",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  VerticalDivider(thickness: 2, color: Colors.black, indent: 2, endIndent: 2),
+                  VerticalDivider(
+                      thickness: 2,
+                      color: Colors.black,
+                      indent: 2,
+                      endIndent: 2),
                   Expanded(
                     child: Text(
                       "Travail (heure)",
                       textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
                     ),
                   ),
                 ],
@@ -208,10 +244,11 @@ class EquipmentTile extends StatelessWidget {
           ),
           // Lignes de sous-catégorie
           ...equip.machines.asMap().entries.map((entry) {
-            return MachineTile(equip: equip, machine: entry.value, index: entry.key);
+            return MachineTile(
+                equip: equip, machine: entry.value, index: entry.key);
           }),
         ],
       ),
     );
-  } 
+  }
 }
