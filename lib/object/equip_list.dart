@@ -6,7 +6,7 @@ import 'package:flutter/foundation.dart' show ChangeNotifier, ValueNotifier;
 
 class EquipList extends ChangeNotifier {
   final List<Equipment> _equipList = [];
-  final bool isModifyingApp;
+  final bool isModifyingApp; // Liste chargé depuis le .contrapp, et qui le modifie à chaque changement dans cette liste via la fonction modifyApp()
 
   EquipList({this.isModifyingApp = false});
 

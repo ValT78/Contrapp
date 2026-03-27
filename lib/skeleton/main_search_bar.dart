@@ -84,7 +84,7 @@ Widget build(BuildContext context) {
             borderRadius: _isSearching ? BorderRadius.circular(35) : BorderRadius.circular(100),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey[300]!.withOpacity(0.5),
+                color: Colors.grey[300]!.withValues(alpha: 0.5), // Increase opacity to make the shadow more visible
                 spreadRadius: 10,
                 blurRadius: 14,
                 offset: const Offset(5, -5),
@@ -169,7 +169,7 @@ Widget _buildSearchList() {
         },
         // hoverColor: Colors.green.withOpacity(0.2), // Couleur de survol
         borderRadius: BorderRadius.circular(8),
-        splashColor: const Color.fromARGB(255, 13, 32, 14).withOpacity(0.2), // Couleur de survol
+        splashColor: const Color.fromARGB(255, 13, 32, 14).withValues(alpha: 0.2), // Couleur de survol
         child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -198,7 +198,7 @@ Widget _buildSearchList() {
         _pressEnter();
       });
     },
-    hoverColor: Colors.grey.withOpacity(0.2), // Couleur de survol
+    hoverColor: Colors.grey.withValues(alpha: 0.2), // Couleur de survol
     child: SizedBox(
       height: 100,
       child: Row(

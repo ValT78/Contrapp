@@ -174,7 +174,6 @@ void createPdfFromMarkdown() async {
   
   }
   catch (e) {
-    print(e);
     throw Exception('Erreur lors de la génération du PDF: $e');    
   }
 }
@@ -341,7 +340,7 @@ for (int i = 0; i < attachList.length; i += 2) {
 }
 
 
-  pw.Widget _formatMarkdown(mdContent, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle, pw.MemoryImage bulletImage, pw.MemoryImage titleCadre) {
+  pw.Widget _formatMarkdown(dynamic mdContent, pw.TextStyle classicStyle, pw.TextStyle boldStyle, pw.TextStyle italicStyle, pw.TextStyle underlineStyle, pw.TextStyle titleStyle, pw.TextStyle highlightedStyle, pw.MemoryImage bulletImage, pw.MemoryImage titleCadre) {
 
     String mdText = _insertInformation(mdContent.textContent);
 

@@ -6,7 +6,7 @@ class Operation extends Object {
   bool defaultSelected;
 
   Operation(
-     {required operationName, this.visits = 1, this.defaultSelected = false}): operationNameNotifier = ValueNotifier<String>(operationName);
+     {required String operationName, this.visits = 1, this.defaultSelected = false}): operationNameNotifier = ValueNotifier<String>(operationName);
 
   Map<String, dynamic> toJson() {
     return {

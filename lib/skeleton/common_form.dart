@@ -48,7 +48,7 @@ class CommonFormState extends State<CommonForm> {
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.8), // Increase opacity to make the shadow more visible
+              color: Colors.grey.withValues(alpha: 0.8), // Increase opacity to make the shadow more visible
               spreadRadius: 10,
               blurRadius: 14,
               offset: const Offset(0, 5),

@@ -199,7 +199,7 @@ void resetAppData() {
 }
 
 // Charger les données de l'application
-Future<void> _loadAppData() async {
+Future<void> _loadAppData(BuildContext context) async {
   Directory projectDir = Directory.current;
   List<FileSystemEntity> files = projectDir.listSync(recursive: false);
   File? targetFile;
@@ -227,8 +227,9 @@ Future<void> _loadAppData() async {
       }
       equipInformations = List<String>.from(data['equipInformation'] ?? []);
     } catch (e) {
-      // Handle decoding error
-      print('Error decoding JSON data: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erreur : $e')),
+      );
     }
   }
 }
@@ -372,7 +373,7 @@ Future<bool> showExitDialog(BuildContext context) async {
       false;
 }
 
-// Enregistre les modifications qui ont été effectuées dans la page des équipements de manière définitive
+// Enregistre les modifications qui ont été effectuées dans la page des équipements de manière définitive dans un .contrapp
 Future<void> modifyApp() async {
   Map<String, dynamic> data = {
     'equipToPick': equipToPick.equipList.map((e) => e.toJson()).toList(),
@@ -394,7 +395,7 @@ Future<void> modifyApp() async {
 }
 
 void main() async {
-  await _loadAppData();
+  await _loadAppData(navigatorKey.currentContext!);
   runApp(
     ChangeNotifierProvider<EquipList>.value(
       value: equipPicked,
