@@ -1,3 +1,5 @@
+import 'dart:math' as math;
+
 import 'package:contrapp/object/contract_calendar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
@@ -27,14 +29,14 @@ class Calendar extends StatelessWidget {
     return LayoutBuilder(
       builder: (context, constraints) {
         final totalWidth = constraints.maxWidth;
-        final unitWidth = totalWidth / (months.length + 6);
+        final unitWidth = totalWidth / (months.length + 7);
         final labelWidth = unitWidth * 5;
         final monthWidth = unitWidth;
-        final totalColumnWidth = unitWidth;
+        final totalColumnWidth = unitWidth * 2;
         final rowHeight = unitWidth / 1.5;
         final titleFontSize = 30 * totalWidth / 1920;
         final labelFontSize = 24 * totalWidth / 1920;
-        final totalFontSize = 32 * totalWidth / 1920;
+        final totalFontSize = 24 * totalWidth / 1920;
 
         return SingleChildScrollView(
           child: Column(
@@ -64,9 +66,14 @@ class Calendar extends StatelessWidget {
                     rowHeight: rowHeight,
                     labelFontSize: labelFontSize,
                     totalFontSize: totalFontSize,
+                    expectedVisits: _getExpectedEquipmentVisits(equipment),
                     backgroundColor: Colors.blue[100]!,
                     showExpandButton: operations.isNotEmpty,
                     isExpanded: expandedEquipments.contains(equipName),
+                    collapsedOperationBadgeCount:
+                        !expandedEquipments.contains(equipName)
+                            ? _countSelectedOperationDates(equipName)
+                            : 0,
                     onToggleExpanded: () => onToggleExpanded(equipName),
                   ),
                 ];
@@ -94,6 +101,7 @@ class Calendar extends StatelessWidget {
                         rowHeight: rowHeight,
                         labelFontSize: labelFontSize * 0.9,
                         totalFontSize: totalFontSize * 0.9,
+                        expectedVisits: operation.visits,
                         backgroundColor: Colors.blue[50]!,
                         showExpandButton: false,
                         isOperation: true,
@@ -191,10 +199,12 @@ class Calendar extends StatelessWidget {
     required double rowHeight,
     required double labelFontSize,
     required double totalFontSize,
+    required int expectedVisits,
     required Color backgroundColor,
     required bool showExpandButton,
     bool isExpanded = false,
     bool isOperation = false,
+    int collapsedOperationBadgeCount = 0,
     VoidCallback? onToggleExpanded,
   }) {
     final total = selectedMonths.values.where((selected) => selected).length;
@@ -242,6 +252,28 @@ class Calendar extends StatelessWidget {
                   ),
                 ),
               ),
+              if (collapsedOperationBadgeCount > 0)
+                Container(
+                  margin: const EdgeInsets.only(right: 8),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 4,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.red[700],
+                    borderRadius: BorderRadius.circular(999),
+                  ),
+                  child: Text(
+                    collapsedOperationBadgeCount > 99
+                        ? '99+'
+                        : '$collapsedOperationBadgeCount',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: labelFontSize * 0.75,
+                    ),
+                  ),
+                ),
             ],
           ),
         ),
@@ -264,11 +296,14 @@ class Calendar extends StatelessWidget {
             ),
           ),
           child: Center(
-            child: Text(
-              '$total',
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: totalFontSize,
+            child: FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                '$total / $expectedVisits',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: totalFontSize,
+                ),
               ),
             ),
           ),
@@ -324,6 +359,30 @@ class Calendar extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  int _getExpectedEquipmentVisits(Equipment equipment) {
+    if (equipment.machines.isEmpty) {
+      return 0;
+    }
+
+    return equipment.machines
+        .map((machine) => machine.visitsPerYear)
+        .reduce(math.max);
+  }
+
+  int _countSelectedOperationDates(String equipName) {
+    final operations = getOperationMonthSelections(
+      selectedCalendar,
+      equipName,
+      months,
+    );
+
+    return operations.values.fold<int>(
+      0,
+      (total, monthSelection) =>
+          total + monthSelection.values.where((selected) => selected).length,
     );
   }
 }

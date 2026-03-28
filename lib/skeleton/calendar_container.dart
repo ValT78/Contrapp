@@ -70,7 +70,7 @@ class CalendarContainerState extends State<CalendarContainer> {
   Widget build(BuildContext context) {
     _syncCalendarData();
 
-    return Calendar(
+    return Calendar( // On passe des fonctions en argument pour que le widget enfant puisse modifier l'état du parent
       equipments: equipPicked.equipList,
       months: months,
       selectedCalendar: selectedCalendar,
