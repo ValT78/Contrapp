@@ -122,6 +122,7 @@ class EquipPage extends StatelessWidget {
                                 (element) => element.equipName == equipName)
                             .clone();
                         equipPicked.addEquipment(newEquip);
+                        recomputeContractTotalsFromMachines();
                       }
                     },
                     createNewElement: (String equipName) {
@@ -133,6 +134,21 @@ class EquipPage extends StatelessWidget {
                     deleteElement: (String equipName) {
                       equipToPick.removeEquipmentName(equipName);
                       equipPicked.removeEquipmentName(equipName);
+                      recomputeContractTotalsFromMachines();
+                    },
+                    copyElement: (String sourceName, String newName) async {
+                      final sourceEquipment = equipToPick.equipList.firstWhere(
+                        (element) => element.equipName == sourceName,
+                      );
+
+                      equipToPick.addEquipment(
+                        sourceEquipment.copyWithName(newName),
+                      );
+                      equipPicked.addEquipment(
+                        sourceEquipment.copyWithName(newName),
+                      );
+                      recomputeContractTotalsFromMachines();
+                      await modifyApp();
                     },
                   ),
                 ],

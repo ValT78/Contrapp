@@ -47,6 +47,16 @@ class Equipment extends Object {
       );
     }
 
+    Equipment copyWithName(String newEquipName) {
+      return Equipment(
+        equipName: newEquipName,
+        operations: operationsNotifier.value
+            .map((operation) => operation.clone())
+            .toList(),
+        machines: machines.map((machine) => machine.clone()).toList(),
+      );
+    }
+
     void addMachine(Machine machine) {
       machines.add(machine);
     }
