@@ -22,8 +22,10 @@ Located in the `lib/object/...` folder
 - Equipment : Equipment types
 - Machine : For each equipment type, there can be multiple machines
 - Operation : For each equipment type, multiple operations can be performed
+- ContractCalendar : Not a real object, but all the logic to manage the visits per year for every equipments and machines
 
 ## Commands
+You are on Windows. Use ONLY windows commands. Use ONLY powershell. If a command fails find out the correct syntax and extend AGENTS.md to note down that syntax for future use
 - Run app: `flutter run`
 - Analyze: `flutter analyze`
 - Tests: `flutter test`
