@@ -27,7 +27,7 @@ class SelectedOperation extends StatelessWidget {
             itemBuilder: (context, index) {
               if (index == 0) {
                 return const Padding(
-                  padding: EdgeInsets.fromLTRB(120, 0, 0, 8),
+                  padding: EdgeInsets.fromLTRB(10, 0, 80, 8),
                   child: IntrinsicHeight(
                     child: Row(
                       children: [
@@ -76,13 +76,24 @@ class SelectedOperation extends StatelessWidget {
               return OperationTile(
                 key: ObjectKey(operation),
                 operation: operation,
+                canMoveUp: index > 1,
+                canMoveDown: index < operations.length,
+                onMoveUp: () {
+                  equipPicked.moveOperationUp(equipment.equipName, operation);
+                },
+                onMoveDown: () {
+                  equipPicked.moveOperationDown(equipment.equipName, operation);
+                },
                 onDelete: () {
-                  operationsNotifier.value = List.from(operations)
-                    ..remove(operation);
+                  equipPicked.removeOperation(equipment.equipName, operation);
                 },
                 changedDefaultSelected: (bool selected) {
                   equipToPick.changedDefaultSelected(
-                      equipment.equipName, operation, selected);
+                    equipment.equipName,
+                    operation,
+                    selected,
+                    operations,
+                  );
                 },
               );
             },

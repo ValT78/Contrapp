@@ -6,10 +6,23 @@ import 'package:contrapp/object/operation.dart';
 class OperationTile extends StatefulWidget {
   final Operation operation;
   final VoidCallback onDelete;
+  final VoidCallback onMoveUp;
+  final VoidCallback onMoveDown;
+  final bool canMoveUp;
+  final bool canMoveDown;
 
   final Function changedDefaultSelected;
 
-  const OperationTile({super.key, required this.operation, required this.onDelete, required this.changedDefaultSelected});
+  const OperationTile({
+    super.key,
+    required this.operation,
+    required this.onDelete,
+    required this.onMoveUp,
+    required this.onMoveDown,
+    required this.canMoveUp,
+    required this.canMoveDown,
+    required this.changedDefaultSelected,
+  });
 
   @override
   OperationTileState createState() => OperationTileState();
@@ -33,28 +46,10 @@ class OperationTileState extends State<OperationTile> {
         borderRadius: BorderRadius.circular(8.0),
       ),
       padding: const EdgeInsets.all(8.0),
-      child: Row(
+        child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Center(child:
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(800),
-              border: Border.all(
-                color: Colors.red[900]!,
-                width: 2,
-              ),
-              color: Colors.red[700],
-            ),
-            child: IconButton(
-              icon: const Icon(Icons.delete),
-              color: Colors.black,
-              onPressed: widget.onDelete,
-            ),
-          ),
-          ),
-          const Spacer(flex: 1),
+          _buildReorderControls(),
           CustomFormField(
             color: Colors.blue,
             icon: Icons.build_circle,
@@ -106,8 +101,45 @@ class OperationTileState extends State<OperationTile> {
             ),
           ),
           const Spacer(flex: 1),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 16),
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(800),
+              border: Border.all(
+                color: Colors.red[900]!,
+                width: 2,
+              ),
+              color: Colors.red[700],
+            ),
+            child: IconButton(
+              tooltip: 'Supprimer cette opération',
+              icon: const Icon(Icons.delete),
+              color: Colors.black,
+              onPressed: widget.onDelete,
+            ),
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildReorderControls() {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.keyboard_arrow_up),
+          color: widget.canMoveUp ? Colors.black : Colors.black26,
+          onPressed: widget.canMoveUp ? widget.onMoveUp : null,
+          constraints: BoxConstraints(maxHeight: 30, maxWidth: 50),
+        ),
+        IconButton(
+          icon: const Icon(Icons.keyboard_arrow_down),
+          color: widget.canMoveDown ? Colors.black : Colors.black26,
+          onPressed: widget.canMoveDown ? widget.onMoveDown : null,
+          constraints: BoxConstraints(maxHeight: 30, maxWidth: 50),
+        ),
+      ],
     );
   }
 }

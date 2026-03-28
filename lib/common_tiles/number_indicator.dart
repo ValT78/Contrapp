@@ -31,7 +31,7 @@ class NumberIndicator extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withValues(alpha: 0.8), // Increase opacity to make the shadow more visible
+            color: Colors.grey.withValues(alpha: 0.5), // Increase opacity to make the shadow more visible
             spreadRadius: 10,
             blurRadius: 14,
             offset: const Offset(5, 5),

@@ -22,10 +22,12 @@ class MachineTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double screenWidth = MediaQuery.of(context).size.width;
+    final bool canMoveUp = index > 0;
+    final bool canMoveDown = index < equip.machines.length - 1;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 8.0),
         decoration: BoxDecoration(
           color: index % 2 == 0 ? Colors.blue[200] : Colors.blue[300],
           borderRadius: BorderRadius.circular(12),
@@ -34,29 +36,11 @@ class MachineTile extends StatelessWidget {
           color: Colors.transparent, // Important pour voir l'effet d'encre
           child: Row(
             children: [
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(800),
-                  border: Border.all(
-                    color: Colors.red[900]!,
-                    width: 2,
-                  ),
-                  color: Colors.red[700],
-                ),
-                child: IconButton(
-                  icon: const Icon(Icons.delete),
-                  color: Colors.black,
-                  onPressed: () {
-                    equipPicked.removeMachine(equip, machine);
-                    if (equip.machines.isEmpty) {
-                      equipPicked.removeEquipment(equip);
-                    }
-                  },
-                ),
-              ),
-              const Spacer(
-                flex: 1,
+              _buildReorderControls(
+                canMoveUp: canMoveUp,
+                canMoveDown: canMoveDown,
+                moveUp: () => equipPicked.moveMachineUp(equip, machine),
+                moveDown: () => equipPicked.moveMachineDown(equip, machine),
               ),
               CustomFormField(
                 color: Colors.lightBlue,
@@ -103,7 +87,7 @@ class MachineTile extends StatelessWidget {
                         Positioned.fill(
                           child: InkWell(
                             onTap: () {
-                              _showPopup(context, equip, machine, screenWidth);
+                              _showInformationMachinePopUp(context, equip, machine, screenWidth);
                             },
                             splashColor:
                                 Colors.deepPurple.withValues(alpha: 0.2),
@@ -179,8 +163,28 @@ class MachineTile extends StatelessWidget {
                 width: 120,
                 height: 50,
               ),
-              const Spacer(
-                flex: 1,
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 16),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(800),
+                  border: Border.all(
+                    color: Colors.red[900]!,
+                    width: 2,
+                  ),
+                  color: Colors.red[700],
+                ),
+                child: IconButton(
+                  tooltip: 'Supprimer cette machine',
+                  icon: const Icon(Icons.delete),
+                  color: Colors.black,
+                  onPressed: () {
+                    equipPicked.removeMachine(equip, machine);
+                    if (equip.machines.isEmpty) {
+                      equipPicked.removeEquipment(equip);
+                    }
+                    recomputeContractTotalsFromMachines();
+                  },
+                ),
               ),
             ],
           ),
@@ -189,7 +193,32 @@ class MachineTile extends StatelessWidget {
     );
   }
 
-  void _showPopup(BuildContext context, Equipment equip, Machine machine,
+  Widget _buildReorderControls({
+    required bool canMoveUp,
+    required bool canMoveDown,
+    required VoidCallback moveUp,
+    required VoidCallback moveDown,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        IconButton(
+          icon: const Icon(Icons.keyboard_arrow_up),
+          color: canMoveUp ? Colors.black : Colors.black26,
+          onPressed: canMoveUp ? moveUp : null,
+          constraints: BoxConstraints(maxHeight: 30, maxWidth: 50),
+        ),
+        IconButton(
+          icon: const Icon(Icons.keyboard_arrow_down),
+          color: canMoveDown ? Colors.black : Colors.black26,
+          onPressed: canMoveDown ? moveDown : null,
+          constraints: BoxConstraints(maxHeight: 30, maxWidth: 50),
+        ),
+      ],
+    );
+  }
+
+  void _showInformationMachinePopUp(BuildContext context, Equipment equip, Machine machine,
       double screenWidth) {
     FocusNode focusNode = FocusNode();
     TextEditingController informationController = TextEditingController();
