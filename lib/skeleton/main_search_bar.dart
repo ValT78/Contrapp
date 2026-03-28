@@ -150,9 +150,10 @@ Widget _buildSearchList() {
     child: Ink(
       
       decoration: BoxDecoration(
-        color: Colors.green,
-        border: Border.all(color: Colors.green[900]!),
-        borderRadius: BorderRadius.circular(8),
+        color: Colors.green[400],
+        border: Border.all(color: Colors.green[700]!, width: 2),
+        borderRadius: BorderRadius.circular(18),
+        
       ),
       child: InkWell(
         onHover: (value) {
@@ -223,27 +224,93 @@ Widget _buildSearchList() {
                 await showDialog(
                   context: context,
                   builder: (BuildContext context) {
-                    return AlertDialog(
-                      title: const Text("Confirmation"),
-                      content: Text("Supprimer ${_searchList[index]} ?"),
-                      actions: <Widget>[
-                        TextButton(
-                          child: const Text("Non"),
-                          onPressed: () {
-                            Navigator.of(context).pop(false);
-                          },
+                    return Dialog(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      elevation: 0,
+                      backgroundColor: Colors.white,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey[300]!.withValues(alpha: 0.5),
+                              spreadRadius: 10,
+                              blurRadius: 14,
+                              offset: const Offset(5, -5),
+                            ),
+                          ],
                         ),
-                        TextButton(
-                          child: const Text("Oui"),
-                          onPressed: () {
-                            setState(() {
-                              widget.deleteElement(_searchList[index]);
-                              widget.storeList.remove(_searchList[index]);
-                            });
-                            Navigator.of(context).pop(true);
-                          },
+                        padding: const EdgeInsets.all(24),
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Text(
+                              "Confirmation",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black87,
+                              ),
+                            ),
+                            const SizedBox(height: 16),
+                            Text(
+                              "Supprimer ${_searchList[index]} ?",
+                              style: const TextStyle(
+                                fontSize: 16,
+                                color: Colors.black54,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            const SizedBox(height: 24),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.black87,
+                                    backgroundColor: Colors.grey[200],
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 32,
+                                      vertical: 12,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop(false);
+                                  },
+                                  child: const Text("Non"),
+                                ),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    foregroundColor: Colors.white,
+                                    backgroundColor: Colors.red,
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 32,
+                                      vertical: 12,
+                                    ),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(10),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      widget.deleteElement(_searchList[index]);
+                                      widget.storeList.remove(_searchList[index]);
+                                    });
+                                    Navigator.of(context).pop(true);
+                                  },
+                                  child: const Text("Oui"),
+                                ),
+                              ],
+                            ),
+                          ],
                         ),
-                      ],
+                      ),
                     );
                   },
                 );

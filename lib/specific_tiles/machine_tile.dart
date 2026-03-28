@@ -168,15 +168,15 @@ class MachineTile extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(800),
                   border: Border.all(
-                    color: Colors.red[900]!,
+                    color: Colors.red[800]!,
                     width: 2,
                   ),
-                  color: Colors.red[700],
+                  color: Color.fromARGB(255, 255, 36, 0),
                 ),
                 child: IconButton(
                   tooltip: 'Supprimer cette machine',
                   icon: const Icon(Icons.delete),
-                  color: Colors.black,
+                  color: Colors.red[50],
                   onPressed: () {
                     equipPicked.removeMachine(equip, machine);
                     if (equip.machines.isEmpty) {

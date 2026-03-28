@@ -20,8 +20,7 @@ class EquipmentTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 4.0), // Marge légère
       decoration: BoxDecoration(
-        color: Colors.blue[100], // Couleur de fond green[100]
-        // border: Border.all(color: Colors.black), // Bordure noire
+        color: Colors.blue[100],
         borderRadius: BorderRadius.circular(8.0), // Coins arrondis
       ),
       padding: const EdgeInsets.all(8.0),
@@ -33,8 +32,7 @@ class EquipmentTile extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 0),
             decoration: BoxDecoration(
               color: const Color.fromARGB(
-                  255, 12, 57, 126), // Couleur de fond green[100]
-              // border: Border.all(color: Colors.black), // Bordure noire
+                  255, 12, 57, 126),
               borderRadius: BorderRadius.circular(8.0), // Coins arrondis
             ),
             child: Row(
@@ -95,15 +93,15 @@ class EquipmentTile extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(800),
                     border: Border.all(
-                      color: Colors.red[900]!,
+                      color: Colors.red[800]!,
                       width: 2,
                     ),
-                    color: Colors.red[700],
+                    color: Color.fromARGB(255, 255, 36, 0),
                   ),
                   child: IconButton(
                     tooltip: 'Supprimer cet équipement',
                     icon: const Icon(Icons.delete),
-                    color: Colors.black,
+                    color: Colors.red[50],
                     onPressed: () {
                       equipPicked.removeEquipment(equip);
                       recomputeContractTotalsFromMachines();
