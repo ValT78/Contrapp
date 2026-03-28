@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:contrapp/common_tiles/super_title.dart';
 import 'package:contrapp/custom_navbar.dart';
+import 'package:contrapp/object/contract_calendar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:flutter/material.dart';
 import 'package:contrapp/common_tiles/bouncy_action_button.dart';
@@ -171,9 +172,12 @@ class HomePage extends StatelessWidget {
       attachList = List<String>.from(data['attachList']);
       equipPicked.equipList = (List<Equipment>.from(
           data['equipPicked'].map((e) => Equipment.fromJson(e))));
-      selectedCalendar = Map<String, Map<String, bool>>.from(
-          data['selectedCalendar'].map(
-              (key, value) => MapEntry(key, Map<String, bool>.from(value))));
+
+      // On vérifie la structure du calendrier, et ajoute les champs manquants si nécessaire
+      selectedCalendar = normalizeSelectedCalendar(
+        data['selectedCalendar'],
+        equipPicked.equipList,
+      );
       variablesContrat['versionContrat']++;
       recomputeContractTotalsFromMachines();
       if (contractPath != null) {

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:contrapp/main.dart';
-import 'calendar.dart'; // Assurez-vous que le chemin est correct
+import 'package:contrapp/object/contract_calendar.dart';
+import 'calendar.dart';
 
 class CalendarContainer extends StatefulWidget {
   const CalendarContainer({super.key});
@@ -10,30 +11,73 @@ class CalendarContainer extends StatefulWidget {
 }
 
 class CalendarContainerState extends State<CalendarContainer> {
-  List<String> months = ['Jan', 'Fév', 'Mar', 'Avr', 'Mai', 'Jui', 'Jul', 'Aoû', 'Sep', 'Oct', 'Nov', 'Déc'];
+  final List<String> months = List<String>.from(calendarMonths);
+  final Set<String> expandedEquipments = <String>{};
 
   @override
   void initState() {
     super.initState();
-    for (var equip in equipPicked.equipList) {
-      if (selectedCalendar[equip.equipName] == null) {
-        selectedCalendar[equip.equipName] = {for (var month in months) month: false};
-      }
-    }
+    _syncCalendarData();
   }
 
-  void onMonthTap(String equipName, String month) {
+  void _syncCalendarData() {
+    syncSelectedCalendarWithEquipments(
+      selectedCalendar,
+      equipPicked.equipList,
+      months,
+    );
+    expandedEquipments.removeWhere(
+      (equipName) => !selectedCalendar.containsKey(equipName),
+    );
+  }
+
+  void onEquipmentMonthTap(String equipName, String month) {
     setState(() {
-      selectedCalendar[equipName]![month] = !selectedCalendar[equipName]![month]!;
+      _syncCalendarData();
+      final monthSelection = getEquipmentMonthSelection(
+        selectedCalendar,
+        equipName,
+        months,
+      );
+      monthSelection[month] = !(monthSelection[month] ?? false);
+    });
+  }
+
+  void onOperationMonthTap(String equipName, String operationName, String month) {
+    setState(() {
+      _syncCalendarData();
+      final monthSelection = getOperationMonthSelection(
+        selectedCalendar,
+        equipName,
+        operationName,
+        months,
+      );
+      monthSelection[month] = !(monthSelection[month] ?? false);
+    });
+  }
+
+  void onToggleExpanded(String equipName) {
+    setState(() {
+      if (expandedEquipments.contains(equipName)) {
+        expandedEquipments.remove(equipName);
+      } else {
+        expandedEquipments.add(equipName);
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    _syncCalendarData();
+
     return Calendar(
+      equipments: equipPicked.equipList,
       months: months,
       selectedCalendar: selectedCalendar,
-      onMonthTap: onMonthTap,
+      expandedEquipments: expandedEquipments,
+      onEquipmentMonthTap: onEquipmentMonthTap,
+      onOperationMonthTap: onOperationMonthTap,
+      onToggleExpanded: onToggleExpanded,
     );
   }
 }

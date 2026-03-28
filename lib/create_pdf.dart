@@ -316,10 +316,10 @@ for (int i = 0; i < attachList.length; i += 2) {
     }
   }
   else if(element.contains('calendar')) {
-    if(variablesContrat['selectedCalendar'].isEmpty) {
+    if(selectedCalendar.isEmpty) {
       return [pw.Container()];
     }
-    return buildCalendar(variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>, classicStyle, boldStyle);
+    return buildCalendar(selectedCalendar, classicStyle, boldStyle);
   }
 
   else if(element.contains('operation')) {

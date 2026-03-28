@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:contrapp/object/contract_calendar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
 import 'package:flutter/material.dart';
@@ -84,10 +85,26 @@ EquipList equipToPick =
     EquipList(isModifyingApp: true); // Votre liste d'équipements
 EquipList equipPicked = EquipList(); // Votre liste d'équipements sélectionnés
 
-Map<String, Map<String, bool>> get selectedCalendar =>
-    variablesContrat['selectedCalendar'] as Map<String, Map<String, bool>>;
+SelectedCalendarData get selectedCalendar {
+  final rawCalendar = variablesContrat['selectedCalendar'];
+  if (rawCalendar is SelectedCalendarData) { // Les données sont déjà dans le format attendu. Juste une vérification de type, pas plus de code que ça
+    return rawCalendar;
+  }
 
-set selectedCalendar(Map<String, Map<String, bool>> calendar) {
+  final normalized = <String, EquipmentCalendarData>{};
+  if (rawCalendar is Map) {  // Si on a les mois pour l'équipement, on vérifie qu'on a aussi les mois pour les opérations, sinon on les ajoute
+    for (final entry in rawCalendar.entries) {
+      normalized[entry.key.toString()] = entry.value is Map
+          ? Map<String, dynamic>.from(entry.value as Map)
+          : <String, dynamic>{};
+    }
+  }
+
+  variablesContrat['selectedCalendar'] = normalized;
+  return normalized;
+}
+
+set selectedCalendar(SelectedCalendarData calendar) {
   variablesContrat['selectedCalendar'] = calendar;
 }
 
@@ -126,7 +143,7 @@ Map<String, dynamic> resetVariablesContrat() {
     'hasCustomTva': false,
     'montantAstreinte': 0.0,
     'tauxHoraire': 0.0,
-    'selectedCalendar': <String, Map<String, bool>>{},
+    'selectedCalendar': <String, Map<String, dynamic>>{},
   };
 }
 
