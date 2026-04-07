@@ -25,6 +25,26 @@ class TravelButton extends StatefulWidget {
 class TravelButtonState extends State<TravelButton> {
 
   bool _isHoveringButton = false;
+
+  Future<void> _showErrorDialog(BuildContext context, String message) async {
+    await showDialog<void>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Erreur'),
+          content: SingleChildScrollView(
+            child: SelectableText(message),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(dialogContext).pop(),
+              child: const Text('Fermer'),
+            ),
+          ],
+        );
+      },
+    );
+  }
     
   @override
   Widget build(BuildContext context) {
@@ -74,10 +94,14 @@ class TravelButtonState extends State<TravelButton> {
             ),
           ),
           onPressed: () async {
+            bool actionSucceeded = true;
             if (widget.actionFunction != null) {
               try {
                 if (widget.actionFunction != null) {
                   await widget.actionFunction!();
+                  if (!context.mounted) {
+                    return;
+                  }
                   if (widget.showSnackBar) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(content: Text('Succès !')),
@@ -85,12 +109,24 @@ class TravelButtonState extends State<TravelButton> {
                   }
                 }
               } catch (e) {
+                actionSucceeded = false;
+                if (!context.mounted) {
+                  return;
+                }
+                final message = e.toString().replaceFirst('Exception: ', '');
                 ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text('Erreur : $e')),
+                  SnackBar(content: Text('Erreur : $message')),
                 );
+                await _showErrorDialog(context, message);
+                if (!context.mounted) {
+                  return;
+                }
               }
             }
-            if (widget.link != null) {
+            if (!context.mounted) {
+              return;
+            }
+            if (actionSucceeded && widget.link != null) {
               Navigator.pushNamed(context, widget.link!);
             }
           },

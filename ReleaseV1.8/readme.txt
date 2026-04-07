@@ -1,52 +1,100 @@
-Tous les assets utilisés pour l'application se trouvent dans le dossier : data/flutter_assets/assets
+Tous les assets utilisés pour l'application se trouvent dans le dossier :
+data/flutter_assets/assets
 
-Cela inclus :
-- Les images utilisés dans le contrat. Vous pouvez en supprimer, et en placer une autre avec le même nom à la place. Les futurs contrats utiliseront les nouvelles images
-- Le template de contrat "template.md"
-
-
-
-Le contrat se rédige en markdown. En gros c'est du texte, et vous pouvez rajouter des effets de style en utilisant certains caractères. Voici la liste :
+Cela inclut :
+- Les images utilisées dans le contrat. Vous pouvez en supprimer, et en placer une autre avec le même nom à la place. Les futurs contrats utiliseront les nouvelles images.
+- Le template de contrat "template.md".
 
 
-- Du texte sur la même ligne : Tant que vous ne sautez pas de ligne, le texte sera écrit sur le même paragraphe dans le pdf
+PRINCIPE GENERAL
 
-- Retour à la ligne : Les retour à la ligne créent volontairement peu d'espace. N'hésitez pas à faire plusieurs saut de ligne pour ajouter plus d'espace entre 2 éléments
+Le contrat se rédige dans "template.md".
+Vous pouvez écrire du texte libre, comme dans un document classique.
+Certaines syntaxes permettent d'ajouter des informations de l'application.
 
-- && equipment/operation/calendar/attachList/astreinteTexte/astreintePrice : && permet d'afficher un élément custom. Il faut préciser l'un de ces mots pour afficher celui que vous souhaitez :
-	1) equipment : La liste des équipements
-	2) operation : La liste des opérations
-	3) calendar : Le calendrier des visites
-	4) attachList : Les pièces jointes
-	5) astreinteTexte : Le texte pour annoncer la nature de l'astreinte. On doit rajouter un "|", un texte 1, un "|", un texte 2 derrière. S'il y a ou non astreinte, cela affichera le texte 1 ou le texte 2
-	6) astreintePrice : Affiche le prix de l'astreinte. On doit rajouter un "|" puis un texte. Cela modifie le texte afficher en face du prix
+La syntaxe utilise des doubles accolades :
+{{ ... }}
 
-- # : Permet d'afficher un titre en gros, centré, avec un cadre autour
+Important :
+- Les espaces et les tabulations autour des accolades et des "|" sont ignorés.
+- En cas d'erreur, l'application indique maintenant la ligne à corriger lors de la génération du PDF.
 
-- **texte** : Entourer du texte avec 4 astérisques permet de le mettre en gras
 
-- <u>texte</u> : Entourer du texte avec les balises <u></u> permet de le souligner
+MISE EN FORME SIMPLE
 
-- _texte_ : Entourer du texte avec 2 underscore permet de mettre en italique
+- Texte normal : tant que vous ne sautez pas de ligne, le texte reste dans le même paragraphe.
+- Ligne vide : ajoute un petit espace vertical.
+- # Titre : affiche un grand titre centré avec le cadre.
+- **texte** : met le texte en gras.
+- _texte_ : met le texte en italique.
+- <u>texte</u> : souligne le texte.
+- - texte : crée une puce.
+- --- : crée un trait horizontal.
 
-- <tab>texte1|texte2 : Permet d'afficher le texte1 à gauche, et le texte2 à droite (en gras)
 
-- /// : Crée une barre horizontale sur toute la longueur du document
+VARIABLES
 
-- ___ : 3 underscore permettent de faire un retour à la page. Le reste de la page reste vide, on recommence à écrire sur la page suivante
+Pour afficher une donnée venant de l'application, utilisez :
+{{ entreprise }}
 
-- <cadre>texte1|texte2|texte3|texte4 : Crée 2 boîtes, l'une à gauche, l'autre à droite. Vous pouvez ajouter autant de texte que vous voulez (avec un "|" avant). Les textes impairs (premier, troisième,...) iront dans le cadre de gauche, les textes paires (deuxième, quatrième,...) iront dans le cadre de droite
+Exemples :
+- {{ entreprise }}
+- {{ adresse1 }}
+- {{ adresse2 }}
+- {{ numeroContrat }}
+- {{ capital }}
+- {{ matricule }}
+- {{ montantHT }}
+- {{ totalHT }}
+- {{ customTva }}
+- {{ montantTTC }}
+- {{ date }}
 
-- ==variable== : Les 4 signes "égale" permettent d'afficher une variable entrée dans l'application. C'est compatible avec les styles au dessus (**==entreprise==** mettra le nom de l'entreprise en gras) Attention à l'orthographe et aux majuscules :
-	1) entreprise
-	2) adresse1
-	3) adresse2
-	4) numeroContrat
-	5) capital
-	6) matricule
-	7) montantHT : sans astreinte
-	8) totalHT : avec astreinte
-	9) customTva : la tva, par défaut à 20%
-	10) montantTTC : totalHT après la TVA
-	11) date
+Les variables peuvent être utilisées dans une phrase :
+Le client {{ entreprise }} est situé à {{ adresse1 }}.
 
+Vous pouvez aussi les combiner avec le gras :
+**{{ entreprise }}**
+
+
+COMMANDES SPECIALES
+
+Ces commandes doivent être seules sur leur ligne.
+
+- {{ equipements }}
+  Affiche la liste des équipements.
+
+- {{ operations }}
+  Affiche la liste des opérations.
+
+- {{ calendrier }}
+  Affiche le calendrier des visites.
+
+- {{ pieces_jointes }}
+  Affiche les pièces jointes.
+
+- {{ astreinte_texte | texte si astreinte | texte si pas d'astreinte }}
+  Affiche automatiquement l'un des deux textes.
+
+- {{ astreinte_prix | Libellé du supplément }}
+  Affiche le prix de l'astreinte si l'astreinte est activée.
+
+- {{ ligne | texte de gauche | texte de droite }}
+  Affiche une ligne avec un texte à gauche et un texte à droite.
+
+- {{ cadres | texte gauche 1 | texte droite 1 | texte gauche 2 | texte droite 2 }}
+  Remplit 2 cadres. Les textes impairs vont à gauche, les textes pairs à droite.
+
+- {{ separateur }}
+  Ajoute un trait horizontal.
+
+- {{ saut_de_page }}
+  Force un saut de page.
+
+
+CONSEILS
+
+- Ne modifiez pas une commande spéciale si vous ne souhaitez pas changer son comportement.
+- Pour éviter les erreurs, laissez chaque commande spéciale seule sur sa ligne.
+- Faites un test de génération après une modification importante.
+- Si l'application signale une erreur, ouvrez le template, allez à la ligne indiquée et corrigez uniquement cette ligne.

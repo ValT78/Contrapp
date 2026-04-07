@@ -35,6 +35,7 @@ You are on Windows. Use ONLY windows commands. Use ONLY powershell. If a command
 - Prefer minimal diffs.
 - Do not refactor unrelated files.
 - Keep business logic out of widgets.
+- Keep comments in code
 - Explain to the user the reason why you make a technical change, and explain how it works
 
 ## Done when

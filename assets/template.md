@@ -28,7 +28,7 @@
 
 
 
-# Contrat de Maintenance N°SAV==numeroContrat==
+# Contrat de Maintenance N°SAV{{ numeroContrat }}
 
 
 Entre
@@ -51,11 +51,11 @@ et
 
 
 
-**==entreprise==**
+**{{ entreprise }}**
 
-**==adresse1==**
+**{{ adresse1 }}**
 
-**==adresse2==**
+**{{ adresse2 }}**
 
 
 
@@ -68,10 +68,10 @@ Concernant
 
 
 # Installation frigorifique
-___
+{{ saut_de_page }}
 # Matériel concerné
 
-&& equipment
+{{ equipements }}
 
 # Descriptif des opérations de maintenance
 
@@ -90,14 +90,14 @@ Les prestations générales de révision de maintenance consistent à effectuer 
 -	Etablissement du certificat d’étanchéité
 
 
-&& operation
+{{ operations }}
 
 Dans le cadre de l’intervention d’entretien si une défectuosité est repérée par le technicien des Ets PICQUETTE et nécessite le remplacement d’une pièce une offre sera transmise au client pour approbation. (Exemple : réparations de fuites, recharge en gaz, vidange huile, pièce de rechange)
 
 # Calendrier prévisionnel des visites
 
-&& calendar
-___
+{{ calendrier }}
+{{ saut_de_page }}
 # Condition générales de vente
 
 
@@ -108,7 +108,7 @@ Le présent document a pour objet d'établir un contrat entre les parties ci-des
 
 - Société des Etablissements PICQUETTE, au capital de 100 000 €, domiciliée Route de Sainte-Cécile – 84 830 Sérignan-Du-Comtat, immatriculée au RCS Avignon B sous le numéro 305 949 679, ci-après dénommée « le Prestataire ».
 
-- ==entreprise==, sise à ==adresse1==, ==adresse2==, au capital de ==capital== €, immatriculée au RCS ==matricule==, ci-après dénommée « le Client ».
+- {{ entreprise }}, sise à {{ adresse1 }}, {{ adresse2 }}, au capital de {{ capital }} €, immatriculée au RCS {{ matricule }}, ci-après dénommée « le Client ».
 
 Les parties « le Prestataire » et « le Client » seront ci-après désignées ensemble par « les Parties ».
 
@@ -495,8 +495,8 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 
 
 
-&& attachList
-___
+{{ pieces_jointes }}
+{{ saut_de_page }}
 # Tarifs et signatures
 
 
@@ -516,30 +516,30 @@ ___
 <u>Dépannage :</u>
 
 
-&& astreinteTexte |Accès au service de dépannage 24h/24 et 7j/7|Pas d'astreinte
+{{ astreinte_texte | Accès au service de dépannage 24h/24 et 7j/7 | Pas d'astreinte }}
 
 
 <u>Montant du contrat d’entretien :</u>
 
 
-<tab>Coût Matériel HT| ==montantHT== €	
+{{ ligne | Coût Matériel HT | {{ montantHT }} € }}
 		
 
-&& astreintePrice |Supplément Astreinte 24/24
-///
-<tab>Total contrat entretien HT| ==totalHT== €	
+{{ astreinte_prix | Supplément Astreinte 24/24 }}
+{{ separateur }}
+{{ ligne | Total contrat entretien HT | {{ totalHT }} € }}
 
 
 
 
-<tab>Montant TTC contrat entretien (TVA: ==customTva==%)| ==montantTTC== €
+{{ ligne | Montant TTC contrat entretien (TVA: {{ customTva }}%) | {{ montantTTC }} € }}
 
 
-<cadre>==entreprise== |Ets PICQUETTE |==adresse1== |Route de Sainte-Cécile |==adresse2== |84830 - SERIGNAN
+{{ cadres | {{ entreprise }} | Ets PICQUETTE | {{ adresse1 }} | Route de Sainte-Cécile | {{ adresse2 }} | 84830 - SERIGNAN }}
 
 
 
-<tab>Date: ............................. |Date : ==date==      
+{{ ligne | Date: ............................. | Date : {{ date }} }}
 
 
 Signature : 
