@@ -102,6 +102,8 @@ const Map<String, String> _variableAliases = {
   'client': 'entreprise',
   'adresse1': 'adresse1',
   'adresse2': 'adresse2',
+  'adresseprestataire': 'adressePrestataire',
+  'prestataireadresse': 'adressePrestataire',
   'numerocontrat': 'numeroContrat',
   'numcontrat': 'numeroContrat',
   'capital': 'capital',
@@ -118,6 +120,7 @@ const List<String> _supportedVariables = [
   'entreprise',
   'adresse1',
   'adresse2',
+  'adressePrestataire',
   'numeroContrat',
   'capital',
   'matricule',
@@ -153,6 +156,7 @@ Future<void> createPdfFromMarkdown() async {
 
     variablesContrat['numeroContrat'] = generateNumeroContrat();
     variablesContrat['equipPicked'] = equipPicked.equipList;
+    ensureContractorAddressSelection();
 
     final pdf = pw.Document();
     final markdownData = await rootBundle.loadString('assets/template.md');
@@ -576,7 +580,7 @@ List<pw.Widget> _markdownToWidget(
   return markdownLines.expand<pw.Widget>((line) {
     final trimmed = line.text.trim();
     if (trimmed.isEmpty) {
-      return [pw.SizedBox(height: 12)];
+      return [pw.SizedBox(height: 8)]; // Espacement pour les lignes vides
     }
 
     final command = _parseMustacheCommand(trimmed, line.number);
@@ -632,6 +636,10 @@ String _insertInformation(String text, int lineNumber) {
     }
 
     final value = variablesContrat[key];
+    if (key == 'adressePrestataire') {
+      return formatContractorAddressForContract(value.toString());
+    }
+
     if (value is double) {
       return value.toInt().toString();
     }

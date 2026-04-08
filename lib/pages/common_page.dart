@@ -17,7 +17,7 @@ class CommonPage extends StatelessWidget {
       ),
       body: Center(
         child: SizedBox(
-                width: max(1000 * MediaQuery.of(context).size.width / 1920, 1000),
+                width: max(1200 * MediaQuery.of(context).size.width / 1920, 1200),
                 child: const SingleChildScrollView(
           child: Column(
             children: [

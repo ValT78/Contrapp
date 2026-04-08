@@ -168,6 +168,7 @@ class HomePage extends StatelessWidget {
       resetAppData();
 
       variablesContrat = data;
+      ensureContractorAddressSelection();
 
       attachList = List<String>.from(data['attachList']);
       equipPicked.equipList = (List<Equipment>.from(

@@ -8,6 +8,7 @@ class CustomFormField<T> extends StatefulWidget {
   final double? width;
   final bool textAlign;
   final String? label;
+  final String? hintText;
   final double horizontalMargin;
   final FocusNode? focusNode;
   final TextEditingController? controller;
@@ -26,6 +27,7 @@ class CustomFormField<T> extends StatefulWidget {
       this.width,
       this.textAlign = false,
       this.label,
+      this.hintText,
       required this.onChanged,
       required this.initValue,
       this.horizontalMargin = 0,
@@ -102,16 +104,22 @@ class FormFieldState<T> extends State<CustomFormField<T>> {
         controller: _textController,
         focusNode: _focusNode,
         decoration: InputDecoration(
+          hintText: widget.hintText,
+          hintStyle: TextStyle(
+            fontSize: widget.textSize * 0.75,
+            fontWeight: FontWeight.bold,
+            color: widget.color[900]!.withValues(alpha: 0.7),
+          ),
           labelText: widget.label,
           labelStyle: TextStyle(
-            fontSize: widget.textSize / 2, // Augmenter la taille du label
-            fontWeight: FontWeight.bold, // Mettre le label en gras
-            color: widget.color[600], // Changer la couleur du label
+            fontSize: widget.textSize / 2,
+            fontWeight: FontWeight.bold,
+            color: widget.color[600],
           ),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(
               color: widget.color[900]!,
-              width: 3.0, // Augmentez cette valeur pour une barre plus ha
+              width: 3.0,
             ),
           ),
           focusedBorder: UnderlineInputBorder(

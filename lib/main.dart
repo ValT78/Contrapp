@@ -87,12 +87,14 @@ EquipList equipPicked = EquipList(); // Votre liste d'équipements sélectionné
 
 SelectedCalendarData get selectedCalendar {
   final rawCalendar = variablesContrat['selectedCalendar'];
-  if (rawCalendar is SelectedCalendarData) { // Les données sont déjà dans le format attendu. Juste une vérification de type, pas plus de code que ça
+  if (rawCalendar is SelectedCalendarData) {
+    // Les données sont déjà dans le format attendu. Juste une vérification de type, pas plus de code que ça
     return rawCalendar;
   }
 
   final normalized = <String, EquipmentCalendarData>{};
-  if (rawCalendar is Map) {  // Si on a les mois pour l'équipement, on vérifie qu'on a aussi les mois pour les opérations, sinon on les ajoute
+  if (rawCalendar is Map) {
+    // Si on a les mois pour l'équipement, on vérifie qu'on a aussi les mois pour les opérations, sinon on les ajoute
     for (final entry in rawCalendar.entries) {
       normalized[entry.key.toString()] = entry.value is Map
           ? Map<String, dynamic>.from(entry.value as Map)
@@ -119,6 +121,98 @@ Map<String, Map<String, String>> oldContractPaths = {};
 
 List<String> equipInformations = [];
 
+const String contractorAddressLineDelimiter = '|';
+
+List<String> contractorAddresses = <String>[];
+
+String _initialContractorAddressSelection() {
+  return contractorAddresses.isNotEmpty ? contractorAddresses.first : '';
+}
+
+String normalizeContractorAddress(String value) {
+  return value
+      .replaceAll('\r\n', contractorAddressLineDelimiter)
+      .replaceAll('\n', contractorAddressLineDelimiter)
+      .replaceAll('\r', contractorAddressLineDelimiter)
+      .split(contractorAddressLineDelimiter)
+      .map((part) => part.trim())
+      .where((part) => part.isNotEmpty)
+      .join(' $contractorAddressLineDelimiter ');
+}
+
+String formatContractorAddressForContract(String value) {
+  return normalizeContractorAddress(value)
+      .split(contractorAddressLineDelimiter)
+      .map((part) => part.trim())
+      .where((part) => part.isNotEmpty)
+      .join('\n\n');
+}
+
+void ensureContractorAddressSelection() {
+  final currentAddress = normalizeContractorAddress(
+    variablesContrat['adressePrestataire']?.toString() ?? '',
+  );
+
+  variablesContrat['adressePrestataire'] = currentAddress.isNotEmpty
+      ? currentAddress
+      : _initialContractorAddressSelection();
+}
+
+void selectContractorAddress(String address) {
+  variablesContrat['adressePrestataire'] = normalizeContractorAddress(address);
+}
+
+Future<bool> addContractorAddress(String address) async {
+  final normalizedAddress = normalizeContractorAddress(address);
+  if (normalizedAddress.isEmpty) {
+    return false;
+  }
+
+  if (!contractorAddresses.contains(normalizedAddress)) {
+    contractorAddresses.add(normalizedAddress);
+  }
+  selectContractorAddress(normalizedAddress);
+  await modifyApp();
+  return true;
+}
+
+Future<void> removeContractorAddress(String address) async {
+  final normalizedAddress = normalizeContractorAddress(address);
+  contractorAddresses.remove(normalizedAddress);
+
+  final currentAddress = normalizeContractorAddress(
+    variablesContrat['adressePrestataire']?.toString() ?? '',
+  );
+  if (currentAddress == normalizedAddress) {
+    variablesContrat['adressePrestataire'] =
+        _initialContractorAddressSelection();
+  }
+
+  await modifyApp();
+}
+
+List<String> _loadContractorAddresses(Map<String, dynamic> data) {
+  if (!data.containsKey('contractorAddresses')) {
+    return <String>[];
+  }
+
+  final rawAddresses = data['contractorAddresses'];
+  if (rawAddresses is! List) {
+    return <String>[];
+  }
+
+  final loadedAddresses = <String>[];
+  for (final rawAddress in rawAddresses) {
+    final normalizedAddress = normalizeContractorAddress(rawAddress.toString());
+    if (normalizedAddress.isNotEmpty &&
+        !loadedAddresses.contains(normalizedAddress)) {
+      loadedAddresses.add(normalizedAddress);
+    }
+  }
+
+  return loadedAddresses;
+}
+
 //Pour ouvrir le bouton s'il y en a
 bool hasCustomTva = false;
 
@@ -129,6 +223,7 @@ Map<String, dynamic> resetVariablesContrat() {
     'entreprise': '',
     'adresse1': '',
     'adresse2': '',
+    'adressePrestataire': _initialContractorAddressSelection(),
     'matricule': '',
     'capital': '',
     'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
@@ -243,6 +338,8 @@ Future<void> _loadAppData() async {
                 MapEntry(key, Map<String, String>.from(value))));
       }
       equipInformations = List<String>.from(data['equipInformation'] ?? []);
+      contractorAddresses = _loadContractorAddresses(data);
+      ensureContractorAddressSelection();
     } catch (e) {
       // Handle decoding error
       print('Error decoding JSON data: $e');
@@ -395,6 +492,7 @@ Future<void> modifyApp() async {
     'equipToPick': equipToPick.equipList.map((e) => e.toJson()).toList(),
     'oldContractPaths': oldContractPaths,
     'equipInformation': equipInformations,
+    'contractorAddresses': contractorAddresses,
   };
   String jsonData = jsonEncode(data);
   Directory projectDir = Directory.current;

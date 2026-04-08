@@ -91,7 +91,7 @@ class MainSearchBarState extends State<MainSearchBar> {
             margin: const EdgeInsets.all(20.0),
             padding: const EdgeInsets.all(10.0),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.indigo[50],
               borderRadius: _isSearching
                   ? BorderRadius.circular(35)
                   : BorderRadius.circular(100),
@@ -112,6 +112,10 @@ class MainSearchBarState extends State<MainSearchBar> {
                   decoration: InputDecoration(
                     prefixIcon: const Icon(Icons.search),
                     hintText: widget.label,
+                    hintStyle: TextStyle(
+                      fontSize: 18,
+                      color: Colors.grey[700],
+                    ),
                   ),
                   onSubmitted: (value) {
                     setState(() {
@@ -229,7 +233,11 @@ class MainSearchBarState extends State<MainSearchBar> {
                       child: Center(
                         child: Text(
                           elementName,
-                          style: const TextStyle(fontSize: 20),
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[700],
+                          ),
                           textAlign: TextAlign.center,
                         ),
                       ),

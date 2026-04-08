@@ -37,9 +37,7 @@ Entre
  
 **Ets PICQUETTE**
 
-**Route de Sainte-Cécile**
-
-**84830 SERIGNAN**
+**{{ adressePrestataire }}**
 
 
 
@@ -106,7 +104,7 @@ Dans le cadre de l’intervention d’entretien si une défectuosité est repér
 
 Le présent document a pour objet d'établir un contrat entre les parties ci-dessous désignées :
 
-- Société des Etablissements PICQUETTE, au capital de 100 000 €, domiciliée Route de Sainte-Cécile – 84 830 Sérignan-Du-Comtat, immatriculée au RCS Avignon B sous le numéro 305 949 679, ci-après dénommée « le Prestataire ».
+- Société des Etablissements PICQUETTE, au capital de 100 000 €, domiciliée {{ adressePrestataire }}, immatriculée au RCS Avignon B sous le numéro 305 949 679, ci-après dénommée « le Prestataire ».
 
 - {{ entreprise }}, sise à {{ adresse1 }}, {{ adresse2 }}, au capital de {{ capital }} €, immatriculée au RCS {{ matricule }}, ci-après dénommée « le Client ».
 
@@ -535,7 +533,7 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 {{ ligne | Montant TTC contrat entretien (TVA: {{ customTva }}%) | {{ montantTTC }} € }}
 
 
-{{ cadres | {{ entreprise }} | Ets PICQUETTE | {{ adresse1 }} | Route de Sainte-Cécile | {{ adresse2 }} | 84830 - SERIGNAN }}
+{{ cadres | {{ entreprise }} | Ets PICQUETTE | {{ adresse1 }} | {{ adressePrestataire }} | {{ adresse2 }} }}
 
 
 
