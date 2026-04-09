@@ -91,7 +91,7 @@ Les prestations générales de révision de maintenance consistent à effectuer 
 {{ operations }}
 
 Dans le cadre de l’intervention d’entretien si une défectuosité est repérée par le technicien des Ets PICQUETTE et nécessite le remplacement d’une pièce une offre sera transmise au client pour approbation. (Exemple : réparations de fuites, recharge en gaz, vidange huile, pièce de rechange)
-
+{{ saut_de_page }}
 # Calendrier prévisionnel des visites
 
 {{ calendrier }}

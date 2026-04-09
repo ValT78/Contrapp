@@ -25,12 +25,31 @@ pw.Widget buildCheckmark() {
   );
 }
 
+class _CalendarRowData {
+  const _CalendarRowData({
+    required this.label,
+    required this.monthsSelection,
+    required this.style,
+    required this.backgroundColor,
+    this.leftPadding = 4,
+  });
+
+  final String label;
+  final MonthSelection monthsSelection;
+  final pw.TextStyle style;
+  final PdfColor backgroundColor;
+  final double leftPadding;
+
+  double get rowHeight =>
+      max(15.0 * (label.length / 25).ceil(), 30.0).toDouble();
+}
+
 List<pw.Widget> buildCalendar(
   SelectedCalendarData selectedCalendar,
   pw.TextStyle style,
   pw.TextStyle styleBold,
 ) {
-  final rows = <pw.TableRow>[];
+  final rows = <_CalendarRowData>[];
 
   for (final equip in selectedCalendar.keys) {
     final equipmentMonths = getEquipmentMonthSelection(selectedCalendar, equip);
@@ -40,7 +59,7 @@ List<pw.Widget> buildCalendar(
     ).entries.where((entry) => hasAnySelectedMonth(entry.value));
 
     rows.add(
-      _buildCalendarRow(
+      _CalendarRowData(
         label: equip,
         monthsSelection: equipmentMonths,
         style: style.copyWith(fontSize: 7),
@@ -50,7 +69,7 @@ List<pw.Widget> buildCalendar(
 
     for (final operation in detailedOperations) {
       rows.add(
-        _buildCalendarRow(
+        _CalendarRowData(
           label: operation.key,
           monthsSelection: operation.value,
           style: style.copyWith(fontSize: 6.5),
@@ -62,79 +81,78 @@ List<pw.Widget> buildCalendar(
   }
 
   return [
-    pw.Wrap(
-      children: [
-        pw.Table(
-          columnWidths: {
-            0: const pw.FixedColumnWidth(125),
-            for (int i = 1; i <= calendarMonths.length; i++)
-              i: const pw.FixedColumnWidth(40),
-          },
-          children: [
-            pw.TableRow(
-              decoration: const pw.BoxDecoration(
-                color: PdfColors.blue900,
-                borderRadius: pw.BorderRadius.only(
-                  topLeft: pw.Radius.circular(5),
-                  topRight: pw.Radius.circular(5),
-                ),
-              ),
-              children: [
-                pw.Padding(
-                  padding: const pw.EdgeInsets.all(4),
-                  child: pw.Text(
-                    'EQUIPEMENT',
-                    textAlign: pw.TextAlign.center,
-                    style: styleBold.copyWith(color: PdfColors.white),
-                  ),
-                ),
-                ...calendarMonths.map(
-                  (month) => pw.Padding(
-                    padding: const pw.EdgeInsets.all(4),
-                    child: pw.Text(
-                      month,
-                      textAlign: pw.TextAlign.center,
-                      style: styleBold.copyWith(color: PdfColors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            ...rows,
-          ],
-          border: const pw.TableBorder(
-            horizontalInside: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
-            verticalInside: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
-          ),
-        ),
-      ],
+    _buildCalendarTable(
+      rows: rows,
+      styleBold: styleBold,
     ),
   ];
 }
 
-pw.TableRow _buildCalendarRow({
-  required String label,
-  required MonthSelection monthsSelection,
-  required pw.TextStyle style,
-  required PdfColor backgroundColor,
-  double leftPadding = 4,
+pw.Widget _buildCalendarTable({
+  required List<_CalendarRowData> rows,
+  required pw.TextStyle styleBold,
 }) {
-  final rowHeight = max(15.0 * (label.length / 25).ceil(), 30.0).toDouble();
+  return pw.Table(
+    columnWidths: {
+      0: const pw.FixedColumnWidth(125),
+      for (int i = 1; i <= calendarMonths.length; i++)
+        i: const pw.FixedColumnWidth(40),
+    },
+    children: [
+      pw.TableRow(
+        repeat: true,
+        decoration: const pw.BoxDecoration(
+          color: PdfColors.blue900,
+          borderRadius: pw.BorderRadius.only(
+            topLeft: pw.Radius.circular(5),
+            topRight: pw.Radius.circular(5),
+          ),
+        ),
+        children: [
+          pw.Padding(
+            padding: const pw.EdgeInsets.all(4),
+            child: pw.Text(
+              'EQUIPEMENT',
+              textAlign: pw.TextAlign.center,
+              style: styleBold.copyWith(color: PdfColors.white),
+            ),
+          ),
+          ...calendarMonths.map(
+            (month) => pw.Padding(
+              padding: const pw.EdgeInsets.all(4),
+              child: pw.Text(
+                month,
+                textAlign: pw.TextAlign.center,
+                style: styleBold.copyWith(color: PdfColors.white),
+              ),
+            ),
+          ),
+        ],
+      ),
+      ...rows.map(_buildCalendarRow),
+    ],
+    border: const pw.TableBorder(
+      horizontalInside: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
+      verticalInside: pw.BorderSide(color: PdfColors.grey300, width: 0.5),
+    ),
+  );
+}
 
+pw.TableRow _buildCalendarRow(_CalendarRowData row) {
   return pw.TableRow(
     children: [
       pw.Container(
-        color: backgroundColor,
-        height: rowHeight,
+        color: row.backgroundColor,
+        height: row.rowHeight,
         child: pw.Padding(
-          padding: pw.EdgeInsets.fromLTRB(leftPadding, 4, 4, 4),
+          padding: pw.EdgeInsets.fromLTRB(row.leftPadding, 4, 4, 4),
           child: pw.Align(
             alignment: pw.Alignment.centerLeft,
             child: pw.Text(
-              label,
+              row.label,
               maxLines: 4,
               overflow: pw.TextOverflow.clip,
-              style: style,
+              style: row.style,
             ),
           ),
         ),
@@ -142,10 +160,12 @@ pw.TableRow _buildCalendarRow({
       ...calendarMonths.map(
         (month) => pw.Container(
           alignment: pw.Alignment.center,
-          height: rowHeight,
-          color: backgroundColor == PdfColors.blue50 ? PdfColors.blue50 : null,
+          height: row.rowHeight,
+          color: row.backgroundColor == PdfColors.blue100
+              ? PdfColors.blue50
+              : null,
           child: pw.Center(
-            child: monthsSelection[month] == true
+            child: row.monthsSelection[month] == true
                 ? buildCheckmark()
                 : pw.Container(),
           ),

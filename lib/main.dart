@@ -270,6 +270,13 @@ void recomputeContractTotalsFromMachines() {
   montantHT = materialAmount;
 }
 
+void syncContractCalendarWithSelectedEquipments() {
+  syncSelectedCalendarWithEquipments(
+    selectedCalendar,
+    equipPicked.equipList,
+  );
+}
+
 void updateMachineAndContractTotals(
   Machine machine, {
   int? number,
@@ -349,6 +356,7 @@ Future<void> _loadAppData() async {
 
 // Fonction pour sauvegarder les données
 Future<void> saveContract() async {
+  syncContractCalendarWithSelectedEquipments();
   variablesContrat['equipPicked'] = equipPicked.equipList;
 
   String jsonData = jsonEncode(variablesContrat);

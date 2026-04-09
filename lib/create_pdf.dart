@@ -154,6 +154,7 @@ Future<void> createPdfFromMarkdown() async {
     final bytes4 = await rootBundle.load('assets/bulletPoint.png');
     final bulletImage = pw.MemoryImage(bytes4.buffer.asUint8List());
 
+    syncContractCalendarWithSelectedEquipments();
     variablesContrat['numeroContrat'] = generateNumeroContrat();
     variablesContrat['equipPicked'] = equipPicked.equipList;
     ensureContractorAddressSelection();
@@ -164,7 +165,8 @@ Future<void> createPdfFromMarkdown() async {
 
     final font = await rootBundle.load('assets/fonts/Gotham-Book.ttf');
     final boldFont = await rootBundle.load('assets/fonts/Gotham-Bold.ttf');
-    final italicFont = await rootBundle.load('assets/fonts/Gotham-BookItalic.ttf');
+    final italicFont =
+        await rootBundle.load('assets/fonts/Gotham-BookItalic.ttf');
 
     final classicStyle = pw.TextStyle(
       font: pw.Font.ttf(font),
@@ -310,24 +312,17 @@ Future<void> createPdfFromMarkdown() async {
             maxPages: 200,
             pageTheme: mainPageTheme,
             build: (pw.Context context) {
-              return [
-                pw.Padding(
-                  padding: const pw.EdgeInsets.only(bottom: 20),
-                  child: pw.Column(
-                    children: _markdownToWidget(
-                      markdownPages[i],
-                      classicStyle,
-                      boldStyle,
-                      italicStyle,
-                      underlineStyle,
-                      titleStyle,
-                      highlightedStyle,
-                      bulletImage,
-                      titleCadre,
-                    ),
-                  ),
-                ),
-              ];
+              return _markdownToWidget(
+                markdownPages[i],
+                classicStyle,
+                boldStyle,
+                italicStyle,
+                underlineStyle,
+                titleStyle,
+                highlightedStyle,
+                bulletImage,
+                titleCadre,
+              );
             },
           ),
         );
@@ -371,7 +366,8 @@ Future<void> createPdfFromMarkdown() async {
       await directory.create();
     }
 
-    await File('Contrat/${generateNomFichier()}.pdf').writeAsBytes(await pdf.save());
+    await File('Contrat/${generateNomFichier()}.pdf')
+        .writeAsBytes(await pdf.save());
   } on _TemplateException {
     rethrow;
   } catch (e) {
@@ -380,7 +376,8 @@ Future<void> createPdfFromMarkdown() async {
 }
 
 List<List<_TemplateLine>> _parseTemplate(String markdownData) {
-  final normalizedMarkdown = markdownData.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
+  final normalizedMarkdown =
+      markdownData.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
   final rawLines = const LineSplitter().convert(normalizedMarkdown);
   final pages = <List<_TemplateLine>>[
     <_TemplateLine>[],
@@ -428,7 +425,8 @@ void _validateBalancedMarkers(_TemplateLine line) {
 }
 
 void _validateInlineVariables(_TemplateLine line) {
-  for (final match in RegExp(r'\{\{\s*([^{}]+?)\s*\}\}').allMatches(line.text)) {
+  for (final match
+      in RegExp(r'\{\{\s*([^{}]+?)\s*\}\}').allMatches(line.text)) {
     final rawToken = match.group(1)!;
     if (_resolveVariableKey(rawToken) != null) {
       continue;
@@ -487,15 +485,21 @@ _TemplateCommand _buildCommand(
           'Template PDF : ligne $lineNumber - cette commande ne doit pas avoir de paramètre.',
         );
       }
-      return _TemplateCommand(type: type, arguments: const [], lineNumber: lineNumber);
+      return _TemplateCommand(
+          type: type, arguments: const [], lineNumber: lineNumber);
     case _TemplateCommandType.astreinteText:
-      if (arguments.length < 2 || arguments[0].isEmpty || arguments[1].isEmpty) {
+      if (arguments.length < 2 ||
+          arguments[0].isEmpty ||
+          arguments[1].isEmpty) {
         throw _TemplateException(
           'Template PDF : ligne $lineNumber - la commande astreinte_texte attend 2 textes : {{ astreinte_texte | texte si oui | texte si non }}.',
         );
       }
       _validateTextArguments(arguments.take(2).toList(), lineNumber);
-      return _TemplateCommand(type: type, arguments: arguments.take(2).toList(), lineNumber: lineNumber);
+      return _TemplateCommand(
+          type: type,
+          arguments: arguments.take(2).toList(),
+          lineNumber: lineNumber);
     case _TemplateCommandType.astreintePrice:
       if (arguments.isEmpty || arguments.first.isEmpty) {
         throw _TemplateException(
@@ -503,23 +507,29 @@ _TemplateCommand _buildCommand(
         );
       }
       _validateTextArguments([arguments.first], lineNumber);
-      return _TemplateCommand(type: type, arguments: [arguments.first], lineNumber: lineNumber);
+      return _TemplateCommand(
+          type: type, arguments: [arguments.first], lineNumber: lineNumber);
     case _TemplateCommandType.twoColumns:
-      if (arguments.length < 2 || arguments[0].isEmpty || arguments[1].isEmpty) {
+      if (arguments.length < 2 ||
+          arguments[0].isEmpty ||
+          arguments[1].isEmpty) {
         throw _TemplateException(
           'Template PDF : ligne $lineNumber - la commande ligne attend 2 textes : {{ ligne | texte de gauche | texte de droite }}.',
         );
       }
       _validateTextArguments(arguments, lineNumber);
-      return _TemplateCommand(type: type, arguments: arguments, lineNumber: lineNumber);
+      return _TemplateCommand(
+          type: type, arguments: arguments, lineNumber: lineNumber);
     case _TemplateCommandType.boxes:
-      if (arguments.length < 2 || arguments.any((argument) => argument.isEmpty)) {
+      if (arguments.length < 2 ||
+          arguments.any((argument) => argument.isEmpty)) {
         throw _TemplateException(
           'Template PDF : ligne $lineNumber - la commande cadres attend au moins 2 textes : {{ cadres | gauche | droite }}.',
         );
       }
       _validateTextArguments(arguments, lineNumber);
-      return _TemplateCommand(type: type, arguments: arguments, lineNumber: lineNumber);
+      return _TemplateCommand(
+          type: type, arguments: arguments, lineNumber: lineNumber);
   }
 }
 
@@ -678,7 +688,9 @@ List<pw.Widget> _buildCommandWidgets(
           width: double.infinity,
           height: titleCadre.height! /
               (titleCadre.width as num) *
-              (PdfPageFormat.a4.width - PdfPageFormat.a4.marginLeft - PdfPageFormat.a4.marginRight),
+              (PdfPageFormat.a4.width -
+                  PdfPageFormat.a4.marginLeft -
+                  PdfPageFormat.a4.marginRight),
           child: pw.Stack(
             children: [
               pw.Image(titleCadre, fit: pw.BoxFit.cover),
@@ -706,7 +718,8 @@ List<pw.Widget> _buildCommandWidgets(
                   pw.Container(
                     width: 240,
                     height: 330,
-                    child: pw.Image(pw.MemoryImage(base64Decode(attachList[i + 1]))),
+                    child: pw.Image(
+                        pw.MemoryImage(base64Decode(attachList[i + 1]))),
                   ),
               ],
             ),
@@ -745,11 +758,16 @@ List<pw.Widget> _buildCommandWidgets(
           padding: const pw.EdgeInsets.only(left: 20),
           child: pw.Row(
             children: [
-              pw.Text(_insertInformation(command.arguments.first, command.lineNumber), style: boldStyle),
+              pw.Text(
+                  _insertInformation(
+                      command.arguments.first, command.lineNumber),
+                  style: boldStyle),
               pw.Spacer(),
               variablesContrat['montantAstreinte'] == 0.0
                   ? pw.Text('Offerte', style: boldStyle)
-                  : pw.Text('${(variablesContrat['montantAstreinte'] as double).toInt()} €', style: boldStyle),
+                  : pw.Text(
+                      '${(variablesContrat['montantAstreinte'] as double).toInt()} €',
+                      style: boldStyle),
             ],
           ),
         ),
@@ -763,23 +781,31 @@ List<pw.Widget> _buildCommandWidgets(
       if ((variablesContrat['equipPicked'] as List<dynamic>).isEmpty) {
         return [pw.Container()];
       }
-      return buildOperation(variablesContrat['equipPicked'] as List<Equipment>, classicStyle, boldStyle);
+      return buildOperation(variablesContrat['equipPicked'] as List<Equipment>,
+          classicStyle, boldStyle);
     case _TemplateCommandType.equipment:
       if ((variablesContrat['equipPicked'] as List<dynamic>).isEmpty) {
         return [pw.Container()];
       }
-      return buildEquipment(variablesContrat['equipPicked'] as List<Equipment>, classicStyle, boldStyle);
+      return buildEquipment(variablesContrat['equipPicked'] as List<Equipment>,
+          classicStyle, boldStyle);
     case _TemplateCommandType.twoColumns:
       return [
         _buildTwoColumns(
-          command.arguments.map((argument) => _insertInformation(argument, command.lineNumber)).toList(),
+          command.arguments
+              .map((argument) =>
+                  _insertInformation(argument, command.lineNumber))
+              .toList(),
           boldStyle,
         ),
       ];
     case _TemplateCommandType.boxes:
       return [
         _buildBoxes(
-          command.arguments.map((argument) => _insertInformation(argument, command.lineNumber)).toList(),
+          command.arguments
+              .map((argument) =>
+                  _insertInformation(argument, command.lineNumber))
+              .toList(),
         ),
       ];
     case _TemplateCommandType.separator:
@@ -817,7 +843,9 @@ pw.Widget _formatMarkdown(
         width: double.infinity,
         height: titleCadre.height! /
             (titleCadre.width as num) *
-            (PdfPageFormat.a4.width - PdfPageFormat.a4.marginLeft - PdfPageFormat.a4.marginRight),
+            (PdfPageFormat.a4.width -
+                PdfPageFormat.a4.marginLeft -
+                PdfPageFormat.a4.marginRight),
         child: pw.Stack(
           children: [
             pw.Image(titleCadre, fit: pw.BoxFit.cover),
@@ -889,7 +917,8 @@ pw.Widget _buildTwoColumns(List<String> parts, pw.TextStyle boldStyle) {
               pw.Text(cleanedParts.sublist(1).join(' | '), style: boldStyle),
             ],
           )
-        : pw.Text(cleanedParts.isNotEmpty ? cleanedParts.first : '', style: boldStyle),
+        : pw.Text(cleanedParts.isNotEmpty ? cleanedParts.first : '',
+            style: boldStyle),
   );
 }
 
