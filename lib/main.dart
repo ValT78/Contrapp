@@ -148,6 +148,14 @@ String formatContractorAddressForContract(String value) {
       .join('\n\n');
 }
 
+String formatContractorAddressInline(String value) {
+  return normalizeContractorAddress(value)
+      .split(contractorAddressLineDelimiter)
+      .map((part) => part.trim())
+      .where((part) => part.isNotEmpty)
+      .join(', ');
+}
+
 void ensureContractorAddressSelection() {
   final currentAddress = normalizeContractorAddress(
     variablesContrat['adressePrestataire']?.toString() ?? '',

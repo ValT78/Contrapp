@@ -104,6 +104,9 @@ const Map<String, String> _variableAliases = {
   'adresse2': 'adresse2',
   'adresseprestataire': 'adressePrestataire',
   'prestataireadresse': 'adressePrestataire',
+  'adresseprestataireinline': 'adressePrestataireInline',
+  'prestataireadresseligne': 'adressePrestataireInline',
+  'prestataireadresseinline': 'adressePrestataireInline',
   'numerocontrat': 'numeroContrat',
   'numcontrat': 'numeroContrat',
   'capital': 'capital',
@@ -121,6 +124,7 @@ const List<String> _supportedVariables = [
   'adresse1',
   'adresse2',
   'adressePrestataire',
+  'adressePrestataireInline',
   'numeroContrat',
   'capital',
   'matricule',
@@ -637,6 +641,12 @@ String _insertInformation(String text, int lineNumber) {
     final key = _resolveVariableKey(rawToken);
     if (key == null) {
       throw _unknownVariableException(rawToken, lineNumber);
+    }
+
+    if (key == 'adressePrestataireInline') {
+      return formatContractorAddressInline(
+        variablesContrat['adressePrestataire']?.toString() ?? '',
+      );
     }
 
     if (!variablesContrat.containsKey(key)) {
