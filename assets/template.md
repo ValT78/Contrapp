@@ -492,7 +492,8 @@ Toutes contestations pouvant survenir lors de l'interprétation ou de l'exécuti
 
 
 
-
+{{ saut_de_page }}
+{{ annexe_texte }}
 {{ pieces_jointes }}
 {{ saut_de_page }}
 # Tarifs et signatures

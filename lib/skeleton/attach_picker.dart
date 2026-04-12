@@ -14,7 +14,6 @@ class AttachPicker extends StatefulWidget {
 }
 
 class AttachPickerContainerState extends State<AttachPicker> {
-
   Future<void> pickPhotos() async {
     FilePickerResult? result = await FilePicker.platform.pickFiles(
       type: FileType.image,
@@ -26,7 +25,7 @@ class AttachPickerContainerState extends State<AttachPicker> {
         if (path != null) {
           String base64Image = await compressAndConvertToBase64(path);
           setState(() {
-            attachList.add(base64Image);
+            imageList.add(base64Image);
           });
         }
       }
@@ -38,9 +37,11 @@ class AttachPickerContainerState extends State<AttachPicker> {
     img.Image? image = img.decodeImage(file.readAsBytesSync());
 
     // Compresser l'image
-    img.Image compressedImage = img.copyResize(image!, width: 800); // Ajustez la taille selon vos besoins
+    img.Image compressedImage = img.copyResize(image!,
+        width: 800); // Ajustez la taille selon vos besoins
 
-    List<int> compressedBytes = img.encodeJpg(compressedImage, quality: 70); // Ajustez la qualité selon vos besoins
+    List<int> compressedBytes = img.encodeJpg(compressedImage,
+        quality: 70); // Ajustez la qualité selon vos besoins
     String base64Image = base64Encode(compressedBytes);
     return base64Image;
   }
@@ -48,7 +49,7 @@ class AttachPickerContainerState extends State<AttachPicker> {
   @override
   Widget build(BuildContext context) {
     return AttachPickerButton(
-      attachList: attachList,
+      imageList: imageList,
       onPickPhotos: pickPhotos,
     );
   }

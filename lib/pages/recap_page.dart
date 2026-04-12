@@ -32,7 +32,7 @@ class RecapPage extends StatelessWidget {
   }
 
   int _getNumberOfAttachments() {
-    return attachList.length;
+    return imageList.length + contractAnnex.displayableSubtitles.length;
   }
 
   @override
@@ -73,7 +73,7 @@ class RecapPage extends StatelessWidget {
                     ),
                     const Spacer(),
                     NumberIndicator(
-                      text: "Pièces-Jointes",
+                      text: "Annexes",
                       number: _getNumberOfAttachments(),
                       width: 300,
                       widthScaleFactor: 3,

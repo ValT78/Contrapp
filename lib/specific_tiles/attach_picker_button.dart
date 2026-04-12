@@ -5,12 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:contrapp/common_tiles/bouncy_action_button.dart';
 
 class AttachPickerButton extends StatefulWidget {
-  final List<String> attachList;
+  final List<String> imageList;
   final VoidCallback onPickPhotos;
 
   const AttachPickerButton({
     super.key,
-    required this.attachList,
+    required this.imageList,
     required this.onPickPhotos,
   });
 
@@ -22,45 +22,54 @@ class AttachPickerButtonState extends State<AttachPickerButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Container(
-          margin: const EdgeInsets.fromLTRB(30, 50, 30, 10),
+          margin: const EdgeInsets.fromLTRB(10, 16, 10, 10),
           child: TravelButton(
             color: Colors.amber,
             icon: Icons.attach_file,
-            label: 'Ajouter une Image',
+            label: 'Ajouter une image',
             actionFunction: widget.onPickPhotos,
-            height: max( 300* MediaQuery.of(context).size.width / 1920, 300),
-            width: 1000,
+            height: max(180 * MediaQuery.of(context).size.width / 1920, 150),
+            width: 900,
             roundedBorder: 30,
-            textSize: 100,
-            scaleWidthFactor: 1,
+            textSize: 52,
+            scaleWidthFactor: 2,
           ),
         ),
         Container(
-          margin: const EdgeInsets.fromLTRB(30, 10, 30, 10),
-          width: 1400,
-          height: 400,
-          child: Center(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 5,
-                childAspectRatio: widget.attachList.isNotEmpty && widget.attachList.length <= 5 ? 1 : 1.5,
-                mainAxisSpacing: 10,
-                crossAxisSpacing: 10,
-              ),
-              itemCount: widget.attachList.length,
-              itemBuilder: (context, index) {
-                return ImageHolder(
-                  imageData: widget.attachList[index],
-                  onDelete: () {
-                    setState(() {
-                      widget.attachList.removeAt(index);
-                    });
-                  },
-                );
-              },
-            ),
+          margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final availableWidth = constraints.maxWidth;
+              final crossAxisCount = max(1, (availableWidth / 170).floor());
+
+              return GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: crossAxisCount,
+                  childAspectRatio: 1,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                ),
+                itemCount: widget.imageList.length,
+                itemBuilder: (context, index) {
+                  return AspectRatio(
+                    aspectRatio: 1,
+                    child: ImageHolder(
+                      imageData: widget.imageList[index],
+                      onDelete: () {
+                        setState(() {
+                          widget.imageList.removeAt(index);
+                        });
+                      },
+                    ),
+                  );
+                },
+              );
+            },
           ),
         ),
       ],

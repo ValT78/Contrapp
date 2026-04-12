@@ -16,7 +16,8 @@ enum _TemplateCommandType {
   equipment,
   operation,
   calendar,
-  attachList,
+  annexText,
+  imageList,
   astreinteText,
   astreintePrice,
   twoColumns,
@@ -68,11 +69,22 @@ const Map<String, _TemplateCommandType> _commandAliases = {
   'calendrier': _TemplateCommandType.calendar,
   'planning': _TemplateCommandType.calendar,
   'visites': _TemplateCommandType.calendar,
-  'attachlist': _TemplateCommandType.attachList,
-  'piecejointe': _TemplateCommandType.attachList,
-  'piecesjointes': _TemplateCommandType.attachList,
-  'annexe': _TemplateCommandType.attachList,
-  'annexes': _TemplateCommandType.attachList,
+  'annexetexte': _TemplateCommandType.annexText,
+  'annexetextes': _TemplateCommandType.annexText,
+  'annexestexte': _TemplateCommandType.annexText,
+  'annexestextes': _TemplateCommandType.annexText,
+  'annexe': _TemplateCommandType.annexText,
+  'annexes': _TemplateCommandType.annexText,
+  'textannexe': _TemplateCommandType.annexText,
+  'texteannexe': _TemplateCommandType.annexText,
+  'textesannexes': _TemplateCommandType.annexText,
+  'texteannexes': _TemplateCommandType.annexText,
+  'imagelist': _TemplateCommandType.imageList,
+  'image': _TemplateCommandType.imageList,
+  'images': _TemplateCommandType.imageList,
+  'attachlist': _TemplateCommandType.imageList,
+  'piecejointe': _TemplateCommandType.imageList,
+  'piecesjointes': _TemplateCommandType.imageList,
   'astreintetexte': _TemplateCommandType.astreinteText,
   'texteastreinte': _TemplateCommandType.astreinteText,
   'astreinteprice': _TemplateCommandType.astreintePrice,
@@ -136,7 +148,8 @@ const List<String> _supportedVariables = [
   'equipment',
   'operation',
   'calendar',
-  'attachList',
+  'annexeTexte',
+  'imageList',
   'hasAstreinte',
   'astreintePrice',
   'twoColumns',
@@ -147,6 +160,7 @@ const List<String> _supportedVariables = [
 
 Future<void> createPdfFromMarkdown() async {
   try {
+    // Chargement des assets utilisées dans le PDF
     final bytes5 = await rootBundle.load('assets/titleCadre.png');
     final titleCadre = pw.MemoryImage(bytes5.buffer.asUint8List());
     final bytes = await rootBundle.load('assets/footer.png');
@@ -157,20 +171,22 @@ Future<void> createPdfFromMarkdown() async {
     final signatureImage = pw.MemoryImage(bytes3.buffer.asUint8List());
     final bytes4 = await rootBundle.load('assets/bulletPoint.png');
     final bulletImage = pw.MemoryImage(bytes4.buffer.asUint8List());
-
-    syncContractCalendarWithSelectedEquipments();
-    variablesContrat['numeroContrat'] = generateNumeroContrat();
-    variablesContrat['equipPicked'] = equipPicked.equipList;
-    ensureContractorAddressSelection();
-
-    final pdf = pw.Document();
-    final markdownData = await rootBundle.loadString('assets/template.md');
-    final markdownPages = _parseTemplate(markdownData);
-
     final font = await rootBundle.load('assets/fonts/Gotham-Book.ttf');
     final boldFont = await rootBundle.load('assets/fonts/Gotham-Bold.ttf');
     final italicFont =
         await rootBundle.load('assets/fonts/Gotham-BookItalic.ttf');
+
+    // Synchronisation des données du contrat avant la génération du PDF
+    syncContractCalendarWithSelectedEquipments();
+    variablesContrat['numeroContrat'] = generateNumeroContrat();
+    variablesContrat['equipPicked'] = equipPicked.equipList;
+    ensureContractorAddressSelection();
+    ensureContractAnnexStructure();
+
+    final pdf = pw.Document();
+    final markdownData = await rootBundle.loadString('assets/template.md');
+    final markdownPages = _parseTemplate(
+        markdownData); // Vérifie la syntaxe et renvoie des pages avec des éléments interprétables
 
     final classicStyle = pw.TextStyle(
       font: pw.Font.ttf(font),
@@ -210,6 +226,7 @@ Future<void> createPdfFromMarkdown() async {
       child: pw.Image(headerImage),
     );
 
+    // Apparence d'une page classique (sans image dans l'en-tête)
     final mainPageTheme = pw.PageTheme(
       pageFormat: PdfPageFormat.a4,
       buildBackground: (context) {
@@ -220,6 +237,7 @@ Future<void> createPdfFromMarkdown() async {
       },
     );
 
+    // Apparence de la première page (avec image dans l'en-tête)
     final firstPageTheme = pw.PageTheme(
       pageFormat: PdfPageFormat.a4,
       buildBackground: (context) {
@@ -253,41 +271,13 @@ Future<void> createPdfFromMarkdown() async {
         );
       },
     );
-    // Ensuite, ajoutez les pages suivantes sans l'image dans l'en-tête
-    // Générez d'abord la première page avec le thème firstPageTheme
-    if (markdownPages.length == 1) {
-      pdf.addPage(
-        pw.Page(
-          pageTheme: firstPageTheme,
-          build: (pw.Context context) {
-            return pw.Stack(
-              children: [
-                pw.Column(
-                  mainAxisSize: pw.MainAxisSize.min,
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: _markdownToWidget(
-                    markdownPages.first,
-                    classicStyle,
-                    boldStyle,
-                    italicStyle,
-                    underlineStyle,
-                    titleStyle,
-                    highlightedStyle,
-                    bulletImage,
-                    titleCadre,
-                  ),
-                ),
-                pw.Positioned(
-                  bottom: 0,
-                  right: 0,
-                  child: pw.Image(signatureImage, width: 300, height: 200),
-                ),
-              ],
-            );
-          },
-        ),
+
+    if (markdownPages.length <= 2) {
+      throw _TemplateException(
+        "Template PDF : trop peu d'éléments dans le template pour générer un PDF",
       );
     } else {
+      // Première page : on prend les éléments de la première page du template
       pdf.addPage(
         pw.Page(
           pageTheme: firstPageTheme,
@@ -310,6 +300,7 @@ Future<void> createPdfFromMarkdown() async {
         ),
       );
 
+      // Pages suivantes : on prend les éléments des pages suivantes sauf la dernière
       for (int i = 1; i < markdownPages.length - 1; i++) {
         pdf.addPage(
           pw.MultiPage(
@@ -332,6 +323,7 @@ Future<void> createPdfFromMarkdown() async {
         );
       }
 
+      // Dernière page : on ajoute la signature
       pdf.addPage(
         pw.Page(
           pageTheme: mainPageTheme,
@@ -365,6 +357,7 @@ Future<void> createPdfFromMarkdown() async {
       );
     }
 
+    // Enregistrement du PDF dans le dossier "Contrat" de l'appareil
     final directory = Directory('Contrat');
     if (!await directory.exists()) {
       await directory.create();
@@ -375,50 +368,58 @@ Future<void> createPdfFromMarkdown() async {
   } on _TemplateException {
     rethrow;
   } catch (e) {
-    throw _TemplateException('Erreur lors de la génération du PDF : $e');
+    throw _TemplateException('Erreur génération du PDF : $e');
   }
 }
 
 List<List<_TemplateLine>> _parseTemplate(String markdownData) {
-  final normalizedMarkdown =
-      markdownData.replaceAll('\r\n', '\n').replaceAll('\r', '\n');
-  final rawLines = const LineSplitter().convert(normalizedMarkdown);
+  final normalizedMarkdown = markdownData
+      .replaceAll('\r\n', '\n')
+      .replaceAll('\r', '\n'); // Normalisation des sauts de ligne
+  final rawLines = const LineSplitter().convert(
+      normalizedMarkdown); // Split en lignes tout en conservant les numéros de ligne pour les erreurs
   final pages = <List<_TemplateLine>>[
     <_TemplateLine>[],
   ];
 
   for (int index = 0; index < rawLines.length; index++) {
-    final line = _TemplateLine(number: index + 1, text: rawLines[index]);
-    _validateTemplateLine(line);
+    final line = _TemplateLine(
+        number: index + 1,
+        text: rawLines[
+            index]); // Numéro de ligne pour les messages d'erreur plus clairs
+    _validateTemplateLine(line); // Vérification de la syntaxe de chaque ligne
 
     if (_isPageBreakLine(line.text, line.number)) {
+      // Si commande de saut de page, on démarre une nouvelle page
       pages.add(<_TemplateLine>[]);
       continue;
     }
 
-    pages.last.add(line);
+    pages.last.add(
+        line); // Sinon, on ajoute la ligne à la page courante (on utilise un multi-page, donc pas de vérification s'il y a la place)
   }
 
   return pages;
 }
 
 void _validateTemplateLine(_TemplateLine line) {
-  _validateBalancedMarkers(line);
+  _validateClosingBranckets(line);
 
   final trimmed = line.text.trim();
   if (trimmed.isEmpty) {
     return;
   }
 
-  final mustacheCommand = _parseMustacheCommand(trimmed, line.number);
-  if (mustacheCommand != null) {
+  final templateCommand = _parseTemplateCommand(trimmed,
+      line.number); // Renvoie la commande et ses arguments correctement parsés
+  if (templateCommand != null) {
     return;
   }
 
   _validateInlineVariables(line);
 }
 
-void _validateBalancedMarkers(_TemplateLine line) {
+void _validateClosingBranckets(_TemplateLine line) {
   final mustacheOpenCount = RegExp(r'\{\{').allMatches(line.text).length;
   final mustacheCloseCount = RegExp(r'\}\}').allMatches(line.text).length;
   if (mustacheOpenCount != mustacheCloseCount) {
@@ -446,10 +447,10 @@ void _validateInlineVariables(_TemplateLine line) {
   }
 }
 
-_TemplateCommand? _parseMustacheCommand(String trimmedLine, int lineNumber) {
+_TemplateCommand? _parseTemplateCommand(String trimmedLine, int lineNumber) {
   final match = RegExp(r'^\{\{\s*(.*?)\s*\}\}$').firstMatch(trimmedLine);
   if (match == null) {
-    return null;
+    return null; // Aucune commande à cette ligne
   }
 
   final commandContent = match.group(1)!.trim();
@@ -460,7 +461,8 @@ _TemplateCommand? _parseMustacheCommand(String trimmedLine, int lineNumber) {
   }
 
   final parts = commandContent.split('|').map((part) => part.trim()).toList();
-  final commandType = _resolveCommandType(parts.first);
+  final commandType = _resolveCommandType(parts
+      .first); // On cherche le vrai nom de la commande (sans alias et normalisé)
 
   if (commandType == null) {
     if (parts.length > 1) {
@@ -481,7 +483,8 @@ _TemplateCommand _buildCommand(
     case _TemplateCommandType.equipment:
     case _TemplateCommandType.operation:
     case _TemplateCommandType.calendar:
-    case _TemplateCommandType.attachList:
+    case _TemplateCommandType.annexText:
+    case _TemplateCommandType.imageList:
     case _TemplateCommandType.separator:
     case _TemplateCommandType.pageBreak:
       if (arguments.any((argument) => argument.isNotEmpty)) {
@@ -540,14 +543,14 @@ _TemplateCommand _buildCommand(
 void _validateTextArguments(List<String> arguments, int lineNumber) {
   for (final argument in arguments) {
     final line = _TemplateLine(number: lineNumber, text: argument);
-    _validateBalancedMarkers(line);
+    _validateClosingBranckets(line);
     _validateInlineVariables(line);
   }
 }
 
 bool _isPageBreakLine(String line, int lineNumber) {
   final trimmed = line.trim();
-  final command = _parseMustacheCommand(trimmed, lineNumber);
+  final command = _parseTemplateCommand(trimmed, lineNumber);
   return command?.type == _TemplateCommandType.pageBreak;
 }
 
@@ -597,7 +600,7 @@ List<pw.Widget> _markdownToWidget(
       return [pw.SizedBox(height: 8)]; // Espacement pour les lignes vides
     }
 
-    final command = _parseMustacheCommand(trimmed, line.number);
+    final command = _parseTemplateCommand(trimmed, line.number);
     if (command != null) {
       return _buildCommandWidgets(
         command,
@@ -687,32 +690,25 @@ List<pw.Widget> _buildCommandWidgets(
   pw.MemoryImage titleCadre,
 ) {
   switch (command.type) {
-    case _TemplateCommandType.attachList:
-      if (attachList.isEmpty) {
+    case _TemplateCommandType.annexText:
+      final widgets = _buildAnnexTextWidgets(
+        titleStyle,
+        classicStyle,
+        boldStyle,
+        bulletImage,
+        titleCadre,
+      );
+      return widgets.isEmpty ? [pw.Container()] : widgets;
+    case _TemplateCommandType.imageList:
+      if (imageList.isEmpty) {
         return [pw.Container()];
       }
 
-      final text = attachList.length > 1 ? 'Pièces Jointes' : 'Pièce Jointe';
-      final widgets = <pw.Widget>[
-        pw.SizedBox(
-          width: double.infinity,
-          height: titleCadre.height! /
-              (titleCadre.width as num) *
-              (PdfPageFormat.a4.width -
-                  PdfPageFormat.a4.marginLeft -
-                  PdfPageFormat.a4.marginRight),
-          child: pw.Stack(
-            children: [
-              pw.Image(titleCadre, fit: pw.BoxFit.cover),
-              pw.Center(
-                child: pw.Text(text, style: titleStyle),
-              ),
-            ],
-          ),
-        ),
-      ];
+      final widgets = <pw.Widget>[];
+      final text = imageList.length > 1 ? 'Pièces Jointes' : 'Pièce Jointe';
+      widgets.add(_buildTitleBanner(text, titleStyle, titleCadre));
 
-      for (int i = 0; i < attachList.length; i += 2) {
+      for (int i = 0; i < imageList.length; i += 2) {
         widgets.add(
           pw.Padding(
             padding: const pw.EdgeInsets.all(10),
@@ -722,14 +718,14 @@ List<pw.Widget> _buildCommandWidgets(
                 pw.Container(
                   width: 240,
                   height: 330,
-                  child: pw.Image(pw.MemoryImage(base64Decode(attachList[i]))),
+                  child: pw.Image(pw.MemoryImage(base64Decode(imageList[i]))),
                 ),
-                if (i + 1 < attachList.length)
+                if (i + 1 < imageList.length)
                   pw.Container(
                     width: 240,
                     height: 330,
                     child: pw.Image(
-                        pw.MemoryImage(base64Decode(attachList[i + 1]))),
+                        pw.MemoryImage(base64Decode(imageList[i + 1]))),
                   ),
               ],
             ),
@@ -849,22 +845,7 @@ pw.Widget _formatMarkdown(
     final child = children.isNotEmpty ? children.first : null;
 
     if (mdContent.tag == 'h1') {
-      return pw.SizedBox(
-        width: double.infinity,
-        height: titleCadre.height! /
-            (titleCadre.width as num) *
-            (PdfPageFormat.a4.width -
-                PdfPageFormat.a4.marginLeft -
-                PdfPageFormat.a4.marginRight),
-        child: pw.Stack(
-          children: [
-            pw.Image(titleCadre, fit: pw.BoxFit.cover),
-            pw.Center(
-              child: pw.Text(mdText, style: titleStyle),
-            ),
-          ],
-        ),
-      );
+      return _buildTitleBanner(mdText, titleStyle, titleCadre);
     }
 
     if (mdContent.tag == 'hr') {
@@ -883,20 +864,7 @@ pw.Widget _formatMarkdown(
     }
 
     if (mdContent.tag == 'ul') {
-      return pw.Padding(
-        padding: const pw.EdgeInsets.only(left: 20),
-        child: pw.Row(
-          crossAxisAlignment: pw.CrossAxisAlignment.start,
-          children: [
-            pw.Padding(
-              padding: const pw.EdgeInsets.only(top: 3),
-              child: pw.Image(bulletImage, width: 10, height: 10),
-            ),
-            pw.SizedBox(width: 5),
-            pw.Expanded(child: pw.Text(mdText, style: classicStyle)),
-          ],
-        ),
-      );
+      return _buildBulletRow(mdText, classicStyle, bulletImage);
     }
 
     if (mdContent.tag == 'em') {
@@ -913,6 +881,96 @@ pw.Widget _formatMarkdown(
   }
 
   return pw.Container();
+}
+
+List<pw.Widget> _buildAnnexTextWidgets(
+  pw.TextStyle titleStyle,
+  pw.TextStyle classicStyle,
+  pw.TextStyle boldStyle,
+  pw.MemoryImage bulletImage,
+  pw.MemoryImage titleCadre,
+) {
+  final annex = contractAnnex;
+  final subtitles = annex.displayableSubtitles;
+  if (subtitles.isEmpty) {
+    return const <pw.Widget>[];
+  }
+
+  final widgets = <pw.Widget>[
+    _buildTitleBanner(
+      annex.title.trim().isNotEmpty ? annex.title.trim() : 'Annexe',
+      titleStyle,
+      titleCadre,
+    ),
+  ];
+
+  for (final subtitle in subtitles) {
+    final subtitleTitle = subtitle.title.trim();
+    if (subtitleTitle.isNotEmpty) {
+      widgets.add(
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(top: 12, bottom: 4),
+          child: pw.Text(subtitleTitle, style: boldStyle),
+        ),
+      );
+    }
+
+    for (final remark in subtitle.displayableRemarks) {
+      widgets.add(
+        _buildBulletRow(
+          remark.text.trim(),
+          classicStyle,
+          bulletImage,
+        ),
+      );
+    }
+  }
+
+  return widgets;
+}
+
+pw.Widget _buildTitleBanner(
+  String text,
+  pw.TextStyle titleStyle,
+  pw.MemoryImage titleCadre,
+) {
+  return pw.SizedBox(
+    width: double.infinity,
+    height: titleCadre.height! /
+        (titleCadre.width as num) *
+        (PdfPageFormat.a4.width -
+            PdfPageFormat.a4.marginLeft -
+            PdfPageFormat.a4.marginRight),
+    child: pw.Stack(
+      children: [
+        pw.Image(titleCadre, fit: pw.BoxFit.cover),
+        pw.Center(
+          child: pw.Text(text, style: titleStyle),
+        ),
+      ],
+    ),
+  );
+}
+
+pw.Widget _buildBulletRow(
+  String text,
+  pw.TextStyle classicStyle,
+  pw.MemoryImage bulletImage,
+) {
+  return pw.Padding(
+    padding: const pw.EdgeInsets.only(left: 20),
+    child: pw.Row(
+      crossAxisAlignment: pw.CrossAxisAlignment.start,
+      children: [
+        pw.Padding(
+          padding: const pw.EdgeInsets.only(top: 3),
+          child: pw.Image(bulletImage, width: 10, height: 10),
+        ),
+        pw.SizedBox(width: 5),
+        pw.Expanded(child: pw.Text(text, style: classicStyle)),
+      ],
+    ),
+  );
 }
 
 pw.Widget _buildTwoColumns(List<String> parts, pw.TextStyle boldStyle) {

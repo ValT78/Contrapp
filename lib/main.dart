@@ -2,6 +2,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:contrapp/object/annex.dart';
 import 'package:contrapp/object/contract_calendar.dart';
 import 'package:contrapp/object/equipment.dart';
 import 'package:contrapp/object/machine.dart';
@@ -110,11 +111,56 @@ set selectedCalendar(SelectedCalendarData calendar) {
   variablesContrat['selectedCalendar'] = calendar;
 }
 
-// Liste des photos à attacher
-List<String> get attachList => variablesContrat['attachList'] as List<String>;
+List<String> _normalizeImageList(dynamic rawList) {
+  if (rawList is! List) {
+    return <String>[];
+  }
 
-set attachList(List<String> list) {
-  variablesContrat['attachList'] = list;
+  return rawList.map((image) => image.toString()).toList();
+}
+
+// Liste des photos à attacher
+List<String> get imageList {
+  final normalized = _normalizeImageList(
+      variablesContrat['imageList'] ?? variablesContrat['attachList']);
+  variablesContrat['imageList'] = normalized;
+  variablesContrat.remove('attachList');
+  return normalized;
+}
+
+set imageList(List<String> list) {
+  variablesContrat['imageList'] = list;
+  variablesContrat.remove('attachList');
+}
+
+void ensureImageListStructure() {
+  imageList = _normalizeImageList(
+    variablesContrat['imageList'] ?? variablesContrat['attachList'],
+  );
+}
+
+ContractAnnex get contractAnnex {
+  final rawAnnex = variablesContrat['contractAnnex'];
+  if (rawAnnex is ContractAnnex) {
+    return rawAnnex;
+  }
+
+  final normalized = ContractAnnex.fromJson(rawAnnex);
+  variablesContrat['contractAnnex'] = normalized;
+  return normalized;
+}
+
+set contractAnnex(ContractAnnex annex) {
+  variablesContrat['contractAnnex'] = annex;
+}
+
+void ensureContractAnnexStructure() {
+  final rawAnnex = variablesContrat['contractAnnex'];
+  if (rawAnnex is ContractAnnex) {
+    return;
+  }
+
+  contractAnnex = ContractAnnex.fromJson(rawAnnex);
 }
 
 Map<String, Map<String, String>> oldContractPaths = {};
@@ -236,7 +282,8 @@ Map<String, dynamic> resetVariablesContrat() {
     'capital': '',
     'date': DateFormat('dd/MM/yyyy').format(DateTime.now()),
     'versionContrat': 1,
-    'attachList': <String>[],
+    'imageList': <String>[],
+    'contractAnnex': ContractAnnex(),
     'equipPicked': <Equipment>[],
     'montantHT': 0.0,
     'montantTTC': 0.0,
@@ -317,7 +364,7 @@ void updateMachineAndContractTotals(
 void resetAppData() {
   variablesContrat = resetVariablesContrat();
   equipPicked.equipList.clear();
-  attachList.clear();
+  imageList.clear();
   montantHT = 0.0;
   montantTTC = 0.0;
   totalHT = 0.0;

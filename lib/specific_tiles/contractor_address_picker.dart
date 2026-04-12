@@ -132,7 +132,7 @@ class _ContractorAddressPickerState extends State<ContractorAddressPicker> {
     if (addresses.isEmpty) {
       menuChildren.add(
         SizedBox(
-          width: 520,
+          // width: 520,
           child: Padding(
             padding: const EdgeInsets.all(12),
             child: Text(
@@ -149,8 +149,9 @@ class _ContractorAddressPickerState extends State<ContractorAddressPicker> {
     } else {
       for (final address in addresses) {
         menuChildren.add(
-          SizedBox(
-            width: 520,
+          Container(
+            margin: const EdgeInsets.only(bottom: 8),
+            // width: 520,
             child: Row(
               children: [
                 Expanded(
@@ -165,7 +166,7 @@ class _ContractorAddressPickerState extends State<ContractorAddressPicker> {
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
-                    ),
+                    ),                      
                     child: Row(
                       children: [
                         Icon(

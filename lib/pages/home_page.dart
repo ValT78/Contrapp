@@ -169,8 +169,9 @@ class HomePage extends StatelessWidget {
 
       variablesContrat = data;
       ensureContractorAddressSelection();
+      ensureContractAnnexStructure();
+      ensureImageListStructure();
 
-      attachList = List<String>.from(data['attachList']);
       equipPicked.equipList = (List<Equipment>.from(
           data['equipPicked'].map((e) => Equipment.fromJson(e))));
 
